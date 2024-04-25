@@ -5,7 +5,7 @@ import { FormLayout } from "../layouts";
 export const RegisterPage = () => {
   axios
     .post(
-      "/api/user_data",
+      "http://34.42.210.241:80/user_data",
       { userId: "124" },
     )
     .then((data) => {
