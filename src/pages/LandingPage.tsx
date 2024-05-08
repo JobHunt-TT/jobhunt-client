@@ -1,3 +1,5 @@
+import { faInstagram, faSquareFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
 export const LandingPage = () => {
@@ -18,14 +20,14 @@ export const LandingPage = () => {
           <div className="text-center">
             <Link
               to="/login"
-              className="bg-white text-politectico font-semibold py-2 px-3 rounded-md"
+              className="bg-white text-politectico font-semibold py-2 px-3 rounded-md block sm:inline"
             >
               Iniciar Sesión
             </Link>
           </div>
         </div>
       </div>
-      <div className="h-screen flex justify-between flex-col p-28">
+      <div className="h-screen flex justify-between flex-col p-10 md:p-28">
         <div className="flex items-center flex-col">
           <div className="text-politectico text-3xl font-bold md:text-4xl">
             Registrate
@@ -38,22 +40,22 @@ export const LandingPage = () => {
             <br />
             haciendo clic en el botón de abajo.
           </div>
-          <div className="mt-6">
+          <div className="mt-6 w-full sm:w-auto">
             <Link
               to="/register"
-              className="bg-politectico text-white font-semibold mx-1 py-2 px-3 rounded-md"
+              className="bg-politectico text-white font-semibold py-2 px-3 rounded-md block mb-3 text-center sm:mx-1 sm:mb-0 sm:inline-block"
             >
               Estudiantes
             </Link>
-            <a
-              href="./registerEmpresa.html"
-              className="bg-black text-white font-semibold mx-1 py-2 px-3 rounded-md"
+            <Link
+              to="/registerEnterprise"
+              className="bg-black text-white font-semibold py-2 px-3 rounded-md block text-center sm:mx-1 sm:inline-block"
             >
               Empresas
-            </a>
+            </Link>
           </div>
         </div>
-        <div className="w-10/12 md:w-1/4">
+        <div className="w-10/12 2xl:w-1/4">
           <div className="text-politectico text-3xl font-bold md:text-4xl">
             ¿Por qué elegirnos?
           </div>
@@ -66,12 +68,12 @@ export const LandingPage = () => {
         </div>
       </div>
       <div className="h-screen bg-frase bg-no-repeat bg-cover bg-center"></div>
-      <div className="h-screen p-28">
+      <div className="h-screen p-10 md:p-28">
         <div>
           <div className="text-politectico text-3xl font-bold md:text-4xl">
             Nuestros casos de éxito
           </div>
-          <div className="grid grid-cols-2 gap-y-14 gap-x-24 my-14">
+          <div className="grid grid-cols-1 gap-y-4 my-6 gap-x-10 sm:grid-cols-2 sm:gap-y-14 sm:gap-x-24 sm:my-14">
             <div>
               <div className="text-base font-bold md:text-lg">Juan Pérez</div>
               <div className="text-sm md:text-base">
@@ -114,11 +116,11 @@ export const LandingPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center flex-col mt-28">
+        <div className="flex items-center flex-col mt-28 mb-8 lg:mb-0">
           <div>
-            <i className="fa-brands fa-square-facebook text-2xl text-politectico mx-1 md:text-3xl"></i>
-            <i className="fa-brands fa-x-twitter text-2xl text-politectico mx-1 md:text-3xl"></i>
-            <i className="fa-brands fa-instagram text-2xl text-politectico mx-1 md:text-3xl"></i>
+            <FontAwesomeIcon icon={faSquareFacebook} className="text-2xl text-politectico mx-1 md:text-3xl" />
+            <FontAwesomeIcon icon={faXTwitter} className="text-2xl text-politectico mx-1 md:text-3xl" />
+            <FontAwesomeIcon icon={faInstagram} className="text-2xl text-politectico mx-1 md:text-3xl" />
           </div>
           <div className="text-politectico font-semibold mt-6 text-sm md:text-base">
             &copy; 2023

@@ -3,10 +3,11 @@ import { RegisterForm } from "../forms";
 import { FormLayout } from "../layouts";
 
 export const RegisterPage = () => {
+
   axios
     .post(
-      "http://34.42.210.241:80/user_data",
-      { userId: "124" },
+      "http://35.232.168.61:80/consulta_estudiante",
+      { id: "6" },
     )
     .then((data) => {
       console.log(data);
