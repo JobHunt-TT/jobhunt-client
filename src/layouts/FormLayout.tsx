@@ -1,3 +1,6 @@
+import { faInstagram, faSquareFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 interface FormLayoutProps {
   title: string
   children?: JSX.Element
@@ -17,9 +20,9 @@ export const FormLayout = ({ children, title }: FormLayoutProps) => {
             Estás a un clic del talento que necesitas
           </div>
           <div className="mb-4">
-            <i className="fa-brands fa-square-facebook text-3xl text-politectico mx-1"></i>
-            <i className="fa-brands fa-x-twitter text-3xl text-politectico mx-1"></i>
-            <i className="fa-brands fa-instagram text-3xl text-politectico mx-1"></i>
+            <FontAwesomeIcon icon={faSquareFacebook} className="text-2xl text-politectico mx-1 md:text-3xl" />
+            <FontAwesomeIcon icon={faXTwitter} className="text-2xl text-politectico mx-1 md:text-3xl" />
+            <FontAwesomeIcon icon={faInstagram} className="text-2xl text-politectico mx-1 md:text-3xl" />
           </div>
           <div className="text-politectico font-semibold">&copy; 2023</div>
         </div>
