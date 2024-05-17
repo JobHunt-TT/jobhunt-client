@@ -1,34 +1,49 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
 interface FormInputProps {
   label: string;
+  name: string;
 }
 
-export const FormInput = ({ label }: FormInputProps) => {
+export const FormInput = ({ label, name }: FormInputProps) => {
   const [focused, setFocused] = useState(false);
-  const [value, setValue] = useState("");
+  const { control, setValue } = useFormContext();
 
   return (
-    <div className="bg-gray-200 rounded-md relative ">
-      <label
-        htmlFor={label.toLowerCase()}
-        className={`absolute left-4 text-gray-600 transition-label-form duration-100 ease-linear ${
-          focused || !!value ? "top-1 text-xs" : "top-1/4 text-base"
-        }`}
-      >
-        {label}
-      </label>
-      <input
-        type="text"
-        autoComplete="off"
-        className="bg-transparent w-full pb-2 mt-5 px-4 outline-none"
-        name={label.toLowerCase()}
-        id={label.toLowerCase()}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onFocus={() => setFocused(!focused)}
-        onBlur={() => setFocused(false)}
-      />
-    </div>
+    <Controller
+      name={name}
+      control={control}
+      render={({ fieldState: { error }, field: { value, onChange } }) => {
+        const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+          const newValue = event.target.value;
+          !!onChange && onChange(newValue);
+          setValue(name, newValue);
+        };
+        return (
+          <div className={`bg-gray-200 rounded-md relative border-2 ${!!error && 'border-red-400'}`}>
+            <label
+              htmlFor={label.toLowerCase()}
+              className={`absolute left-4 transition-label-form duration-100 ease-linear ${!!error ? 'text-red-600' : 'text-gray-600'} ${
+                focused || !!value ? "top-1 text-xs" : "top-1/4 text-base"
+              }`}
+            >
+              {label}
+            </label>
+            <input
+              type="text"
+              autoComplete="off"
+              className="bg-transparent w-full pb-2 mt-5 px-4 outline-none"
+              name={label.toLowerCase()}
+              id={label.toLowerCase()}
+              value={value ? value : ""}
+              onChange={handleChange}
+              onFocus={() => setFocused(!focused)}
+              onBlur={() => setFocused(false)}
+            />
+          </div>
+        );
+      }}
+    />
   );
 };
