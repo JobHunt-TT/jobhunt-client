@@ -14,7 +14,10 @@ module.exports = {
       },
       transitionProperty: {
         'label-form': 'top, font-size, line-height',
-        'rotate': 'rotate'
+        'rotate': 'rotate',
+        'width-step': 'width',
+        'border-step': 'border-color',
+        'color-step': 'color'
       }
     },
   },

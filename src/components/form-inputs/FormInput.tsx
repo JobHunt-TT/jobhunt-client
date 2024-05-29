@@ -4,9 +4,10 @@ import { Controller, useFormContext } from "react-hook-form";
 interface FormInputProps {
   label: string;
   name: string;
+  type?: 'text' | 'password';
 }
 
-export const FormInput = ({ label, name }: FormInputProps) => {
+export const FormInput = ({ label, name, type = 'text' }: FormInputProps) => {
   const [focused, setFocused] = useState(false);
   const { control, setValue } = useFormContext();
 
@@ -21,7 +22,7 @@ export const FormInput = ({ label, name }: FormInputProps) => {
           setValue(name, newValue);
         };
         return (
-          <div className={`bg-gray-200 rounded-md relative border-2 ${!!error && 'border-red-400'}`}>
+          <div className={`col-span-2 bg-gray-200 rounded-md relative border-2 ${!!error && 'border-red-400'}`}>
             <label
               htmlFor={label.toLowerCase()}
               className={`absolute left-4 transition-label-form duration-100 ease-linear ${!!error ? 'text-red-600' : 'text-gray-600'} ${
@@ -31,7 +32,7 @@ export const FormInput = ({ label, name }: FormInputProps) => {
               {label}
             </label>
             <input
-              type="text"
+              type={type}
               autoComplete="off"
               className="bg-transparent w-full pb-2 mt-5 px-4 outline-none"
               name={label.toLowerCase()}

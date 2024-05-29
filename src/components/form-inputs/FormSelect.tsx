@@ -35,7 +35,7 @@ export const FormSelect = ({
           setValue(name, newValue);
         };
         return (
-          <div className={`bg-gray-200 rounded-md relative border-2 ${!!error && 'border-red-400'}`}>
+          <div className={`col-span-2 bg-gray-200 rounded-md relative border-2 ${!!error && 'border-red-400'}`}>
             <label
               htmlFor={label.toLowerCase()}
               className={`absolute left-4 transition-label-form duration-100 ease-linear text-gray-600 top-1 text-xs`}
