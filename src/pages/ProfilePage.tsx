@@ -61,7 +61,7 @@ export const ProfilePage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-300">
+    <div className="bg-gray-300 h-screen">
       <div className="bg-politectico">
         <div className="w-4/5 m-auto flex justify-between items-center text-white">
           <a href="./principal.html" className="font-bold text-2xl py-1">
@@ -80,7 +80,7 @@ export const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <div className="w-4/5 mx-auto my-16">
+      <div className="w-4/5 mx-auto py-16">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-1">
             <div className="bg-white rounded-md p-4">
