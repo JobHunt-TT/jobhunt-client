@@ -142,7 +142,7 @@ export const ProfileEnterprisePage = () => {
               </table>
             </div>
 
-            <div className="bg-white rounded-md p-4">
+            <div className="bg-white rounded-md p-4 mb-6">
               <div className="flex justify-between items-start">
                 <div className="text-xl text-politectico font-bold">
                   Vacantes
@@ -156,20 +156,101 @@ export const ProfileEnterprisePage = () => {
               </div>
               <table className="w-full mt-3 border-b-[3px] border-politectico">
                 <tr className="bg-politectico text-white font-semibold">
-                  <th className="px-4 py-3 rounded-tl-md">Nombre</th>
-                  <th className="px-4 py-3">Fecha</th>
-                  <th className="px-4 py-3">Estatus</th>
-                  <th className="px-4 py-3">Creador</th>
-                  <th className="px-4 py-3 rounded-tr-md text-center">
+                  <td className="px-4 py-3 rounded-tl-md">Nombre</td>
+                  <td className="px-4 py-3">Fecha</td>
+                  <td className="px-4 py-3">Estatus</td>
+                  <td className="px-4 py-3">Creador</td>
+                  <td className="px-4 py-3 rounded-tr-md text-center">
                     Acciones
-                  </th>
+                  </td>
                 </tr>
                 <tbody>
                   <tr>
                     <td className="px-4 py-3">Desarrollador BackEnd</td>
                     <td className="px-4 py-3">5 Jun. 2024</td>
                     <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-blue-200 text-blue-500 rounded-full text-sm font-semibold">
+                    <div className="inline px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm font-semibold">
+                        En Espera
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">Juanito Pérez</td>
+                    <td className="px-4 py-3 text-center">
+                      <FontAwesomeIcon
+                        icon={faPen}
+                        className="fa-solid fa-pen mx-1 text-yellow-500"
+                      />
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        className="fa-solid fa-trash mx-1 text-red-500"
+                      />
+                    </td>
+                  </tr>
+                  <tr className="bg-gray-200">
+                    <td className="px-4 py-3">Desarrollador BackEnd</td>
+                    <td className="px-4 py-3">5 Jun. 2024</td>
+                    <td className="px-4 py-3">
+                      <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
+                        Aprobada
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">Juanito Pérez</td>
+                    <td className="px-4 py-3 text-center">
+                      <FontAwesomeIcon
+                        icon={faPen}
+                        className="fa-solid fa-pen mx-1 text-yellow-500"
+                      />
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        className="fa-solid fa-trash mx-1 text-red-500"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3">Desarrollador BackEnd</td>
+                    <td className="px-4 py-3">5 Jun. 2024</td>
+                    <td className="px-4 py-3">
+                      <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
+                        Bloqueada
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">Juanito Pérez</td>
+                    <td className="px-4 py-3 text-center">
+                      <FontAwesomeIcon
+                        icon={faPen}
+                        className="fa-solid fa-pen mx-1 text-yellow-500"
+                      />
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        className="fa-solid fa-trash mx-1 text-red-500"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bg-white rounded-md p-4">
+              <div className="flex justify-between items-start">
+                <div className="text-xl text-politectico font-bold">
+                  Postulaciones
+                </div>
+              </div>
+              <table className="w-full mt-3 border-b-[3px] border-politectico">
+                <tr className="bg-politectico text-white font-semibold">
+                  <td className="px-4 py-3 rounded-tl-md">Nombre</td>
+                  <td className="px-4 py-3">Fecha</td>
+                  <td className="px-4 py-3">Estatus</td>
+                  <td className="px-4 py-3">Aspirante</td>
+                  <td className="px-4 py-3 rounded-tr-md text-center">
+                    Acciones
+                  </td>
+                </tr>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-3">Desarrollador BackEnd</td>
+                    <td className="px-4 py-3">5 Jun. 2024</td>
+                    <td className="px-4 py-3">
+                      <div className="inline px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
                         En Validación
                       </div>
                     </td>
@@ -189,7 +270,7 @@ export const ProfileEnterprisePage = () => {
                     <td className="px-4 py-3">Desarrollador BackEnd</td>
                     <td className="px-4 py-3">5 Jun. 2024</td>
                     <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-green-200 text-green-500 rounded-full text-sm font-semibold">
+                      <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
                         Validado
                       </div>
                     </td>
@@ -209,8 +290,8 @@ export const ProfileEnterprisePage = () => {
                     <td className="px-4 py-3">Desarrollador BackEnd</td>
                     <td className="px-4 py-3">5 Jun. 2024</td>
                     <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-red-200 text-red-500 rounded-full text-sm font-semibold">
-                        Bloqueada
+                      <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
+                        Rechazada
                       </div>
                     </td>
                     <td className="px-4 py-3">Juanito Pérez</td>

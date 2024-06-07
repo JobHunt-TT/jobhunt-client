@@ -4,27 +4,24 @@ import * as yup from "yup";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const MySwal = withReactContent(Swal);
 
 export interface VacanteFormFields {
-  email: string;
-  password: string;
+  nombreVacante: string;
+  descripcionVacante: string;
 }
 
 const defaultValues: VacanteFormFields = {
-  email: "",
-  password: "",
+  nombreVacante: "",
+  descripcionVacante: "",
 };
 
 export const useVacanteFormManagement = () => {
   const schema = yup.object().shape({
-    email: yup
-      .string()
-      .email("El correo no es valido")
-      .required("El correo es requerido"),
-    password: yup.string().required("La constraseña es requerida"),
+    nombreVacante: yup
+      .string().required("El nombre es requerido"),
+    descripcionVacante: yup.string().required("La constraseña es requerida"),
   });
 
   const methods = useForm({
@@ -35,46 +32,43 @@ export const useVacanteFormManagement = () => {
   const validForm = async () => {
     
     const result = await methods.trigger([
-      "email",
-      "password",
+      "nombreVacante",
+      "descripcionVacante"
     ]);
     return result;
   }
 
-  const submit: SubmitHandler<VacanteFormFields> = async ({
-    email,
-    password,
-  }) => {
-    axios
-      .post("/login", {
-        userEmail: email,
-        userPass: password,
-      })
-      .then((data) => {
-        console.log("success", data);
-        if (typeof data.data === "object") {
-          localStorage.setItem("idUser", data.data.id);
-        } else {
-          MySwal.fire({
-            icon: "error",
-            title: "Error",
-            text: data.data,
-            timer: 3000,
-            showConfirmButton: false,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
+  const submit: SubmitHandler<VacanteFormFields> = async (fields) => {
+    // axios
+    //   .post("/login", {
+    //     userEmail: email,
+    //     userPass: password,
+    //   })
+    //   .then((data) => {
+    //     console.log("success", data);
+    //     if (typeof data.data === "object") {
+    //       localStorage.setItem("idUser", data.data.id);
+    //     } else {
+    //       MySwal.fire({
+    //         icon: "error",
+    //         title: "Error",
+    //         text: data.data,
+    //         timer: 3000,
+    //         showConfirmButton: false,
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("error", error);
 
-        MySwal.fire({
-          icon: "error",
-          title: "Error",
-          text: 'Hubo un error en al iniciar sesión',
-          timer: 3000,
-          showConfirmButton: false,
-        });
-      });
+    //     MySwal.fire({
+    //       icon: "error",
+    //       title: "Error",
+    //       text: 'Hubo un error en al iniciar sesión',
+    //       timer: 3000,
+    //       showConfirmButton: false,
+    //     });
+    //   });
   };
 
   return {

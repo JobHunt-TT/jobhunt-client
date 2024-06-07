@@ -8,6 +8,7 @@ import {
   ProfilePage,
   RegisterEnterprisePage,
   RegisterPage,
+  VacantePage,
 } from "./pages";
 import "./assets/css/index.css";
 
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminPage />,
+  },
+  {
+    path: "/vacante",
+    element: <VacantePage />,
   },
 ]);
 

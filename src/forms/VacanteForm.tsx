@@ -23,12 +23,12 @@ export const VacanteForm = () => {
   const setErrors = () => {
     const errorsTemp: string[] = [];
 
-    if (!!errors.email && !!errors.email.message) {
-      errorsTemp.push(errors.email.message);
+    if (!!errors.nombreVacante && !!errors.nombreVacante.message) {
+      errorsTemp.push(errors.nombreVacante.message);
     }
 
-    if (!!errors.password && !!errors.password.message) {
-      errorsTemp.push(errors.password.message);
+    if (!!errors.descripcionVacante && !!errors.descripcionVacante.message) {
+      errorsTemp.push(errors.descripcionVacante.message);
     }
 
     console.log(errorsTemp);
@@ -45,8 +45,8 @@ export const VacanteForm = () => {
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
         onSubmit={handleSubmit(submit)}
       >
-        <FormInput label="Correo" name="email" />
-        <FormInput label="Contraseña" name="password" type="password" />
+        <FormInput label="Nombre" name="nombreVacante" />
+        <FormInput label="Descripción" name="descripcionVacante" />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
@@ -55,14 +55,14 @@ export const VacanteForm = () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.email || !!errors.password) {
+              if (!!errors.nombreVacante || !!errors.descripcionVacante) {
                 setErrors();
               }
               handleShowNotification();
             }
           }}
         >
-          Iniciar Sesión
+          Crear Vacante
         </button>
       </form>
 
