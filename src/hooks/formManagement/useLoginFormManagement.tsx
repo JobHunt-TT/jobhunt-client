@@ -47,7 +47,7 @@ export const useLoginFormManagement = () => {
     password,
   }) => {
     axios
-      .post("/login", {
+      .post("http://35.222.69.159:80/login", {
         userEmail: email,
         userPass: password,
       })
