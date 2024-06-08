@@ -1,11 +1,11 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import axios from "axios";
+// import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
+// import axios from "axios";
 
-const MySwal = withReactContent(Swal);
+// const MySwal = withReactContent(Swal);
 
 export interface VacanteFormFields {
   nombreVacante: string;
