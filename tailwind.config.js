@@ -18,6 +18,9 @@ module.exports = {
         'width-step': 'width',
         'border-step': 'border-color',
         'color-step': 'color'
+      },
+      height: {
+        'screen-menu': 'calc(100vh - 3.5rem)'
       }
     },
   },

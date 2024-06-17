@@ -1,4 +1,13 @@
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBackwardStep,
+  faChevronDown,
+  faChevronLeft,
+  faChevronRight,
+  faForwardStep,
+  faPen,
+  faSearch,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -20,6 +29,8 @@ interface TipoEmpresa {
 export const AdminPage = () => {
   const [enterprises, setEnterprises] = useState<DataEnterprise[]>([]);
   const [tipoEmpresa, setTipoEmpresa] = useState<TipoEmpresa[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused2, setIsFocused2] = useState(false);
 
   const getTipoEmpresa = (id: number): string => {
     const tipo = tipoEmpresa.find((tipo) => tipo.id === id);
@@ -75,11 +86,61 @@ export const AdminPage = () => {
               <div className="text-politectico font-bold text-3xl">
                 Empresas
               </div>
-              <table className="w-full mt-3 border-b-[3px] border-politectico">
+              <div className="grid grid-cols-8 gap-2 my-4">
+                <div className="col-span-2 relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
+                      isFocused ? "text-politectico" : "text-gray-300"
+                    }`}
+                  />
+                </div>
+                <div className="col-span-3"></div>
+                <div className="col-span-3 flex justify-end gap-6">
+                  <div className="flex items-center h-full gap-2">
+                    <div className="text-gray-600">Filas por página</div>
+                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                  <div className="flex h-full items-center ">
+                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
+                    <div className="grid grid-cols-4 gap-4">
+                      <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faBackwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faForwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table className="w-full border-b-[3px] border-politectico">
                 <tr className="bg-politectico text-white font-semibold">
                   <td className="px-4 py-3 rounded-tl-md">Empresa</td>
+                  <td className="px-4 py-3">RFC</td>
                   <td className="px-4 py-3">Giro</td>
-                  <td className="px-4 py-3">Administrador</td>
                   <td className="px-4 py-3 rounded-tr-md text-center">
                     Acciones
                   </td>
@@ -120,6 +181,56 @@ export const AdminPage = () => {
           <div className="col-span-2">
             <div className="bg-white rounded-md px-4 pt-2 pb-4">
               <div className="text-politectico font-bold text-3xl">Alumnos</div>
+              <div className="grid grid-cols-8 gap-2 my-4">
+                <div className="col-span-2 relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
+                    onFocus={() => setIsFocused2(true)}
+                    onBlur={() => setIsFocused2(false)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
+                      isFocused2 ? "text-politectico" : "text-gray-300"
+                    }`}
+                  />
+                </div>
+                <div className="col-span-3"></div>
+                <div className="col-span-3 flex justify-end gap-6">
+                  <div className="flex items-center h-full gap-2">
+                    <div className="text-gray-600">Filas por página</div>
+                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                  <div className="flex h-full items-center ">
+                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
+                    <div className="grid grid-cols-4 gap-4">
+                      <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faBackwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faForwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
               <table className="w-full mt-3 border-b-[3px] border-politectico">
                 <tr className="bg-politectico text-white font-semibold">
                   <td className="px-4 py-3 rounded-tl-md">Nombre</td>

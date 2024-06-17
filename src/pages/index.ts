@@ -6,3 +6,5 @@ export * from './ProfilePage';
 export * from './ProfileEnterprisePage';
 export * from './AdminPage';
 export * from './VacantePage';
+export * from './RecoverPasswordPage';
+export * from './RestorePasswordPage';

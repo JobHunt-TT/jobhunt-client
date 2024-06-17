@@ -9,9 +9,36 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { VacanteForm } from "../forms";
+import { useEffect, useState } from "react";
+import axios from "axios";
 const MySwal = withReactContent(Swal);
 
+interface AdminEmpresa {
+  id: number;
+  userName: string;
+  userApellido: string;
+  userBirthDate: string;
+  userPhone: string;
+  userEmail: string;
+  userPass: string;
+  userCurp: string;
+  userSexoId: number;
+  userEstatusCarreraId: number;
+  userBoleta: string;
+  usuarioEmpresaId: number;
+  userCargo: string;
+  sexo: string;
+  direccionID: number;
+  direccion: string;
+  estatusCarrera: string;
+  cedula_Profesional: string;
+  fechaEgreso: string;
+  porcentaje_Cursado: string;
+}
+
 export const ProfileEnterprisePage = () => {
+  const [adminEmpresa, setAdminEmpresa] = useState<AdminEmpresa[]>([]);
+
   const handleOpenModal = () => {
     MySwal.fire({
       html: <VacanteForm />,
@@ -26,6 +53,21 @@ export const ProfileEnterprisePage = () => {
       },
     });
   };
+
+  useEffect(() => {
+    axios
+      .post("/consulta_admin_x_empresa", {
+        id: "1",
+      })
+      .then((data) => {
+        console.log("success", data);
+        setAdminEmpresa(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, []);
+
   return (
     <div>
       <div className="bg-politectico">
@@ -106,7 +148,40 @@ export const ProfileEnterprisePage = () => {
                   </td>
                 </tr>
                 <tbody>
-                  <tr>
+                  {adminEmpresa.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-4 py-3 text-center">
+                        No hay administradores
+                      </td>
+                    </tr>
+                  ) : (
+                    <>
+                      {adminEmpresa.map(
+                        (
+                          { userName, userApellido, userEmail, userPhone },
+                          index
+                        ) => (
+                          <tr key={index}>
+                            <td className="px-4 py-3">{userName}</td>
+                            <td className="px-4 py-3">{userApellido}</td>
+                            <td className="px-4 py-3">{userEmail}</td>
+                            <td className="px-4 py-3">{userPhone}</td>
+                            <td className="px-4 py-3 text-center">
+                              <FontAwesomeIcon
+                                icon={faPen}
+                                className="fa-solid fa-pen mx-1 text-yellow-500"
+                              />
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                className="fa-solid fa-trash mx-1 text-red-500"
+                              />
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </>
+                  )}
+                  {/* <tr>
                     <td className="px-4 py-3">Juanito Pérez</td>
                     <td className="px-4 py-3">Administrador</td>
                     <td className="px-4 py-3">juan.perez@microsoft.com</td>
@@ -137,7 +212,7 @@ export const ProfileEnterprisePage = () => {
                         className="fa-solid fa-trash mx-1 text-red-500"
                       />
                     </td>
-                  </tr>
+                  </tr> */}
                 </tbody>
               </table>
             </div>
@@ -169,7 +244,7 @@ export const ProfileEnterprisePage = () => {
                     <td className="px-4 py-3">Desarrollador BackEnd</td>
                     <td className="px-4 py-3">5 Jun. 2024</td>
                     <td className="px-4 py-3">
-                    <div className="inline px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm font-semibold">
+                      <div className="inline px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm font-semibold">
                         En Espera
                       </div>
                     </td>

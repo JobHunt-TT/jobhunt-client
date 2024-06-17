@@ -1,14 +1,13 @@
 import { FormProvider } from "react-hook-form";
 
 import { AlertNotification, FormInput } from "../components";
-import { useLoginFormManagement } from "../hooks";
+import { useRecoverPasswordManagement } from "../hooks";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-export const LoginForm = () => {
+export const RecoverPasswordForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { methods, validForm, submit } = useLoginFormManagement();
+  const { methods, validForm, submit } = useRecoverPasswordManagement();
   const {
     handleSubmit,
     formState: { errors },
@@ -29,18 +28,13 @@ export const LoginForm = () => {
       errorsTemp.push(errors.email.message);
     }
 
-    if (!!errors.password && !!errors.password.message) {
-      errorsTemp.push(errors.password.message);
-    }
-
     console.log(errorsTemp);
 
     setErrorsForm(errorsTemp);
   };
 
   useEffect(setErrors, [errors]);
-
-  return (
+  return(
     <FormProvider {...methods}>
       <div className="text-4xl font-bold">Ingresa tus datos</div>
 
@@ -49,23 +43,22 @@ export const LoginForm = () => {
         onSubmit={handleSubmit(submit)}
       >
         <FormInput label="Correo" name="email" />
-        <FormInput label="Contraseña" name="password" type="password" />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.email || !!errors.password) {
+              if (!!errors.email) {
                 setErrors();
               }
               handleShowNotification();
             }
           }}
         >
-          Iniciar Sesión
+          Recuperar Contraseña
         </button>
-        <div className="text-center col-span-2 mt-2">
+        {/* <div className="text-center col-span-2 mt-2">
           <div className="h-1 border-t-[1px] border-gray-400"></div>
           <div className="mt-3">
             ¿No tienes cuenta? -&nbsp;
@@ -79,9 +72,9 @@ export const LoginForm = () => {
               Regístrate como empresa
             </Link>
           </div>
-        </div>
+        </div> */}
         
-        <div className="text-center col-span-2">
+        {/* <div className="text-center col-span-2">
         <div className="h-1 border-t-[1px] border-gray-400"></div>
         <div className="mt-3">
             ¿Olvidaste tu contraseña? -&nbsp;
@@ -89,7 +82,7 @@ export const LoginForm = () => {
               Recupera tu contraseña
             </Link>
           </div>
-        </div>
+        </div> */}
       </form>
 
       <AlertNotification
@@ -99,5 +92,5 @@ export const LoginForm = () => {
         onClose={handleHideNotification}
       />
     </FormProvider>
-  );
-};
+  )
+}

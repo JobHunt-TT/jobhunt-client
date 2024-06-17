@@ -6,8 +6,10 @@ import {
   LoginPage,
   ProfileEnterprisePage,
   ProfilePage,
+  RecoverPasswordPage,
   RegisterEnterprisePage,
   RegisterPage,
+  RestorePasswordPage,
   VacantePage,
 } from "./pages";
 import "./assets/css/index.css";
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
   {
     path: "/registerEnterprise",
     element: <RegisterEnterprisePage />,
+  },
+  {
+    path: "/recoverPassword",
+    element: <RecoverPasswordPage />,
+  },
+  {
+    path: "/restorePassword",
+    element: <RestorePasswordPage />,
   },
   {
     path: "/profile",
