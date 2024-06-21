@@ -4,7 +4,16 @@ import {
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { faPen, faPhone, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBackwardStep,
+  faChevronLeft,
+  faChevronRight,
+  faForwardStep,
+  faPen,
+  faPhone,
+  faSearch,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -39,6 +48,9 @@ interface AdminEmpresa {
 
 export const ProfileEnterprisePage = () => {
   const [adminEmpresa, setAdminEmpresa] = useState<AdminEmpresa[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused2, setIsFocused2] = useState(false);
+  const [isFocused3, setIsFocused3] = useState(false);
 
   const handleOpenModal = () => {
     MySwal.fire({
@@ -136,6 +148,55 @@ export const ProfileEnterprisePage = () => {
                   Crear Administrador
                 </button>
               </div>
+              <div className="grid grid-cols-8 gap-2 my-4">
+                <div className="col-span-3 relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
+                      isFocused ? "text-politectico" : "text-gray-300"
+                    }`}
+                  />
+                </div>
+                <div className="col-span-5 flex justify-end gap-6">
+                  <div className="flex items-center h-full gap-2">
+                    <div className="text-gray-600">Filas por página</div>
+                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                  <div className="flex h-full items-center ">
+                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
+                    <div className="grid grid-cols-4 gap-4">
+                      <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faBackwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faForwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
               <table className="w-full mt-3 border-b-[3px] border-politectico">
                 <tr className="bg-politectico text-white font-semibold">
                   <td className="px-4 py-3 rounded-tl-md">Nombre</td>
@@ -214,6 +275,55 @@ export const ProfileEnterprisePage = () => {
                 >
                   Crear Oferta
                 </button>
+              </div>
+              <div className="grid grid-cols-8 gap-2 my-4">
+                <div className="col-span-3 relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
+                    onFocus={() => setIsFocused2(true)}
+                    onBlur={() => setIsFocused2(false)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
+                      isFocused2 ? "text-politectico" : "text-gray-300"
+                    }`}
+                  />
+                </div>
+                <div className="col-span-5 flex justify-end gap-6">
+                  <div className="flex items-center h-full gap-2">
+                    <div className="text-gray-600">Filas por página</div>
+                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                  <div className="flex h-full items-center ">
+                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
+                    <div className="grid grid-cols-4 gap-4">
+                      <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faBackwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faForwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
               <table className="w-full mt-3 border-b-[3px] border-politectico">
                 <tr className="bg-politectico text-white font-semibold">
@@ -294,6 +404,55 @@ export const ProfileEnterprisePage = () => {
               <div className="flex justify-between items-start">
                 <div className="text-xl text-politectico font-bold">
                   Postulaciones
+                </div>
+              </div>
+              <div className="grid grid-cols-8 gap-2 my-4">
+                <div className="col-span-3 relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
+                    onFocus={() => setIsFocused3(true)}
+                    onBlur={() => setIsFocused3(false)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
+                      isFocused3 ? "text-politectico" : "text-gray-300"
+                    }`}
+                  />
+                </div>
+                <div className="col-span-5 flex justify-end gap-6">
+                  <div className="flex items-center h-full gap-2">
+                    <div className="text-gray-600">Filas por página</div>
+                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                  <div className="flex h-full items-center ">
+                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
+                    <div className="grid grid-cols-4 gap-4">
+                      <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faBackwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faForwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <table className="w-full mt-3 border-b-[3px] border-politectico">

@@ -10,6 +10,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { ContentLayout } from "../layouts";
 
 interface DataEnterprise {
   empresaNombre: string;
@@ -59,25 +60,7 @@ export const AdminPage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-300">
-      <div className="bg-politectico">
-        <div className="w-4/5 m-auto flex justify-between items-center text-white">
-          <a href="./principal.html" className="font-bold text-2xl py-1">
-            JobHunt
-          </a>
-          <div className="flex">
-            <a
-              href="./profileAlumno.html"
-              className="py-4 px-5 hover:bg-white/30"
-            >
-              Perfil
-            </a>
-            <a href="./index.html" className="py-4 px-5 hover:bg-white/30">
-              Salir
-            </a>
-          </div>
-        </div>
-      </div>
+    <ContentLayout>
       <div className="w-4/5 mx-auto py-16">
         <div className="grid grid-cols-2 gap-6">
           <div className="col-span-2">
@@ -343,6 +326,6 @@ export const AdminPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ContentLayout>
   );
 };
