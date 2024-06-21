@@ -7,37 +7,17 @@ import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
-export interface VacanteFormFields {
-  nombreOferta: string;
-  vigencia: string;
-  duracionContrato: string;
-  nombrePuesto: string;
-  salario: string;
+export interface SkillFormFields {
+  descripcion: string;
 }
 
-const defaultValues: VacanteFormFields = {
-  nombreOferta: "",
-  vigencia: "",
-  duracionContrato: "",
-  nombrePuesto: "",
-  salario: "",
+const defaultValues: SkillFormFields = {
+  descripcion: "",
 };
 
-export const useVacanteFormManagement = () => {
+export const useSkillFormManagement = () => {
   const schema = yup.object().shape({
-    nombreOferta: yup.string().required("El nombre es requerido"),
-    vigencia: yup
-      .string()
-      .required("La fecha es requerido")
-      .matches(
-        /^[0-9-]{5}[0-9-]{3}[0-9]{2}$/,
-        "La fecha no es valida. Ejemplo: 2000-06-15"
-      ),
-    duracionContrato: yup
-      .string()
-      .required("La duración del contrato es requerida"),
-    nombrePuesto: yup.string().required("El nombre del puesto es requerido"),
-    salario: yup.string().required("El salario es requerido"),
+    descripcion: yup.string().required("El nombre es requerido").matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras"),
   });
 
   const methods = useForm({
@@ -46,19 +26,14 @@ export const useVacanteFormManagement = () => {
   });
 
   const validForm = async () => {
+    
     const result = await methods.trigger([
-      "nombreOferta",
-      "vigencia",
-      "duracionContrato",
-      "nombrePuesto",
-      "salario",
+      "descripcion",
     ]);
     return result;
-  };
+  }
 
-  const submit: SubmitHandler<VacanteFormFields> = async (fields) => {
-    console.log(fields);
-
+  const submit: SubmitHandler<SkillFormFields> = async ({ descripcion }) => {
     MySwal.fire({
       title: "Por favor, espere...",
       didOpen: () => {
@@ -67,18 +42,18 @@ export const useVacanteFormManagement = () => {
       },
       allowOutsideClick: false,
     });
-
+    
     axios
-      .post("/alta_oferta_trabajo", {
-        empresaID: localStorage.getItem("idEmpresa"),
-        ...fields,
+      .post("/cambio_estudiante_tag", {
+        id: localStorage.getItem("idUser"),
+        descripcion
       })
       .then((data) => {
         console.log("success", data);
-
+        
         MySwal.fire({
           icon: "success",
-          title: data.data,
+          title: "Skill registrada con éxito",
           timer: 3000,
           showConfirmButton: false,
         });
@@ -89,7 +64,7 @@ export const useVacanteFormManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al agregar la skill",
+          text: 'Hubo un error al agregar la skill',
           timer: 3000,
           showConfirmButton: false,
         });

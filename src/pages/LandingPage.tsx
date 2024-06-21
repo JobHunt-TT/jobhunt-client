@@ -1,8 +1,30 @@
-import { faInstagram, faSquareFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import {
+  faInstagram,
+  faSquareFacebook,
+  faXTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export const LandingPage = () => {
+  const navigate = useNavigate();
+
+  const checkLogin = () => {
+    const idUser = localStorage.getItem("idUser");
+    const idEmpresa = localStorage.getItem("idEmpresa");
+    
+    if (idUser !== null) {
+      if (idEmpresa !== null) {
+        navigate('/profile');
+      } else {
+        navigate('/profileEnterprise');
+      }
+    }
+  };
+
+  useEffect(checkLogin, [navigate])
+
   return (
     <div className="h-full">
       <div className="h-screen flex justify-start items-center bg-politectico text-white">
@@ -118,9 +140,18 @@ export const LandingPage = () => {
         </div>
         <div className="flex items-center flex-col mt-28 mb-8 lg:mb-0">
           <div>
-            <FontAwesomeIcon icon={faSquareFacebook} className="text-2xl text-politectico mx-1 md:text-3xl" />
-            <FontAwesomeIcon icon={faXTwitter} className="text-2xl text-politectico mx-1 md:text-3xl" />
-            <FontAwesomeIcon icon={faInstagram} className="text-2xl text-politectico mx-1 md:text-3xl" />
+            <FontAwesomeIcon
+              icon={faSquareFacebook}
+              className="text-2xl text-politectico mx-1 md:text-3xl"
+            />
+            <FontAwesomeIcon
+              icon={faXTwitter}
+              className="text-2xl text-politectico mx-1 md:text-3xl"
+            />
+            <FontAwesomeIcon
+              icon={faInstagram}
+              className="text-2xl text-politectico mx-1 md:text-3xl"
+            />
           </div>
           <div className="text-politectico font-semibold mt-6 text-sm md:text-base">
             &copy; 2023

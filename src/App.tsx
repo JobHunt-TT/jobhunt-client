@@ -4,6 +4,7 @@ import {
   AdminPage,
   LandingPage,
   LoginPage,
+  OfertasPage,
   ProfileEnterprisePage,
   ProfilePage,
   RecoverPasswordPage,
@@ -52,8 +53,12 @@ const router = createBrowserRouter([
     element: <AdminPage />,
   },
   {
-    path: "/vacante",
+    path: "/oferta",
     element: <VacantePage />,
+  },
+  {
+    path: "/ofertas",
+    element: <OfertasPage />,
   },
 ]);
 

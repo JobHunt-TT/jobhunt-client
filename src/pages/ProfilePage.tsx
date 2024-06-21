@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircle, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+import { ContentLayout } from "../layouts";
+import { SkillForm } from "../forms";
+import { faInstagram, faSquareFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons";
+
+const MySwal = withReactContent(Swal);
 
 interface DataUser {
   cedula_Profesional: string;
@@ -20,6 +30,11 @@ interface DataUser {
   userPass: string;
   userPhone: string;
   userSexoId: number;
+}
+
+interface SkillUser {
+  id: number;
+  descripcion: string;
 }
 
 const INITIAL_STATE: DataUser = {
@@ -45,6 +60,37 @@ const INITIAL_STATE: DataUser = {
 
 export const ProfilePage = () => {
   const [user, setUser] = useState(INITIAL_STATE);
+  const [skillsUser, setSkillsUser] = useState<SkillUser[]>([]);
+
+  const handleAddSkill = () => {
+    MySwal.fire({
+      html: <SkillForm />,
+      showCancelButton: false,
+      showConfirmButton: false,
+      preConfirm: () => {
+        // const form = document.getElementById('my-form') as HTMLFormElement;
+        // if (form) {
+        //   return handleSubmit(submit)().then(() => null);
+        // }
+        return null;
+      },
+    });
+  };
+
+  // const handleAddDireccion = () => {
+  //   MySwal.fire({
+  //     html: <DireccionForm />,
+  //     showCancelButton: false,
+  //     showConfirmButton: false,
+  //     preConfirm: () => {
+  //       // const form = document.getElementById('my-form') as HTMLFormElement;
+  //       // if (form) {
+  //       //   return handleSubmit(submit)().then(() => null);
+  //       // }
+  //       return null;
+  //     },
+  //   });
+  // };
 
   useEffect(() => {
     axios
@@ -58,28 +104,22 @@ export const ProfilePage = () => {
       .catch((error) => {
         console.log("error", error);
       });
+
+    axios
+      .post("/consulta_estudiante_tag", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        console.log("success", data);
+        setSkillsUser(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   }, []);
 
   return (
-    <div className="bg-gray-300 h-screen">
-      <div className="bg-politectico">
-        <div className="w-4/5 m-auto flex justify-between items-center text-white">
-          <a href="./principal.html" className="font-bold text-2xl py-1">
-            JobHunt
-          </a>
-          <div className="flex">
-            <a
-              href="./profileAlumno.html"
-              className="py-4 px-5 hover:bg-white/30"
-            >
-              Perfil
-            </a>
-            <a href="./index.html" className="py-4 px-5 hover:bg-white/30">
-              Salir
-            </a>
-          </div>
-        </div>
-      </div>
+    <ContentLayout>
       <div className="w-4/5 mx-auto py-16">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-1">
@@ -94,24 +134,35 @@ export const ProfilePage = () => {
               <div className="text-xl font-bold text-center">
                 {user.userName} {user.userApellido}
               </div>
-              <div className="text-center">Ingeniería en Sistemas</div>
+              {/* <div className="text-center">Ingeniería en Sistemas</div> */}
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
               <div className="flex items-center mt-2">
                 <i className="fa-regular fa-envelope text-lg mr-2"></i>
-                <div>{user.userPhone}</div>
+                <div>{user.userEmail}</div>
               </div>
               <div className="flex items-center mt-2">
                 <i className="fa-solid fa-phone text-lg mr-2"></i>
-                <div>+52 55 1234 5678</div>
+                <div>{user.userPhone}</div>
               </div>
               <div className="flex justify-center mt-2">
-                <i className="fa-brands fa-square-facebook text-3xl text-facebook mx-2"></i>
-                <i className="fa-brands fa-x-twitter text-3xl text-x-twitter mx-2"></i>
-                <i className="fa-brands fa-instagram text-3xl text-instagram mx-2"></i>
+                <FontAwesomeIcon icon={faSquareFacebook} className="text-3xl text-facebook mx-2" />
+                <FontAwesomeIcon icon={faXTwitter} className="text-3xl text-x-twitter mx-2" />
+                <FontAwesomeIcon icon={faInstagram} className="text-3xl text-instagram mx-2" />
               </div>
             </div>
+            {/* <div className="bg-white rounded-md p-4 mt-6 relative">
+              <div className="text-xl text-politectico font-bold">Dirección</div>
+              <div className="mt-2">
+                <div>Hda de Aragón Mz 2 Lt 1</div>
+              </div>
+              <FontAwesomeIcon
+                icon={faPen}
+                onClick={handleAddDireccion}
+                className="absolute top-4 right-4 text-politectico/60 text-lg cursor-pointer hover:text-politectico"
+              />
+            </div> */}
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Idiomas</div>
               <div className="mt-2">
@@ -122,30 +173,24 @@ export const ProfilePage = () => {
             </div>
           </div>
           <div className="col-span-2">
-            <div className="bg-white rounded-md p-4">
+            <div className="bg-white rounded-md p-4 relative">
               <div className="text-xl text-politectico font-bold">Skills</div>
               <div className="mt-1">
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 1
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 2
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 3
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 4
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 5
-                </div>
+                {skillsUser.map(({ descripcion }, index) => (
+                  <div className="flex items-center" key={index}>
+                    <FontAwesomeIcon
+                      icon={faCircle}
+                      className="text-[.4rem] mr-1"
+                    />
+                    {descripcion}
+                  </div>
+                ))}
               </div>
+              <FontAwesomeIcon
+                icon={faCirclePlus}
+                onClick={handleAddSkill}
+                className="absolute top-4 right-4 text-politectico/60 text-xl cursor-pointer hover:text-politectico"
+              />
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">
@@ -226,6 +271,6 @@ export const ProfilePage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ContentLayout>
   );
 };

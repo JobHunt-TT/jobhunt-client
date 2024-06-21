@@ -11,6 +11,7 @@ import withReactContent from "sweetalert2-react-content";
 import { VacanteForm } from "../forms";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ContentLayout } from "../layouts";
 const MySwal = withReactContent(Swal);
 
 interface AdminEmpresa {
@@ -54,10 +55,26 @@ export const ProfileEnterprisePage = () => {
     });
   };
 
+  // const handleDeleteAdminModal = (id: number, userName: string) => {
+  //   MySwal.fire({
+  //     icon: "warning",
+  //     title: "Advertencia",
+  //     text: `¿Estás seguro de querer borrar a ${userName}?`,
+  //     showCancelButton: true,
+  //     confirmButtonText: "Si, borrar",
+  //     cancelButtonText: "No, cancelar",
+  //     confirmButtonColor: "#16A34A",
+  //     cancelButtonColor: "#DC2626",
+  //   }).then(({ isConfirmed }) => {
+  //     if (isConfirmed) {
+  //     }
+  //   });
+  // };
+
   useEffect(() => {
     axios
       .post("/consulta_admin_x_empresa", {
-        id: "1",
+        id: localStorage.getItem("idEmpresa"),
       })
       .then((data) => {
         console.log("success", data);
@@ -69,25 +86,7 @@ export const ProfileEnterprisePage = () => {
   }, []);
 
   return (
-    <div>
-      <div className="bg-politectico">
-        <div className="w-4/5 m-auto flex justify-between items-center text-white">
-          <a href="./principal.html" className="font-bold text-2xl py-1">
-            JobHunt
-          </a>
-          <div className="flex">
-            <a
-              href="./profileAlumno.html"
-              className="py-4 px-5 hover:bg-white/30"
-            >
-              Perfil
-            </a>
-            <a href="./index.html" className="py-4 px-5 hover:bg-white/30">
-              Salir
-            </a>
-          </div>
-        </div>
-      </div>
+    <ContentLayout>
       <div className="w-4/5 mx-auto my-16">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-1">
@@ -143,9 +142,6 @@ export const ProfileEnterprisePage = () => {
                   <td className="px-4 py-3">Cargo</td>
                   <td className="px-4 py-3">Correo</td>
                   <td className="px-4 py-3">Teléfono</td>
-                  <td className="px-4 py-3 rounded-tr-md text-center">
-                    Acciones
-                  </td>
                 </tr>
                 <tbody>
                   {adminEmpresa.length === 0 ? (
@@ -158,7 +154,7 @@ export const ProfileEnterprisePage = () => {
                     <>
                       {adminEmpresa.map(
                         (
-                          { userName, userApellido, userEmail, userPhone },
+                          { userName, userApellido, userEmail, userPhone, id },
                           index
                         ) => (
                           <tr key={index}>
@@ -166,16 +162,6 @@ export const ProfileEnterprisePage = () => {
                             <td className="px-4 py-3">{userApellido}</td>
                             <td className="px-4 py-3">{userEmail}</td>
                             <td className="px-4 py-3">{userPhone}</td>
-                            <td className="px-4 py-3 text-center">
-                              <FontAwesomeIcon
-                                icon={faPen}
-                                className="fa-solid fa-pen mx-1 text-yellow-500"
-                              />
-                              <FontAwesomeIcon
-                                icon={faTrash}
-                                className="fa-solid fa-trash mx-1 text-red-500"
-                              />
-                            </td>
                           </tr>
                         )
                       )}
@@ -220,13 +206,13 @@ export const ProfileEnterprisePage = () => {
             <div className="bg-white rounded-md p-4 mb-6">
               <div className="flex justify-between items-start">
                 <div className="text-xl text-politectico font-bold">
-                  Vacantes
+                  Ofertas
                 </div>
                 <button
                   className="bg-politectico text-white px-6 py-2 font-semibold rounded-full"
                   onClick={handleOpenModal}
                 >
-                  Crear Vacante
+                  Crear Oferta
                 </button>
               </div>
               <table className="w-full mt-3 border-b-[3px] border-politectico">
@@ -387,6 +373,6 @@ export const ProfileEnterprisePage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </ContentLayout>
   );
 };

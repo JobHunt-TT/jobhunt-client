@@ -1,12 +1,12 @@
 import { FormProvider } from "react-hook-form";
 import { AlertNotification, FormInput } from "../components";
 import { useEffect, useState } from "react";
-import { useVacanteFormManagement } from "../hooks";
+import { useSkillFormManagement } from "../hooks";
 
-export const VacanteForm = () => {
+export const SkillForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { methods, validForm, submit } = useVacanteFormManagement();
+  const { methods, validForm, submit } = useSkillFormManagement();
   const {
     handleSubmit,
     formState: { errors },
@@ -23,24 +23,8 @@ export const VacanteForm = () => {
   const setErrors = () => {
     const errorsTemp: string[] = [];
 
-    if (!!errors.nombreOferta && !!errors.nombreOferta.message) {
-      errorsTemp.push(errors.nombreOferta.message);
-    }
-
-    if (!!errors.vigencia && !!errors.vigencia.message) {
-      errorsTemp.push(errors.vigencia.message);
-    }
-
-    if (!!errors.duracionContrato && !!errors.duracionContrato.message) {
-      errorsTemp.push(errors.duracionContrato.message);
-    }
-
-    if (!!errors.duracionContrato && !!errors.duracionContrato.message) {
-      errorsTemp.push(errors.duracionContrato.message);
-    }
-
-    if (!!errors.salario && !!errors.salario.message) {
-      errorsTemp.push(errors.salario.message);
+    if (!!errors.descripcion && !!errors.descripcion.message) {
+      errorsTemp.push(errors.descripcion.message);
     }
 
     console.log(errorsTemp);
@@ -49,33 +33,31 @@ export const VacanteForm = () => {
   };
 
   useEffect(setErrors, [errors]);
+
   return(
+    
     <FormProvider {...methods}>
-      <div className="text-4xl font-bold mt-5">Crear Vacante</div>
+      <div className="text-4xl font-bold mt-5">Agregar Skill</div>
 
       <form
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
         onSubmit={handleSubmit(submit)}
       >
-        <FormInput label="Nombre de la Oferta" name="nombreOferta" />
-        <FormInput label="Vigencia" name="vigencia" />
-        <FormInput label="Duración de Contrato" name="duracionContrato" />
-        <FormInput label="Nombre del Puesto" name="nombrePuesto" />
-        <FormInput label="Salario" name="salario" />
+        <FormInput label="Nombre de la Skill" name="descripcion" />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.nombreOferta || !!errors.vigencia || !!errors.duracionContrato || !!errors.nombrePuesto || !!errors.salario) {
+              if (!!errors.descripcion) {
                 setErrors();
               }
               handleShowNotification();
             }
           }}
         >
-          Crear Vacante
+          Agregar
         </button>
       </form>
 

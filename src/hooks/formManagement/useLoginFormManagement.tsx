@@ -47,7 +47,7 @@ export const useLoginFormManagement = () => {
     password,
   }) => {
     axios
-      .post("http://35.222.69.159:80/login", {
+      .post("/login", {
         userEmail: email,
         userPass: password,
       })
@@ -55,7 +55,12 @@ export const useLoginFormManagement = () => {
         console.log("success", data);
         if (typeof data.data === "object") {
           localStorage.setItem("idUser", data.data.id);
-          navigate("/profile");
+          if (data.data.empresaId !== 0) {
+            localStorage.setItem("idEmpresa", data.data.empresaId);
+            navigate("/profileEnterprise");
+          } else {
+            navigate("/profile");
+          }
         } else {
           MySwal.fire({
             icon: "error",
