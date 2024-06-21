@@ -1,12 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
 
-const MySwal = withReactContent(Swal);
+// const MySwal = withReactContent(Swal);
 
 export interface RestorePasswordFormFields {
   codeUser: string;
@@ -21,7 +21,7 @@ const defaultValues: RestorePasswordFormFields = {
 };
 
 export const useRestorePasswordFormManagement = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const schema = yup.object().shape({
     codeUser: yup.string().required("El código es requerido"),
     passwordUser: yup.string().required("La contraseña es requerida"),

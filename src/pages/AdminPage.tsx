@@ -1,6 +1,5 @@
 import {
   faBackwardStep,
-  faChevronDown,
   faChevronLeft,
   faChevronRight,
   faForwardStep,

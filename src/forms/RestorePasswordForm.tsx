@@ -8,7 +8,7 @@ import {
   AlertNotification,
   DataSelect,
   FormInput,
-  FormSelect,
+  // FormSelect,
 } from "../components";
 import { useRestorePasswordFormManagement } from "../hooks";
 
@@ -19,7 +19,7 @@ interface TipoEmpresa {
 }
 
 export const RestorePasswordForm = () => {
-  const [dataTipo, setDataTipo] = useState<DataSelect[]>([]);
+  // const [dataTipo, setDataTipo] = useState<DataSelect[]>([]);
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [step, setStep] = useState(1);
   const [showNotification, setShowNotification] = useState(false);
@@ -76,7 +76,7 @@ export const RestorePasswordForm = () => {
           };
           catalogEnterprise.push(tipo);
         }
-        setDataTipo(catalogEnterprise);
+        // setDataTipo(catalogEnterprise);
       })
       .catch((error) => {
         console.log("error", error);
