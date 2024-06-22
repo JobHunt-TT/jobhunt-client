@@ -7,17 +7,11 @@ import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 
 import {
   AlertNotification,
-  DataSelect,
   FormInput,
   FormSelect,
 } from "../components";
 import { useRegisterEnterpriseFormManagement } from "../hooks";
-
-interface TipoEmpresa {
-  id: number;
-  alias: string;
-  descripcion: string;
-}
+import { DataSelect, TipoEmpresa } from "../types";
 
 export const RegisterEnterpriseForm = () => {
   const [dataTipo, setDataTipo] = useState<DataSelect[]>([]);

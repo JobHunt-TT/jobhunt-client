@@ -6,17 +6,11 @@ import { faKey, faLock } from "@fortawesome/free-solid-svg-icons";
 
 import {
   AlertNotification,
-  DataSelect,
   FormInput,
   // FormSelect,
 } from "../components";
 import { useRestorePasswordFormManagement } from "../hooks";
-
-interface TipoEmpresa {
-  id: number;
-  alias: string;
-  descripcion: string;
-}
+import { DataSelect, TipoEmpresa } from "../types";
 
 export const RestorePasswordForm = () => {
   // const [dataTipo, setDataTipo] = useState<DataSelect[]>([]);

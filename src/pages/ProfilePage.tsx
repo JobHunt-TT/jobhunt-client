@@ -8,34 +8,9 @@ import withReactContent from "sweetalert2-react-content";
 import { ContentLayout } from "../layouts";
 import { SkillForm } from "../forms";
 import { faInstagram, faSquareFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import { DataUser, SkillUser } from "../types";
 
 const MySwal = withReactContent(Swal);
-
-interface DataUser {
-  cedula_Profesional: string;
-  direccion: string;
-  direccionID: number;
-  estatusCarrera: string;
-  fechaEgreso: string;
-  id: number;
-  porcentaje_Cursado: string;
-  sexo: string;
-  userApellido: string;
-  userBirthDate: string;
-  userBoleta: null;
-  userCurp: string;
-  userEmail: null;
-  userEstatusCarreraId: number;
-  userName: string;
-  userPass: string;
-  userPhone: string;
-  userSexoId: number;
-}
-
-interface SkillUser {
-  id: number;
-  descripcion: string;
-}
 
 const INITIAL_STATE: DataUser = {
   cedula_Profesional: "",

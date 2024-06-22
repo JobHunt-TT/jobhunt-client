@@ -21,30 +21,9 @@ import { VacanteForm } from "../forms";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ContentLayout } from "../layouts";
-const MySwal = withReactContent(Swal);
+import { AdminEmpresa } from "../types";
 
-interface AdminEmpresa {
-  id: number;
-  userName: string;
-  userApellido: string;
-  userBirthDate: string;
-  userPhone: string;
-  userEmail: string;
-  userPass: string;
-  userCurp: string;
-  userSexoId: number;
-  userEstatusCarreraId: number;
-  userBoleta: string;
-  usuarioEmpresaId: number;
-  userCargo: string;
-  sexo: string;
-  direccionID: number;
-  direccion: string;
-  estatusCarrera: string;
-  cedula_Profesional: string;
-  fechaEgreso: string;
-  porcentaje_Cursado: string;
-}
+const MySwal = withReactContent(Swal);
 
 export const ProfileEnterprisePage = () => {
   const [adminEmpresa, setAdminEmpresa] = useState<AdminEmpresa[]>([]);
@@ -144,9 +123,6 @@ export const ProfileEnterprisePage = () => {
                 <div className="text-xl text-politectico font-bold">
                   Administradores
                 </div>
-                <button className="bg-politectico text-white px-6 py-2 font-semibold rounded-full">
-                  Crear Administrador
-                </button>
               </div>
               <div className="grid grid-cols-8 gap-2 my-4">
                 <div className="col-span-3 relative">

@@ -2,11 +2,8 @@ import { ChangeEvent, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DataSelect } from "../../types";
 
-export interface DataSelect {
-  label: string;
-  value: string;
-}
 
 interface FormSelectProps {
   label: string;

@@ -21,6 +21,9 @@ module.exports = {
       },
       height: {
         'screen-menu': 'calc(100vh - 3.5rem)'
+      },
+      boxShadow: {
+        'float': '0px 0px 6px 1px rgba(0,0,0,0.25);'
       }
     },
   },

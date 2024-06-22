@@ -2,23 +2,13 @@ import { FormProvider } from "react-hook-form";
 
 import {
   AlertNotification,
-  DataSelect,
   FormInput,
   FormSelect,
 } from "../components";
 import { useRegisterFormManagement } from "../hooks";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-interface EstatusCarrera {
-  id: number;
-  carreraDescripcion: string;
-}
-
-interface SexoUser {
-  id: number;
-  descripcion: string;
-}
+import { DataSelect, EstatusCarrera, SexoUser } from "../types";
 
 export const RegisterForm = () => {
   const [dataEstatusCarrera, setDataEstatusCarrera] = useState<DataSelect[]>(
