@@ -9,4 +9,3 @@ export * from './VacantePage';
 export * from './RecoverPasswordPage';
 export * from './RestorePasswordPage';
 export * from './OfertasPage';
-export * from './AdminPageTest';

@@ -2,7 +2,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import {
   AdminPage,
-  AdminPageTest,
   LandingPage,
   LoginPage,
   OfertasPage,
@@ -52,10 +51,6 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminPage />,
-  },
-  {
-    path: "/adminTest",
-    element: <AdminPageTest />,
   },
   {
     path: "/oferta",
