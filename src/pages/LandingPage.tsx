@@ -16,9 +16,9 @@ export const LandingPage = () => {
     
     if (idUser !== null) {
       if (idEmpresa !== null) {
-        navigate('/profile');
-      } else {
         navigate('/profileEnterprise');
+      } else {
+        navigate('/profile');
       }
     }
   };

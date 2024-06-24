@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
@@ -6,10 +7,11 @@ const MySwal = withReactContent(Swal);
 interface ContentLayoutProps {
   children: JSX.Element;
 }
-const idEmpresa = localStorage.getItem("idEmpresa");
 
 export const ContentLayout = ({ children }: ContentLayoutProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [idEmpresa, setIdEmpresa] = useState<string | null>(null);
 
   const handleLogout = () => {
     MySwal.fire({
@@ -30,6 +32,16 @@ export const ContentLayout = ({ children }: ContentLayoutProps) => {
     });
   };
 
+  useEffect(() => {
+    const idEmpresa = localStorage.getItem("idEmpresa");
+    setIdEmpresa(idEmpresa);
+  }, [location]);
+
+  useEffect(() => {
+    const idEmpresa = localStorage.getItem("idEmpresa");
+    setIdEmpresa(idEmpresa);
+  }, []);
+
   return (
     <div>
       <div className="bg-politectico">
@@ -39,7 +51,9 @@ export const ContentLayout = ({ children }: ContentLayoutProps) => {
               Adopta Un Burrito: Bolsa de Trabajo IPN
             </Link>
           ) : (
-            <div className="font-bold text-2xl py-1">Adopta Un Burrito: Bolsa de Trabajo IPN</div>
+            <div className="font-bold text-2xl py-1">
+              Adopta Un Burrito: Bolsa de Trabajo IPN
+            </div>
           )}
 
           <div className="flex">

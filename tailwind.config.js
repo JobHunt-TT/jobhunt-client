@@ -17,7 +17,8 @@ module.exports = {
         'rotate': 'rotate',
         'width-step': 'width',
         'border-step': 'border-color',
-        'color-step': 'color'
+        'color-step': 'color',
+        'display': 'display'
       },
       height: {
         'screen-menu': 'calc(100vh - 3.5rem)'

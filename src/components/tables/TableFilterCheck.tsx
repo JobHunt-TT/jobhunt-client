@@ -11,12 +11,12 @@ interface TableFilterCheckProps {
 
 export const TableFilterCheck = ({
   itemHead,
-  isDefault,
+  isDefault = false,
   icon,
   onClick,
 }: TableFilterCheckProps) => {
   return (
-    <div className="flex items-center">
+    <div className={`${!isDefault && 'ml-6'}`}>
       <button
         className="flex items-center text-politectico"
         onClick={() => onClick(itemHead?.key)}

@@ -21,15 +21,93 @@ import { VacanteForm } from "../forms";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ContentLayout } from "../layouts";
-import { AdminEmpresa } from "../types";
+import { AdminEmpresa, DataHeadTable } from "../types";
+import { TableComponent } from "../components";
+
+const dataHeadPersonal: DataHeadTable[] = [
+  {
+    key: "userName",
+    nombre: "Nombre",
+  },
+  {
+    key: "userCargo",
+    nombre: "Cargo",
+  },
+  {
+    key: "userEmail",
+    nombre: "Correo",
+  },
+  {
+    key: "userPhone",
+    nombre: "Teléfono",
+  },
+];
 
 const MySwal = withReactContent(Swal);
 
 export const ProfileEnterprisePage = () => {
   const [adminEmpresa, setAdminEmpresa] = useState<AdminEmpresa[]>([]);
-  const [isFocused, setIsFocused] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [isFocused3, setIsFocused3] = useState(false);
+
+  const handleDeletePersonal = () => {
+    MySwal.fire({
+      title: "Por favor, espere...",
+      didOpen: () => {
+        // `MySwal` is a subclass of `Swal` with all the same instance & static methods
+        MySwal.showLoading();
+      },
+      allowOutsideClick: false,
+    });
+
+    setTimeout(() => {
+      MySwal.fire({
+        icon: "success",
+        title: "Eliminado",
+        text: "Registro eliminado correctamente",
+        timer: 3000,
+        showConfirmButton: false,
+      });
+    }, 2000);
+    // axios
+    //   .post("/alta_estudiante", {
+    //     userName: name,
+    //     userApellido: lastName,
+    //     userBirthDate: birthDate,
+    //     userPhone: phoneNumber,
+    //     userEmail: email,
+    //     userPass: password,
+    //     userCurp: curp,
+    //     userSexoId: gender,
+    //     userEstatusCarreraId: status,
+    //     userBoleta: identification,
+    //   })
+    //   .then((data) => {
+    //     console.log("success", data);
+
+    // MySwal.fire({
+    //   icon: "success",
+    //   title: data.data,
+    //   text: "Ya puedes ingresar a tu cuenta",
+    //   timer: 3000,
+    //   showConfirmButton: false,
+    //   didClose: () => {
+    //     navigate("/login");
+    //   },
+    // });
+    // })
+    // .catch((error) => {
+    //   console.log("error", error);
+
+    //   MySwal.fire({
+    //     icon: "error",
+    //     title: "Error",
+    //     text: "Hubo un error en el registro",
+    //     timer: 3000,
+    //     showConfirmButton: false,
+    //   });
+    // });
+  };
 
   const handleOpenModal = () => {
     MySwal.fire({
@@ -45,22 +123,6 @@ export const ProfileEnterprisePage = () => {
       },
     });
   };
-
-  // const handleDeleteAdminModal = (id: number, userName: string) => {
-  //   MySwal.fire({
-  //     icon: "warning",
-  //     title: "Advertencia",
-  //     text: `¿Estás seguro de querer borrar a ${userName}?`,
-  //     showCancelButton: true,
-  //     confirmButtonText: "Si, borrar",
-  //     cancelButtonText: "No, cancelar",
-  //     confirmButtonColor: "#16A34A",
-  //     cancelButtonColor: "#DC2626",
-  //   }).then(({ isConfirmed }) => {
-  //     if (isConfirmed) {
-  //     }
-  //   });
-  // };
 
   useEffect(() => {
     axios
@@ -117,8 +179,18 @@ export const ProfileEnterprisePage = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-2">
-            <div className="bg-white rounded-md p-4 mb-6">
+          <div className="col-span-2 flex flex-col gap-6">
+            <TableComponent
+              titulo="Personal"
+              dataHead={dataHeadPersonal}
+              data={adminEmpresa}
+              showButtonCreate={true}
+              textButtonCreate="Crear Reclutador"
+              formCreate={<VacanteForm />}
+              handleForm={handleDeletePersonal}
+              width="md"
+            />
+            {/* <div className="bg-white rounded-md p-4 mb-6">
               <div className="flex justify-between items-start">
                 <div className="text-xl text-politectico font-bold">
                   Administradores
@@ -204,43 +276,11 @@ export const ProfileEnterprisePage = () => {
                       )}
                     </>
                   )}
-                  {/* <tr>
-                    <td className="px-4 py-3">Juanito Pérez</td>
-                    <td className="px-4 py-3">Administrador</td>
-                    <td className="px-4 py-3">juan.perez@microsoft.com</td>
-                    <td className="px-4 py-3">+52 55 1234 5678</td>
-                    <td className="px-4 py-3 text-center">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        className="fa-solid fa-pen mx-1 text-yellow-500"
-                      />
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        className="fa-solid fa-trash mx-1 text-red-500"
-                      />
-                    </td>
-                  </tr>
-                  <tr className="bg-gray-200">
-                    <td className="px-4 py-3">Pedrito Fernandez</td>
-                    <td className="px-4 py-3">Reclutador</td>
-                    <td className="px-4 py-3">pedro.fernandez@microsoft.com</td>
-                    <td className="px-4 py-3">+52 55 1234 5678</td>
-                    <td className="px-4 py-3 text-center">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        className="fa-solid fa-pen mx-1 text-yellow-500"
-                      />
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        className="fa-solid fa-trash mx-1 text-red-500"
-                      />
-                    </td>
-                  </tr> */}
                 </tbody>
               </table>
-            </div>
+            </div> */}
 
-            <div className="bg-white rounded-md p-4 mb-6">
+            <div className="bg-white rounded-md p-4 ">
               <div className="flex justify-between items-start">
                 <div className="text-xl text-politectico font-bold">
                   Ofertas
@@ -252,7 +292,7 @@ export const ProfileEnterprisePage = () => {
                   Crear Oferta
                 </button>
               </div>
-              <div className="grid grid-cols-8 gap-2 my-4">
+              <div className="grid grid-cols-8 gap-2 my-4 ">
                 <div className="col-span-3 relative">
                   <input
                     type="text"

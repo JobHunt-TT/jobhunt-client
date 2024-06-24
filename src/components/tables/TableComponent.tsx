@@ -11,19 +11,36 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { TableCell, TableFilterCheck, TableRow } from "./";
-import { DataHeadTable } from "../../types";
+import { DataHeadTable, WidthTable } from "../../types";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 interface TableComponentProps<T> {
   titulo: string;
   dataHead: DataHeadTable[];
   data: T[];
+  width?: WidthTable;
+  showActions?: boolean;
+  showButtonCreate?: boolean;
+  textButtonCreate?: string;
+  formCreate?: JSX.Element;
+  keyId?: string;
+  handleForm?: () => void;
 }
 
 export const TableComponent = <T,>({
   titulo,
   dataHead,
   data,
+  width = "xl",
+  showActions = true,
+  showButtonCreate = false,
+  textButtonCreate,
+  formCreate,
+  handleForm,
 }: TableComponentProps<T>) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -47,6 +64,36 @@ export const TableComponent = <T,>({
         ? prev.filter((item) => item !== key || "")
         : [...prev, key || ""]
     );
+  };
+
+  const handleDeleteModal = () => {
+    MySwal.fire({
+      icon: "warning",
+      title: "Advertencia",
+      text: `¿Estás seguro de querer borrar este registro?`,
+      showCancelButton: true,
+      confirmButtonText: "Si, borrar",
+      cancelButtonText: "No, cancelar",
+      confirmButtonColor: "#16A34A",
+      cancelButtonColor: "#DC2626",
+    }).then(({ isConfirmed }) => {
+      isConfirmed && !!handleForm && handleForm();
+    });
+  };
+
+  const handleOpenModal = () => {
+    MySwal.fire({
+      html: formCreate,
+      showCancelButton: false,
+      showConfirmButton: false,
+      preConfirm: () => {
+        // const form = document.getElementById('my-form') as HTMLFormElement;
+        // if (form) {
+        //   return handleSubmit(submit)().then(() => null);
+        // }
+        return null;
+      },
+    });
   };
 
   const filterData = () => {
@@ -74,65 +121,95 @@ export const TableComponent = <T,>({
   }, [data]);
 
   return (
-    <div className="bg-white rounded-md px-4 pt-2 pb-4">
-      <div className="text-politectico font-bold text-3xl">{titulo}</div>
-      <div className="grid grid-cols-8 gap-2 my-4">
-        <div className="col-span-2 relative">
-          <input
-            type="text"
-            placeholder="Buscar..."
-            value={searchTerm}
-            className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <FontAwesomeIcon
-            icon={faSearch}
-            className={`absolute right-4 top-3.5 text-lg transition-colors ${
-              isFocused ? "text-politectico" : "text-gray-300"
-            }`}
-          />
+    <div className="bg-white rounded-md p-4">
+      <div className="flex justify-between">
+        <div
+          className={`text-politectico font-bold ${
+            width === "xl" ? "text-3xl" : "text-2xl"
+          } `}
+        >
+          {titulo}
         </div>
-        <div className="col-span-2 flex items-center relative">
-          <FontAwesomeIcon
-            icon={faFilter}
-            onClick={() => setShowFilter(!showFilter)}
-            className="ml-4 text-2xl text-gray-400 cursor-pointer transition-colors duration-150 hover:text-politectico"
-          />
-          <div
-            className={`absolute left-14 top-0 w-full flex flex-col gap-2 bg-white p-4 rounded-md shadow-float transition-all duration-300 ease-in-out ${
-              showFilter
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-[-10px]"
-            }`}
+        {showButtonCreate && (
+          <button
+            className="bg-politectico text-white px-6 py-2 font-semibold rounded-full"
+            onClick={handleOpenModal}
           >
-            <TableFilterCheck
-              icon={
-                selectedFields.length === dataHead.length
-                  ? faSquareCheck
-                  : selectedFields.length < dataHead.length &&
-                    selectedFields.length !== 0
-                  ? faSquareMinus
-                  : faSquare
-              }
-              isDefault
-              onClick={handleFilterAllChange}
-            />
-            {dataHead.map((head, index) => (
-              <TableFilterCheck
-                itemHead={head}
-                icon={
-                  selectedFields.includes(head.key) ? faSquareCheck : faSquare
-                }
-                onClick={handleFilterChange}
-                key={index}
+            {textButtonCreate}
+          </button>
+        )}
+      </div>
+      <div className="grid grid-cols-8 gap-2 my-4">
+        <div
+          className={`flex items-center ${
+            width === "xl" ? "col-span-3" : "col-span-3"
+          }`}
+        >
+          <div className="relative flex items-center">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={searchTerm}
+                className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-            ))}
+              <FontAwesomeIcon
+                icon={faSearch}
+                className={`absolute right-4 top-3.5 text-lg transition-colors ${
+                  isFocused ? "text-politectico" : "text-gray-300"
+                }`}
+              />
+            </div>
+            <FontAwesomeIcon
+              icon={faFilter}
+              onClick={() => setShowFilter(!showFilter)}
+              className="ml-4 text-2xl text-gray-400 cursor-pointer transition-colors duration-150 hover:text-politectico"
+            />
+            <div
+              className={`absolute left-0 top-14 w-full flex-col gap-2 bg-white p-4 rounded-md shadow-float transition-all duration-300 ease-in-out ${
+                showFilter
+                  ? "opacity-100 translate-y-0 pointer-events-auto visible"
+                  : "opacity-0 translate-y-[-10px] pointer-events-none invisible"
+              }`}
+            >
+              <TableFilterCheck
+                icon={
+                  selectedFields.length === dataHead.length
+                    ? faSquareCheck
+                    : selectedFields.length < dataHead.length &&
+                      selectedFields.length !== 0
+                    ? faSquareMinus
+                    : faSquare
+                }
+                isDefault
+                onClick={handleFilterAllChange}
+              />
+              {dataHead.map((head, index) => (
+                <div key={index}>
+                  {!head.isSelectColor && (
+                    <TableFilterCheck
+                      itemHead={head}
+                      icon={
+                        selectedFields.includes(head.key)
+                          ? faSquareCheck
+                          : faSquare
+                      }
+                      onClick={handleFilterChange}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="col-span-1"></div>
-        <div className="col-span-3 flex justify-end gap-6">
+        <div
+          className={`flex justify-end gap-6 ${
+            width === "xl" ? "col-span-5" : "col-span-5"
+          }`}
+        >
           <div className="flex items-center h-full gap-2">
             <div className="text-gray-600">Filas por página</div>
             <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
@@ -170,37 +247,36 @@ export const TableComponent = <T,>({
           {dataHead.map((head, index) => (
             <TableCell dataHead={head} key={index} />
           ))}
-          <td className="px-4 py-3 rounded-tr-md text-center">Acciones</td>
+          {showActions && (
+            <TableCell
+              dataHead={{ key: "actions", nombre: "Acciones", center: true }}
+            />
+          )}
         </tr>
         <tbody>
-          {dataFilteed.map((item, index) => (
-            <TableRow
-              dataHead={dataHead}
-              item={item}
-              index={index}
-              key={index}
-            />
-            // <tr className={`${index % 2 === 1 && "bg-gray-200"}`} key={index}>
-            //   {dataHead.map(({ key, center }, index) => (
-            //     <td
-            //       className={`px-4 py-3 ${center && "text-center"}`}
-            //       key={index}
-            //     >
-            //       {String(item[key as keyof T])}
-            //     </td>
-            //   ))}
-            //   <td className="px-4 py-3 text-center">
-            //     <FontAwesomeIcon
-            //       icon={faPen}
-            //       className="fa-solid fa-pen mx-1 text-yellow-500"
-            //     />
-            //     <FontAwesomeIcon
-            //       icon={faTrash}
-            //       className="fa-solid fa-trash mx-1 text-red-500"
-            //     />
-            //   </td>
-            // </tr>
-          ))}
+          {dataFilteed.length === 0 ? (
+            <tr>
+              <td
+                colSpan={dataHead.length + 1}
+                className={`px-4 py-3 text-center`}
+              >
+                No hay información
+              </td>
+            </tr>
+          ) : (
+            <>
+              {dataFilteed.map((item, index) => (
+                <TableRow
+                  dataHead={dataHead}
+                  item={item}
+                  index={index}
+                  key={index}
+                  showActions={showActions}
+                  onClickIcon={handleDeleteModal}
+                />
+              ))}
+            </>
+          )}
         </tbody>
       </table>
     </div>

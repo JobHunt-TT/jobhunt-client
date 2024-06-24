@@ -1,23 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ContentLayout } from "../layouts";
-import { DataEnterprise, DataHeadTable, TipoEmpresa } from "../types";
+import { DataEnterprise, DataHeadTable, DataUser, TipoEmpresa } from "../types";
 import { TableComponent } from "../components";
-
-const dataHead: DataHeadTable[] = [
-  {
-    key: "empresaNombre",
-    nombre: "Empresa"
-  },
-  {
-    key: "userRFC",
-    nombre: "RFC"
-  },
-  {
-    key: "empresaGiro",
-    nombre: "Giro"
-  }
-] 
 
 export const AdminPage = () => {
   const [enterprises, setEnterprises] = useState<DataEnterprise[]>([]);
@@ -28,6 +13,55 @@ export const AdminPage = () => {
     const tipo = tipoEmpresa.find((tipo) => tipo.id === id);
     return tipo !== undefined ? tipo.descripcion : "No hay tipo";
   };
+
+  const handleChangeStatus = () => {
+    console.log('Endpoint para cambiar status');
+  }
+
+  const dataHeadEmpresa: DataHeadTable[] = [
+    {
+      key: "empresaNombre",
+      nombre: "Empresa"
+    },
+    {
+      key: "userRFC",
+      nombre: "RFC"
+    },
+    {
+      key: "empresaGiro",
+      nombre: "Giro"
+    },
+    {
+      key: "empresaVisibilidad",
+      nombre: "Estatus",
+      isSelectColor: true,
+      configSelectColor: [
+        {
+          label: 'Pendiente',
+          value: 0,
+          color: 'waring'
+        },
+        {
+          label: 'Aprobada',
+          value: 1,
+          color: 'success'
+        },
+        {
+          label: 'Rechazada',
+          value: 2,
+          color: 'error'
+        },
+      ],
+      onChange: handleChangeStatus
+    }
+  ]
+
+  useEffect(() => {
+    const newEnterprises = enterprises.map(enterprise => {
+      return {...enterprise, empresaGiro: getTipoEmpresa(enterprise.tipoEmpresaId)}
+    });
+    setFormatEnterprises(newEnterprises);
+  }, [enterprises])
 
   useEffect(() => {
     const newEnterprises = enterprises.map(enterprise => {
@@ -64,7 +98,7 @@ export const AdminPage = () => {
       <div className="w-4/5 mx-auto py-16">
         <div className="grid grid-cols-2 gap-6">
           <div className="col-span-2">
-           <TableComponent titulo="Empresas" dataHead={dataHead} data={formatEnterprises} />
+           <TableComponent titulo="Empresas" dataHead={dataHeadEmpresa} data={formatEnterprises} />
           </div>
         </div>
       </div>

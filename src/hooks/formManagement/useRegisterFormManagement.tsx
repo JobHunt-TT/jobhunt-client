@@ -15,10 +15,14 @@ export interface RegisterFormFields {
   phoneNumber: string;
   email: string;
   password: string;
-  curp: string;
   gender: string;
   status: string;
-  identification: string;
+  fechaTermino?: string;
+  cedula?: string;
+  porcentajeCursado?: string;
+  fechaTentativaTermino?: string;
+  curp?: string;
+  identification?: string;
 }
 
 const defaultValues: RegisterFormFields = {
@@ -32,6 +36,10 @@ const defaultValues: RegisterFormFields = {
   gender: "",
   status: "",
   identification: "",
+  fechaTermino: "",
+  cedula: "",
+  porcentajeCursado: "",
+  fechaTentativaTermino: ""
 };
 
 export const useRegisterFormManagement = () => {
@@ -61,18 +69,53 @@ export const useRegisterFormManagement = () => {
     email: yup
       .string()
       .email("El correo no es valido")
-      .required("El correo es requerido"),
-    password: yup.string().required("La contraseña es requerida"),
-    curp: yup
-      .string()
-      .required("El CURP es requerido")
+      .required("El correo es requerido")
       .matches(
-        /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[HM]{1}(AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[A-Z]{3}[A-Z\d]{1}\d{1}$/,
-        "El CURP no es valido"
+        /^[a-zA-Z0-9._%+-]+@(alumno\.ipn\.mx|egresado\.ipn\.mx)$/,
+        "El correo debe ser de dominio alumno.ipn.mx o egresado.ipn.mx"
       ),
+    password: yup.string().required("La contraseña es requerida"),
     gender: yup.string().required("El género es requerido"),
     status: yup.string().required("El estatus de carrera es requerido"),
-    identification: yup.string().required("La boleta es requerida"),
+    fechaTermino: yup.string().when("status", (status, schema) => {
+      return (status as unknown as string) === "1" || (status as unknown as string) === "2"
+        ? schema
+            .required("La fecha de término es requerida")
+            .matches(
+              /^[0-9-]{5}[0-9-]{3}[0-9]{2}$/,
+              "La fecha no es válida. Ejemplo: 2000-06-15"
+            )
+        : schema.notRequired();
+    }),
+    cedula: yup.string().when("status", (status, schema) => {
+      return (status as unknown as string) === "1"
+        ? schema.required("La cédula es requerida")
+          // Agregar expresión regular si se quiere validar un formato de cédula
+          // .matches(
+          //   /^[0-9-]{4}-[0-9]{2}-[0-9]{2}$/,
+          //   "La cédula no es válida"
+          // )
+        : schema.notRequired();
+    }),
+    porcentajeCursado: yup.string().when("status", (status, schema) => {
+      return (status as unknown as string) === "3" || (status as unknown as string) === "4"
+        ? schema.required("El porcentaje cursado es requerido")
+          .matches(
+            /^[0-9]*$/,
+            "Solo se admiten números"
+          )
+        : schema.notRequired();
+    }),
+    fechaTentativaTermino: yup.string().when("status", (status, schema) => {
+      return (status as unknown as string) === "4"
+        ? schema
+        .required("La fecha tentativa de término es requerida")
+        .matches(
+          /^[0-9-]{5}[0-9-]{3}[0-9]{2}$/,
+          "La fecha no es válida. Ejemplo: 2000-06-15"
+        )
+        : schema.notRequired();
+    }),
   });
 
   const methods = useForm({
@@ -88,10 +131,12 @@ export const useRegisterFormManagement = () => {
       "phoneNumber",
       "email",
       "password",
-      "curp",
       "gender",
       "status",
-      "identification",
+      "fechaTermino",
+      "cedula",
+      "fechaTentativaTermino",
+      "porcentajeCursado"
     ]);
     return result;
   };
@@ -107,6 +152,10 @@ export const useRegisterFormManagement = () => {
     gender,
     status,
     identification,
+    fechaTermino,
+    cedula,
+    fechaTentativaTermino,
+    porcentajeCursado
   }) => {
     MySwal.fire({
       title: "Por favor, espere...",
@@ -129,6 +178,10 @@ export const useRegisterFormManagement = () => {
         userSexoId: gender,
         userEstatusCarreraId: status,
         userBoleta: identification,
+        userFechaTermino : fechaTermino,
+        userFechaTentativaTermino : fechaTentativaTermino,
+        userPorcentajeCursado : porcentajeCursado + "%",
+        userCedula : cedula
       })
       .then((data) => {
         console.log("success", data);

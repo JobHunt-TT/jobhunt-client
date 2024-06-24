@@ -1,15 +1,25 @@
+import { faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 interface FormInputProps {
   label: string;
   name: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "date";
   disabled?: boolean;
+  onChangeInput?: () => void;
   onBlurInput?: () => void;
 }
 
-export const FormInput = ({ label, name, type = "text", disabled = false, onBlurInput }: FormInputProps) => {
+export const FormInput = ({
+  label,
+  name,
+  type = "text",
+  disabled = false,
+  onChangeInput,
+  onBlurInput,
+}: FormInputProps) => {
   const [focused, setFocused] = useState(false);
   const { control, setValue } = useFormContext();
 
@@ -33,7 +43,11 @@ export const FormInput = ({ label, name, type = "text", disabled = false, onBlur
               htmlFor={label.toLowerCase()}
               className={`absolute left-4 transition-label-form duration-100 ease-linear ${
                 !!error ? "text-red-600" : "text-gray-600"
-              } ${focused || !!value ? "top-1 text-xs" : "top-1/4 text-base"}`}
+              } ${
+                focused || !!value || type === "date"
+                  ? "top-1 text-xs"
+                  : "top-1/4 text-base"
+              }`}
             >
               {label}
             </label>
@@ -41,13 +55,16 @@ export const FormInput = ({ label, name, type = "text", disabled = false, onBlur
               type={type}
               disabled={disabled}
               autoComplete="off"
-              className="bg-transparent w-full pb-2 mt-5 px-4 outline-none"
+              className="bg-transparent w-full pb-2 mt-5 px-4 appearance-none outline-none"
               name={label.toLowerCase()}
               id={label.toLowerCase()}
               value={value ? value : ""}
               onChange={handleChange}
-              onFocus={() => setFocused(!focused)}
-              onBlur={() => {
+              onFocus={() => {
+                setFocused(!focused);
+                !!onChangeInput && onChangeInput();
+              }}
+              onBlur={(e) => {
                 setFocused(false);
                 !!onBlurInput && onBlurInput();
               }}
