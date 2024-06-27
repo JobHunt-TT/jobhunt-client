@@ -1,13 +1,14 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-// import Swal from "sweetalert2";
-// import withReactContent from "sweetalert2-react-content";
-// import axios from "axios";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import axios from "axios";
 
-// const MySwal = withReactContent(Swal);
+const MySwal = withReactContent(Swal);
 
 export interface DireccionFormFields {
+  type: string;
   cp: string;
   vialidad: string;
   noExt: string;
@@ -19,6 +20,7 @@ export interface DireccionFormFields {
 }
 
 const defaultValues: DireccionFormFields = {
+  type: "",
   cp: "",
   vialidad: "",
   noExt: "",
@@ -31,6 +33,7 @@ const defaultValues: DireccionFormFields = {
 
 export const useDireccionFormManagement = () => {
   const schema = yup.object().shape({
+    type: yup.string().required(),
     cp: yup
       .string()
       .required("El nombre es requerido")
@@ -53,6 +56,7 @@ export const useDireccionFormManagement = () => {
 
   const validForm = async () => {
     const result = await methods.trigger([
+      "type",
       "cp",
       "vialidad",
       "noExt",
@@ -65,44 +69,59 @@ export const useDireccionFormManagement = () => {
     return result;
   };
 
-  const submit: SubmitHandler<DireccionFormFields> = async (fields) => {
-    console.log(fields);
-    
-    // MySwal.fire({
-    //   title: "Por favor, espere...",
-    //   didOpen: () => {
-    //     // `MySwal` is a subclass of `Swal` with all the same instance & static methods
-    //     MySwal.showLoading();
-    //   },
-    //   allowOutsideClick: false,
-    // });
+  const submit: SubmitHandler<DireccionFormFields> = async ({
+    type,
+    ...direccion
+  }) => {
+    MySwal.fire({
+      title: "Por favor, espere...",
+      didOpen: () => {
+        // `MySwal` is a subclass of `Swal` with all the same instance & static methods
+        MySwal.showLoading();
+      },
+      allowOutsideClick: false,
+    });
 
-    // axios
-    //   .post("/cambio_estudiante_tag", {
-    //     id: localStorage.getItem("idUser"),
-    //     descripcion,
-    //   })
-    //   .then((data) => {
-    //     console.log("success", data);
+    axios
+      .post(
+        `/${
+          type === "alumno"
+            ? "cambio_direccion_alumno"
+            : type === "empresa"
+            ? "cambio_direccion_empresa"
+            : "cambio_direccion_oferta"
+        }`,
+        {
+          ide:
+            type === "alumno"
+              ? localStorage.getItem("idUser")
+              : type === "empresa"
+              ? localStorage.getItem("idEmpresa")
+              : localStorage.getItem("idOferta"),
+          ...direccion,
+        }
+      )
+      .then((data) => {
+        console.log("success", data);
 
-    //     MySwal.fire({
-    //       icon: "success",
-    //       title: "Direccion registrada con éxito",
-    //       timer: 3000,
-    //       showConfirmButton: false,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log("error", error);
+        MySwal.fire({
+          icon: "success",
+          title: "Direccion registrada con éxito",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      })
+      .catch((error) => {
+        console.log("error", error);
 
-    //     MySwal.fire({
-    //       icon: "error",
-    //       title: "Error",
-    //       text: "Hubo un error al agregar la Direccion",
-    //       timer: 3000,
-    //       showConfirmButton: false,
-    //     });
-    //   });
+        MySwal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Hubo un error al agregar la Direccion",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      });
   };
 
   return {

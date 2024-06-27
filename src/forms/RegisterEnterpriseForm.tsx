@@ -48,6 +48,14 @@ export const RegisterEnterpriseForm = () => {
       errorsTemp.push(errors.rfcEnterprise.message);
     }
 
+    if (!!errors.emailEnterprise && !!errors.emailEnterprise.message) {
+      errorsTemp.push(errors.emailEnterprise.message);
+    }
+
+    if (!!errors.phoneEnterprise && !!errors.phoneEnterprise.message) {
+      errorsTemp.push(errors.phoneEnterprise.message);
+    }
+
     if (!!errors.nameUser && !!errors.nameUser.message) {
       errorsTemp.push(errors.nameUser.message);
     }
@@ -152,6 +160,8 @@ export const RegisterEnterpriseForm = () => {
             name="statusEnterprise"
           />
           <FormInput label="RFC" name="rfcEnterprise" />
+          <FormInput label="Correo" name="emailEnterprise" />
+          <FormInput label="Teléfono" name="phoneEnterprise" />
           <button
             className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
             onClick={async (e) => {
@@ -164,7 +174,9 @@ export const RegisterEnterpriseForm = () => {
                 if (
                   !!errors.nameEnterprise ||
                   !!errors.statusEnterprise ||
-                  !!errors.rfcEnterprise
+                  !!errors.rfcEnterprise ||
+                  !!errors.emailEnterprise ||
+                  !!errors.phoneEnterprise
                 ) {
                   setErrors();
                 }

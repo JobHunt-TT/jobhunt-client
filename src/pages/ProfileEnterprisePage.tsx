@@ -21,33 +21,76 @@ import { VacanteForm } from "../forms";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ContentLayout } from "../layouts";
-import { AdminEmpresa, DataHeadTable } from "../types";
+import { AdminEmpresa, DataHeadTable, Oferta } from "../types";
 import { TableComponent } from "../components";
-
-const dataHeadPersonal: DataHeadTable[] = [
-  {
-    key: "userName",
-    nombre: "Nombre",
-  },
-  {
-    key: "userCargo",
-    nombre: "Cargo",
-  },
-  {
-    key: "userEmail",
-    nombre: "Correo",
-  },
-  {
-    key: "userPhone",
-    nombre: "Teléfono",
-  },
-];
 
 const MySwal = withReactContent(Swal);
 
 export const ProfileEnterprisePage = () => {
+
+  const handleChangeStatus = () => {
+    console.log('Endpoint para cambiar status');
+  }
+  
+  const dataHeadPersonal: DataHeadTable[] = [
+    {
+      key: "userName",
+      nombre: "Nombre",
+    },
+    {
+      key: "userCargo",
+      nombre: "Cargo",
+    },
+    {
+      key: "userEmail",
+      nombre: "Correo",
+    },
+    {
+      key: "userPhone",
+      nombre: "Teléfono",
+    },
+  ];
+  
+  const dataHeadOferta: DataHeadTable[] = [
+    {
+      key: "nombreOferta",
+      nombre: "Nombre",
+    },
+    {
+      key: "vigencia",
+      nombre: "Fecha",
+    },
+    {
+      key: "estatusId",
+      nombre: "Estatus",
+      isSelectColor: true,
+      configSelectColor: [
+        {
+          label: 'En Espera',
+          value: 1,
+          color: 'waring'
+        },
+        {
+          label: 'Aprobada',
+          value: 2,
+          color: 'success'
+        },
+        {
+          label: 'Bloqueada',
+          value: 3,
+          color: 'error'
+        },
+      ],
+      onChange: handleChangeStatus
+    },
+    {
+      key: "nombrePuesto",
+      nombre: "Creador",
+    },
+  ];
+
   const [adminEmpresa, setAdminEmpresa] = useState<AdminEmpresa[]>([]);
-  const [isFocused2, setIsFocused2] = useState(false);
+  const [ofertaEmpresa, setOfertaEmpresa] = useState<Oferta[]>([]);
   const [isFocused3, setIsFocused3] = useState(false);
 
   const handleDeletePersonal = () => {
@@ -69,59 +112,6 @@ export const ProfileEnterprisePage = () => {
         showConfirmButton: false,
       });
     }, 2000);
-    // axios
-    //   .post("/alta_estudiante", {
-    //     userName: name,
-    //     userApellido: lastName,
-    //     userBirthDate: birthDate,
-    //     userPhone: phoneNumber,
-    //     userEmail: email,
-    //     userPass: password,
-    //     userCurp: curp,
-    //     userSexoId: gender,
-    //     userEstatusCarreraId: status,
-    //     userBoleta: identification,
-    //   })
-    //   .then((data) => {
-    //     console.log("success", data);
-
-    // MySwal.fire({
-    //   icon: "success",
-    //   title: data.data,
-    //   text: "Ya puedes ingresar a tu cuenta",
-    //   timer: 3000,
-    //   showConfirmButton: false,
-    //   didClose: () => {
-    //     navigate("/login");
-    //   },
-    // });
-    // })
-    // .catch((error) => {
-    //   console.log("error", error);
-
-    //   MySwal.fire({
-    //     icon: "error",
-    //     title: "Error",
-    //     text: "Hubo un error en el registro",
-    //     timer: 3000,
-    //     showConfirmButton: false,
-    //   });
-    // });
-  };
-
-  const handleOpenModal = () => {
-    MySwal.fire({
-      html: <VacanteForm />,
-      showCancelButton: false,
-      showConfirmButton: false,
-      preConfirm: () => {
-        // const form = document.getElementById('my-form') as HTMLFormElement;
-        // if (form) {
-        //   return handleSubmit(submit)().then(() => null);
-        // }
-        return null;
-      },
-    });
   };
 
   useEffect(() => {
@@ -136,6 +126,18 @@ export const ProfileEnterprisePage = () => {
       .catch((error) => {
         console.log("error", error);
       });
+
+      axios
+        .post("/oferta_x_empresa", {
+          ofertaId: localStorage.getItem("idEmpresa"),
+        })
+        .then((data) => {
+          console.log("success", data);
+          setOfertaEmpresa(data.data);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
   }, []);
 
   return (
@@ -190,231 +192,17 @@ export const ProfileEnterprisePage = () => {
               handleForm={handleDeletePersonal}
               width="md"
             />
-            {/* <div className="bg-white rounded-md p-4 mb-6">
-              <div className="flex justify-between items-start">
-                <div className="text-xl text-politectico font-bold">
-                  Administradores
-                </div>
-              </div>
-              <div className="grid grid-cols-8 gap-2 my-4">
-                <div className="col-span-3 relative">
-                  <input
-                    type="text"
-                    placeholder="Buscar..."
-                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faSearch}
-                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
-                      isFocused ? "text-politectico" : "text-gray-300"
-                    }`}
-                  />
-                </div>
-                <div className="col-span-5 flex justify-end gap-6">
-                  <div className="flex items-center h-full gap-2">
-                    <div className="text-gray-600">Filas por página</div>
-                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                  </div>
-                  <div className="flex h-full items-center ">
-                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
-                    <div className="grid grid-cols-4 gap-4">
-                      <FontAwesomeIcon
-                        icon={faChevronLeft}
-                        className="col-span-1 text-gray-400 text-2xl"
-                      />
-                      <FontAwesomeIcon
-                        icon={faBackwardStep}
-                        className="col-span-1 text-gray-400 text-2xl"
-                      />
-                      <FontAwesomeIcon
-                        icon={faForwardStep}
-                        className="col-span-1 text-gray-400 text-2xl"
-                      />
-                      <FontAwesomeIcon
-                        icon={faChevronRight}
-                        className="col-span-1 text-gray-400 text-2xl"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <table className="w-full mt-3 border-b-[3px] border-politectico">
-                <tr className="bg-politectico text-white font-semibold">
-                  <td className="px-4 py-3 rounded-tl-md">Nombre</td>
-                  <td className="px-4 py-3">Cargo</td>
-                  <td className="px-4 py-3">Correo</td>
-                  <td className="px-4 py-3">Teléfono</td>
-                </tr>
-                <tbody>
-                  {adminEmpresa.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="px-4 py-3 text-center">
-                        No hay administradores
-                      </td>
-                    </tr>
-                  ) : (
-                    <>
-                      {adminEmpresa.map(
-                        (
-                          { userName, userApellido, userEmail, userPhone, id },
-                          index
-                        ) => (
-                          <tr key={index}>
-                            <td className="px-4 py-3">{userName}</td>
-                            <td className="px-4 py-3">{userApellido}</td>
-                            <td className="px-4 py-3">{userEmail}</td>
-                            <td className="px-4 py-3">{userPhone}</td>
-                          </tr>
-                        )
-                      )}
-                    </>
-                  )}
-                </tbody>
-              </table>
-            </div> */}
-
-            <div className="bg-white rounded-md p-4 ">
-              <div className="flex justify-between items-start">
-                <div className="text-xl text-politectico font-bold">
-                  Ofertas
-                </div>
-                <button
-                  className="bg-politectico text-white px-6 py-2 font-semibold rounded-full"
-                  onClick={handleOpenModal}
-                >
-                  Crear Oferta
-                </button>
-              </div>
-              <div className="grid grid-cols-8 gap-2 my-4 ">
-                <div className="col-span-3 relative">
-                  <input
-                    type="text"
-                    placeholder="Buscar..."
-                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
-                    onFocus={() => setIsFocused2(true)}
-                    onBlur={() => setIsFocused2(false)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faSearch}
-                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
-                      isFocused2 ? "text-politectico" : "text-gray-300"
-                    }`}
-                  />
-                </div>
-                <div className="col-span-5 flex justify-end gap-6">
-                  <div className="flex items-center h-full gap-2">
-                    <div className="text-gray-600">Filas por página</div>
-                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
-                      <option value="10">10</option>
-                      <option value="25">25</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                    </select>
-                  </div>
-                  <div className="flex h-full items-center ">
-                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
-                    <div className="grid grid-cols-4 gap-4">
-                      <FontAwesomeIcon
-                        icon={faChevronLeft}
-                        className="col-span-1 text-gray-400 text-2xl"
-                      />
-                      <FontAwesomeIcon
-                        icon={faBackwardStep}
-                        className="col-span-1 text-gray-400 text-2xl"
-                      />
-                      <FontAwesomeIcon
-                        icon={faForwardStep}
-                        className="col-span-1 text-gray-400 text-2xl"
-                      />
-                      <FontAwesomeIcon
-                        icon={faChevronRight}
-                        className="col-span-1 text-gray-400 text-2xl"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <table className="w-full mt-3 border-b-[3px] border-politectico">
-                <tr className="bg-politectico text-white font-semibold">
-                  <td className="px-4 py-3 rounded-tl-md">Nombre</td>
-                  <td className="px-4 py-3">Fecha</td>
-                  <td className="px-4 py-3">Estatus</td>
-                  <td className="px-4 py-3">Creador</td>
-                  <td className="px-4 py-3 rounded-tr-md text-center">
-                    Acciones
-                  </td>
-                </tr>
-                <tbody>
-                  <tr>
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full text-sm font-semibold">
-                        En Espera
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Juanito Pérez</td>
-                    <td className="px-4 py-3 text-center">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        className="fa-solid fa-pen mx-1 text-yellow-500"
-                      />
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        className="fa-solid fa-trash mx-1 text-red-500"
-                      />
-                    </td>
-                  </tr>
-                  <tr className="bg-gray-200">
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
-                        Aprobada
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Juanito Pérez</td>
-                    <td className="px-4 py-3 text-center">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        className="fa-solid fa-pen mx-1 text-yellow-500"
-                      />
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        className="fa-solid fa-trash mx-1 text-red-500"
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
-                        Bloqueada
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Juanito Pérez</td>
-                    <td className="px-4 py-3 text-center">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        className="fa-solid fa-pen mx-1 text-yellow-500"
-                      />
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        className="fa-solid fa-trash mx-1 text-red-500"
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <TableComponent
+              titulo="Ofertas"
+              dataHead={dataHeadOferta}
+              data={ofertaEmpresa}
+              showButtonCreate={true}
+              textButtonCreate="Crear Oferta"
+              formCreate={<VacanteForm />}
+              handleForm={handleDeletePersonal}
+              showActions={false}
+              width="md"
+            />
 
             <div className="bg-white rounded-md p-4">
               <div className="flex justify-between items-start">

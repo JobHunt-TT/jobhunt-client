@@ -1,5 +1,5 @@
 import { FormProvider } from "react-hook-form";
-import { AlertNotification, FormInput } from "../components";
+import { AlertNotification, FormInput, FormMultiTagInput } from "../components";
 import { useEffect, useState } from "react";
 import { useVacanteFormManagement } from "../hooks";
 
@@ -43,6 +43,10 @@ export const VacanteForm = () => {
       errorsTemp.push(errors.salario.message);
     }
 
+    if (!!errors.tags && !!errors.tags.message) {
+      errorsTemp.push(errors.tags.message);
+    }
+
     console.log(errorsTemp);
 
     setErrorsForm(errorsTemp);
@@ -58,17 +62,18 @@ export const VacanteForm = () => {
         onSubmit={handleSubmit(submit)}
       >
         <FormInput label="Nombre de la Oferta" name="nombreOferta" />
-        <FormInput label="Vigencia" name="vigencia" />
+        <FormInput label="Vigencia" name="vigencia" type="date" />
         <FormInput label="Duración de Contrato" name="duracionContrato" />
         <FormInput label="Nombre del Puesto" name="nombrePuesto" />
         <FormInput label="Salario" name="salario" />
+        <FormMultiTagInput label="Tags" name="tags" />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.nombreOferta || !!errors.vigencia || !!errors.duracionContrato || !!errors.nombrePuesto || !!errors.salario) {
+              if (!!errors.nombreOferta || !!errors.vigencia || !!errors.duracionContrato || !!errors.nombrePuesto || !!errors.salario || !!errors.tags) {
                 setErrors();
               }
               handleShowNotification();

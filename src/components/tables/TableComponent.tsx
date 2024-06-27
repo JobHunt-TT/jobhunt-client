@@ -49,17 +49,60 @@ export const TableComponent = <T,>({
   const [selectedFields, setSelectedFields] = useState<string[]>(
     dataHead.map((field) => field.key)
   );
+  const [extraSelectedFields, setExtraSelectedFields] = useState<string[]>(
+    // dataHead.filter((field) => field.isSelectColor).length !== 0
+    //   ? dataHead
+    //       .filter((field) => field.isSelectColor)[0]
+    //       .configSelectColor?.map((config) => config.value.toString()) || []
+    //   :
+    []
+  );
 
   const handleFilterAllChange = () => {
     if (selectedFields.length !== 0) {
       setSelectedFields([]);
+      setExtraSelectedFields([]);
     } else {
       setSelectedFields(dataHead.map((field) => field.key));
+      setExtraSelectedFields(
+        dataHead
+          .filter((field) => field.isSelectColor)[0]
+          .configSelectColor?.map((config) => config.value.toString()) || []
+      );
     }
   };
 
   const handleFilterChange = (key?: string) => {
+    const head = dataHead.filter((field) => field.key === key);
+    if (head[0].isSelectColor) {
+      if (extraSelectedFields.length !== 0) {
+        setExtraSelectedFields([]);
+      } else {
+        setExtraSelectedFields(
+          dataHead
+            .filter((field) => field.isSelectColor)[0]
+            .configSelectColor?.map((config) => config.value.toString()) || []
+        );
+      }
+    }
+
     setSelectedFields((prev) =>
+      prev.includes(key || "")
+        ? prev.filter((item) => item !== key || "")
+        : [...prev, key || ""]
+    );
+  };
+
+  const handleExtraFilterChange = (key?: string) => {
+    const newSelectedFields = selectedFields;
+    const keyParent = dataHead.filter((field) => field.isSelectColor)[0].key;
+    if (extraSelectedFields.length === 0) {
+      newSelectedFields.push(keyParent);
+    }
+
+    setSelectedFields(newSelectedFields);
+    console.log(extraSelectedFields);
+    setExtraSelectedFields((prev) =>
       prev.includes(key || "")
         ? prev.filter((item) => item !== key || "")
         : [...prev, key || ""]
@@ -109,12 +152,29 @@ export const TableComponent = <T,>({
                 .includes(searchTerm.toLowerCase())
             )
           );
-    console.log(filteredData);
 
-    setDataFilteed(filteredData);
+    if (dataHead.filter((field) => field.isSelectColor).length !== 0) {
+      const keyParent = dataHead.filter((field) => field.isSelectColor)[0].key;
+      const newFilteredData =
+        extraSelectedFields.length === 0
+          ? filteredData
+          : filteredData.filter((item) =>
+              extraSelectedFields.includes(String(item[keyParent as keyof T]))
+            );
+
+      setDataFilteed(newFilteredData);
+    } else {
+      setDataFilteed(filteredData);
+    }
   };
 
-  useEffect(filterData, [data, selectedFields, searchTerm]);
+  useEffect(filterData, [
+    data,
+    selectedFields,
+    extraSelectedFields,
+    searchTerm,
+    dataHead,
+  ]);
 
   useEffect(() => {
     setDataFilteed(data);
@@ -189,7 +249,7 @@ export const TableComponent = <T,>({
               />
               {dataHead.map((head, index) => (
                 <div key={index}>
-                  {!head.isSelectColor && (
+                  {!head.isSelectColor ? (
                     <TableFilterCheck
                       itemHead={head}
                       icon={
@@ -199,6 +259,42 @@ export const TableComponent = <T,>({
                       }
                       onClick={handleFilterChange}
                     />
+                  ) : (
+                    <div>
+                      <TableFilterCheck
+                        itemHead={head}
+                        icon={
+                          extraSelectedFields.length ===
+                          dataHead[index].configSelectColor!.length
+                            ? faSquareCheck
+                            : extraSelectedFields.length <
+                                dataHead[index].configSelectColor!.length &&
+                              extraSelectedFields.length !== 0
+                            ? faSquareMinus
+                            : faSquare
+                        }
+                        onClick={handleFilterChange}
+                      />
+                      <div className="ml-6">
+                        {head.configSelectColor?.map(
+                          ({ value, label }, index) => (
+                            <TableFilterCheck
+                              key={index}
+                              itemHead={{
+                                nombre: label,
+                                key: value.toString(),
+                              }}
+                              icon={
+                                extraSelectedFields.includes(value.toString())
+                                  ? faSquareCheck
+                                  : faSquare
+                              }
+                              onClick={handleExtraFilterChange}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
               ))}

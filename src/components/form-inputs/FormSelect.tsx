@@ -8,6 +8,8 @@ interface FormSelectProps {
   label: string;
   name: string;
   data: DataSelect[];
+  disabled?: boolean;
+  selectFirst?: boolean;
   optionDefault?: string;
   onChangeInput?: () => void;
   onBlurInput?: () => void;
@@ -18,6 +20,8 @@ export const FormSelect = ({
   name,
   optionDefault,
   data,
+  disabled = false,
+  selectFirst = false,
   onChangeInput,
   onBlurInput,
 }: FormSelectProps) => {
@@ -50,6 +54,7 @@ export const FormSelect = ({
               className="bg-transparent w-full pb-2 mt-5 px-4 appearance-none outline-none"
               name={label.toLowerCase()}
               id={label.toLowerCase()}
+              disabled={disabled}
               onChange={(e) => {
                 handleChange(e);
                 !!onChangeInput && onChangeInput();
@@ -64,7 +69,7 @@ export const FormSelect = ({
                 {!!optionDefault ? optionDefault : "Selecciona una opción"}
               </option>
               {data.map(({ label, value }, index) => (
-                <option value={value} key={index}>
+                <option value={value} key={index} selected={selectFirst && index === 0} >
                   {label}
                 </option>
               ))}

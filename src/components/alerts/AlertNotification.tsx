@@ -35,7 +35,7 @@ export const AlertNotification = ({
             show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
           }`}
         >
-          <div className="flex flex-row items-center">
+          <div className="flex flex-row">
             <FontAwesomeIcon icon={faXmark} className="h-6 w-6 text-red-600" />
             <p className="ml-2 text-lg font-semibold text-red-600">{title}</p>
           </div>
@@ -44,7 +44,7 @@ export const AlertNotification = ({
               {Array.isArray(message) ? (
                 <ul className="list-disc pl-2">
                   {message.map((item, index) => (
-                    <li className="ml-2 text-base text-red-600" key={index}>
+                    <li className="ml-2 text-base text-left text-red-600" key={index}>
                       {item}
                     </li>
                   ))}

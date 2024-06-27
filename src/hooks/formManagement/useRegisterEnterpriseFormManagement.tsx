@@ -12,6 +12,8 @@ export interface RegisterEnterpriseFormFields {
   nameEnterprise: string;
   statusEnterprise: string;
   rfcEnterprise: string;
+  emailEnterprise: string;
+  phoneEnterprise: string;
   nameUser: string;
   lastNameUser: string;
   phoneUser: string;
@@ -24,6 +26,8 @@ const defaultValues: RegisterEnterpriseFormFields = {
   nameEnterprise: "",
   statusEnterprise: "",
   rfcEnterprise: "",
+  emailEnterprise: "",
+  phoneEnterprise: "",
   nameUser: "",
   lastNameUser: "",
   phoneUser: "",
@@ -47,6 +51,16 @@ export const useRegisterEnterpriseFormManagement = () => {
         /^([A-ZÑ&]{3,4}) ?-?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12][0-9]|3[01])) ?-?([A-Z\d]{2})([A\d])$/,
         "El RFC no es valido"
       ),
+    emailEnterprise: yup
+      .string()
+      .required("El correo es requerido")
+      .email("El correo no es valido"),
+    phoneEnterprise: yup
+      .string()
+      .required("El teléfono es requerido")
+      .matches(/^[0-9]*$/, "Solo se admiten números")
+      .min(10, "Debes introducir al menos 10 digitos")
+      .max(10, "Solo se admiten 10 digitos"),
     nameUser: yup
       .string()
       .required("El nombre de administrador es requerido")
@@ -79,6 +93,8 @@ export const useRegisterEnterpriseFormManagement = () => {
       "nameEnterprise",
       "statusEnterprise",
       "rfcEnterprise",
+      "emailEnterprise",
+      "phoneEnterprise"
     ]);
     return result;
   };
@@ -99,6 +115,8 @@ export const useRegisterEnterpriseFormManagement = () => {
     nameEnterprise,
     statusEnterprise,
     rfcEnterprise,
+    emailEnterprise,
+    phoneEnterprise,
     nameUser,
     lastNameUser,
     phoneUser,
@@ -114,7 +132,7 @@ export const useRegisterEnterpriseFormManagement = () => {
       },
       allowOutsideClick: false,
     });
-    
+
     axios
       .post("/alta_empresa", {
         userName: nameUser,
@@ -127,6 +145,8 @@ export const useRegisterEnterpriseFormManagement = () => {
         empresaNombre: nameEnterprise,
         tipoEmpresaId: statusEnterprise,
         userRFC: rfcEnterprise,
+        empresaEmail: emailEnterprise,
+        empresaPhone: phoneEnterprise
       })
       .then((data) => {
         console.log("success", data);
@@ -134,12 +154,12 @@ export const useRegisterEnterpriseFormManagement = () => {
         MySwal.fire({
           icon: "success",
           title: data.data,
-          text: 'Ya puedes ingresar a tu cuenta',
+          text: "Ya puedes ingresar a tu cuenta",
           timer: 3000,
           showConfirmButton: false,
           didClose: () => {
             navigate("/login");
-          }
+          },
         });
       })
       .catch((error) => {
@@ -148,7 +168,7 @@ export const useRegisterEnterpriseFormManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: 'Hubo un error en el registro',
+          text: "Hubo un error en el registro",
           timer: 3000,
           showConfirmButton: false,
         });

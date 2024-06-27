@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faCircle, faCirclePlus, faPhone } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -9,6 +9,8 @@ import { ContentLayout } from "../layouts";
 import { SkillForm } from "../forms";
 import { faInstagram, faSquareFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { DataUser, SkillUser } from "../types";
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import { CardAddress } from "../components";
 
 const MySwal = withReactContent(Swal);
 
@@ -51,21 +53,6 @@ export const ProfilePage = () => {
       },
     });
   };
-
-  // const handleAddDireccion = () => {
-  //   MySwal.fire({
-  //     html: <DireccionForm />,
-  //     showCancelButton: false,
-  //     showConfirmButton: false,
-  //     preConfirm: () => {
-  //       // const form = document.getElementById('my-form') as HTMLFormElement;
-  //       // if (form) {
-  //       //   return handleSubmit(submit)().then(() => null);
-  //       // }
-  //       return null;
-  //     },
-  //   });
-  // };
 
   useEffect(() => {
     axios
@@ -114,11 +101,11 @@ export const ProfilePage = () => {
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
               <div className="flex items-center mt-2">
-                <i className="fa-regular fa-envelope text-lg mr-2"></i>
+              <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
                 <div>{user.userEmail}</div>
               </div>
               <div className="flex items-center mt-2">
-                <i className="fa-solid fa-phone text-lg mr-2"></i>
+              <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
                 <div>{user.userPhone}</div>
               </div>
               <div className="flex justify-center mt-2">
@@ -127,17 +114,7 @@ export const ProfilePage = () => {
                 <FontAwesomeIcon icon={faInstagram} className="text-3xl text-instagram mx-2" />
               </div>
             </div>
-            {/* <div className="bg-white rounded-md p-4 mt-6 relative">
-              <div className="text-xl text-politectico font-bold">Dirección</div>
-              <div className="mt-2">
-                <div>Hda de Aragón Mz 2 Lt 1</div>
-              </div>
-              <FontAwesomeIcon
-                icon={faPen}
-                onClick={handleAddDireccion}
-                className="absolute top-4 right-4 text-politectico/60 text-lg cursor-pointer hover:text-politectico"
-              />
-            </div> */}
+            <CardAddress type="alumno" />
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Idiomas</div>
               <div className="mt-2">

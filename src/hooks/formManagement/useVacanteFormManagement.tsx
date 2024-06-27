@@ -13,6 +13,7 @@ export interface VacanteFormFields {
   duracionContrato: string;
   nombrePuesto: string;
   salario: string;
+  tags?: string[]
 }
 
 const defaultValues: VacanteFormFields = {
@@ -21,6 +22,7 @@ const defaultValues: VacanteFormFields = {
   duracionContrato: "",
   nombrePuesto: "",
   salario: "",
+  tags: []
 };
 
 export const useVacanteFormManagement = () => {
@@ -38,6 +40,7 @@ export const useVacanteFormManagement = () => {
       .required("La duración del contrato es requerida"),
     nombrePuesto: yup.string().required("El nombre del puesto es requerido"),
     salario: yup.string().required("El salario es requerido"),
+    tags: yup.array().of(yup.string().required()).min(1, 'Debes agregar por lo menos un tag')
   });
 
   const methods = useForm({
@@ -52,12 +55,23 @@ export const useVacanteFormManagement = () => {
       "duracionContrato",
       "nombrePuesto",
       "salario",
+      "tags"
     ]);
     return result;
   };
 
-  const submit: SubmitHandler<VacanteFormFields> = async (fields) => {
+  const submit: SubmitHandler<VacanteFormFields> = async ({ tags, ...fields }) => {
     console.log(fields);
+    let tagsData = "";
+    for (let index = 0; index < tags!.length; index++) {
+      tagsData += ` ${tags![index].toLowerCase()}`;
+    }
+
+    const formatData = {
+      ...fields,
+      tags: tagsData.trim()
+    }
+    console.log(formatData);
 
     MySwal.fire({
       title: "Por favor, espere...",
@@ -71,7 +85,7 @@ export const useVacanteFormManagement = () => {
     axios
       .post("/alta_oferta_trabajo", {
         empresaID: localStorage.getItem("idEmpresa"),
-        ...fields,
+        ...formatData,
       })
       .then((data) => {
         console.log("success", data);

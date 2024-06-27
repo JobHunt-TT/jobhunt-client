@@ -1,5 +1,3 @@
-import { faCalendar } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
