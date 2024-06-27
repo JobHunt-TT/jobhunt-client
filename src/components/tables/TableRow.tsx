@@ -7,6 +7,7 @@ interface TableRowProps<T> {
   item: T;
   dataHead: DataHeadTable[];
   index: number;
+  enabledChangeSelect: boolean;
   showActions: boolean;
   onClickIcon: () => void
 }
@@ -15,6 +16,7 @@ export const TableRow = <T,>({
   dataHead,
   index,
   item,
+  enabledChangeSelect,
   showActions,
   onClickIcon
 }: TableRowProps<T>) => {
@@ -28,7 +30,7 @@ export const TableRow = <T,>({
         };
         // return <TableCell dataHead={dataCell} key={index} />
         return data.isSelectColor ? (
-          <TableCellSelect item={dataCell} key={index} />
+          <TableCellSelect item={dataCell} key={index} enabledChangeSelect={enabledChangeSelect} />
         ) : (
           <TableCell dataHead={dataCell} key={index} />
         );

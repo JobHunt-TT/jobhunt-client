@@ -27,13 +27,12 @@ import { TableComponent } from "../components";
 const MySwal = withReactContent(Swal);
 
 export const ProfileEnterprisePage = () => {
-
   const handleChangeStatusOferta = (id: string, idStatus: string) => {
-    console.log('Endpoint para cambiar status', id, idStatus);
+    console.log("Endpoint para cambiar status", id, idStatus);
     axios
       .post("/cambio_status_oferta", {
         id,
-        id2: idStatus
+        id2: idStatus,
       })
       .then((data) => {
         console.log("success", data);
@@ -41,8 +40,8 @@ export const ProfileEnterprisePage = () => {
       .catch((error) => {
         console.log("error", error);
       });
-  }
-  
+  };
+
   const dataHeadPersonal: DataHeadTable[] = [
     {
       key: "userName",
@@ -61,7 +60,7 @@ export const ProfileEnterprisePage = () => {
       nombre: "Teléfono",
     },
   ];
-  
+
   const dataHeadOferta: DataHeadTable[] = [
     {
       key: "nombreOferta",
@@ -78,22 +77,22 @@ export const ProfileEnterprisePage = () => {
       isSelectColor: true,
       configSelectColor: [
         {
-          label: 'En Espera',
+          label: "En Espera",
           value: 1,
-          color: 'waring'
+          color: "waring",
         },
         {
-          label: 'Aprobada',
+          label: "Aprobada",
           value: 2,
-          color: 'success'
+          color: "success",
         },
         {
-          label: 'Bloqueada',
+          label: "Bloqueada",
           value: 3,
-          color: 'error'
+          color: "error",
         },
       ],
-      onChange: handleChangeStatusOferta
+      onChange: handleChangeStatusOferta,
     },
     {
       key: "nombrePuesto",
@@ -139,17 +138,17 @@ export const ProfileEnterprisePage = () => {
         console.log("error", error);
       });
 
-      axios
-        .post("/oferta_x_empresa", {
-          ofertaId: localStorage.getItem("idEmpresa"),
-        })
-        .then((data) => {
-          console.log("success", data);
-          setOfertaEmpresa(data.data);
-        })
-        .catch((error) => {
-          console.log("error", error);
-        });
+    axios
+      .post("/oferta_x_empresa", {
+        ofertaId: localStorage.getItem("idEmpresa"),
+      })
+      .then((data) => {
+        console.log("success", data);
+        setOfertaEmpresa(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   }, []);
 
   return (
@@ -194,17 +193,19 @@ export const ProfileEnterprisePage = () => {
             </div>
           </div>
           <div className="col-span-2 flex flex-col gap-6">
-            <TableComponent
-              titulo="Personal"
-              dataHead={dataHeadPersonal}
-              data={adminEmpresa}
-              showButtonCreate={true}
-              textButtonCreate="Crear Reclutador"
-              formCreate={<VacanteForm />}
-              handleForm={handleDeletePersonal}
-              showActions={false}
-              width="md"
-            />
+            {localStorage.getItem("tipoUsuarioEmpresa") === "1" && (
+              <TableComponent
+                titulo="Personal"
+                dataHead={dataHeadPersonal}
+                data={adminEmpresa}
+                showButtonCreate={true}
+                textButtonCreate="Crear Reclutador"
+                formCreate={<VacanteForm />}
+                handleForm={handleDeletePersonal}
+                showActions={false}
+                width="md"
+              />
+            )}
             <TableComponent
               titulo="Ofertas"
               dataHead={dataHeadOferta}
@@ -213,6 +214,7 @@ export const ProfileEnterprisePage = () => {
               textButtonCreate="Crear Oferta"
               formCreate={<VacanteForm />}
               handleForm={handleDeletePersonal}
+              enabledChangeSelect={localStorage.getItem("tipoUsuarioEmpresa") === "1"}
               showActions={false}
               width="md"
             />

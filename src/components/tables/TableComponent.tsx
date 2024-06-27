@@ -23,6 +23,7 @@ interface TableComponentProps<T> {
   dataHead: DataHeadTable[];
   data: T[];
   width?: WidthTable;
+  enabledChangeSelect?: boolean;
   showActions?: boolean;
   showButtonCreate?: boolean;
   textButtonCreate?: string;
@@ -36,6 +37,7 @@ export const TableComponent = <T,>({
   dataHead,
   data,
   width = "xl",
+  enabledChangeSelect = true,
   showActions = true,
   showButtonCreate = false,
   textButtonCreate,
@@ -373,6 +375,7 @@ export const TableComponent = <T,>({
                   item={item}
                   index={index}
                   key={index}
+                  enabledChangeSelect={enabledChangeSelect}
                   showActions={showActions}
                   onClickIcon={handleDeleteModal}
                 />

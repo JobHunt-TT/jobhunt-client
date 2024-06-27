@@ -57,6 +57,7 @@ export const useLoginFormManagement = () => {
           localStorage.setItem("idUser", data.data.id);
           if (data.data.empresaId !== 0) {
             localStorage.setItem("idEmpresa", data.data.usuarioEmpresaId);
+            localStorage.setItem("tipoUsuarioEmpresa", data.data.empresaId);
             navigate("/profileEnterprise");
           } else {
             navigate("/profile");

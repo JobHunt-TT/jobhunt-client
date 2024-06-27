@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 
 interface TableCellSelectProps {
   item: DataHeadTable;
+  enabledChangeSelect: boolean;
 }
 
-export const TableCellSelect = ({ item }: TableCellSelectProps) => {
+export const TableCellSelect = ({ item, enabledChangeSelect }: TableCellSelectProps) => {
   const { id, configSelectColor, nombre, onChange } = item;
   const [showData, setShowData] = useState(false);
   const [config, setConfig] = useState(configSelectColor?.find(
@@ -24,7 +25,7 @@ export const TableCellSelect = ({ item }: TableCellSelectProps) => {
   return (
     <td className="px-4 py-3">
       <button
-        onClick={() => setShowData(!showData)}
+        onClick={() => enabledChangeSelect && setShowData(!showData)}
         className={`inline px-3 py-1 rounded-full text-sm font-semibold relative ${
           config?.color === "success"
             ? "bg-green-100 text-green-600"
@@ -36,7 +37,12 @@ export const TableCellSelect = ({ item }: TableCellSelectProps) => {
         }`}
       >
         {config?.label}
-        <FontAwesomeIcon icon={faChevronDown} className="text-xs ml-1" />
+        {
+          enabledChangeSelect && (
+
+            <FontAwesomeIcon icon={faChevronDown} className="text-xs ml-1" />
+          )
+        }
         <div
           className={`absolute left-0 top-8 w-full flex flex-col gap-2 py-2 px-1 bg-white rounded-md shadow-float transition-all duration-300 ease-in-out z-10 ${
             showData

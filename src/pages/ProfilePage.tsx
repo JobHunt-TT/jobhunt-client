@@ -10,7 +10,7 @@ import { SkillForm } from "../forms";
 import { faInstagram, faSquareFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { DataUser, SkillUser } from "../types";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { CardAddress } from "../components";
+import { CardAddress, CardUserInfo } from "../components";
 
 const MySwal = withReactContent(Swal);
 
@@ -38,21 +38,6 @@ const INITIAL_STATE: DataUser = {
 export const ProfilePage = () => {
   const [user, setUser] = useState(INITIAL_STATE);
   const [skillsUser, setSkillsUser] = useState<SkillUser[]>([]);
-
-  const handleAddSkill = () => {
-    MySwal.fire({
-      html: <SkillForm />,
-      showCancelButton: false,
-      showConfirmButton: false,
-      preConfirm: () => {
-        // const form = document.getElementById('my-form') as HTMLFormElement;
-        // if (form) {
-        //   return handleSubmit(submit)().then(() => null);
-        // }
-        return null;
-      },
-    });
-  };
 
   useEffect(() => {
     axios
@@ -115,36 +100,18 @@ export const ProfilePage = () => {
               </div>
             </div>
             <CardAddress type="alumno" />
-            <div className="bg-white rounded-md p-4 mt-6">
+            {/* <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Idiomas</div>
               <div className="mt-2">
                 <div>Español</div>
                 <div>Inglés</div>
                 <div>Alemán</div>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="col-span-2">
-            <div className="bg-white rounded-md p-4 relative">
-              <div className="text-xl text-politectico font-bold">Skills</div>
-              <div className="mt-1">
-                {skillsUser.map(({ descripcion }, index) => (
-                  <div className="flex items-center" key={index}>
-                    <FontAwesomeIcon
-                      icon={faCircle}
-                      className="text-[.4rem] mr-1"
-                    />
-                    {descripcion}
-                  </div>
-                ))}
-              </div>
-              <FontAwesomeIcon
-                icon={faCirclePlus}
-                onClick={handleAddSkill}
-                className="absolute top-4 right-4 text-politectico/60 text-xl cursor-pointer hover:text-politectico"
-              />
-            </div>
-            <div className="bg-white rounded-md p-4 mt-6">
+            <CardUserInfo titulo="Skills" data={skillsUser} formCreate={<SkillForm />} keyName="descripcion" />
+            {/* <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">
                 Extra Skills
               </div>
@@ -219,7 +186,7 @@ export const ProfilePage = () => {
                   Proyecto 3
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
