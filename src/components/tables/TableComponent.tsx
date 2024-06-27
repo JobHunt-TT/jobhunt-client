@@ -50,12 +50,11 @@ export const TableComponent = <T,>({
     dataHead.map((field) => field.key)
   );
   const [extraSelectedFields, setExtraSelectedFields] = useState<string[]>(
-    // dataHead.filter((field) => field.isSelectColor).length !== 0
-    //   ? dataHead
-    //       .filter((field) => field.isSelectColor)[0]
-    //       .configSelectColor?.map((config) => config.value.toString()) || []
-    //   :
-    []
+    dataHead.filter((field) => field.isSelectColor).length !== 0
+      ? dataHead
+          .filter((field) => field.isSelectColor)[0]
+          .configSelectColor?.map((config) => config.value.toString()) || []
+      : []
   );
 
   const handleFilterAllChange = () => {
@@ -96,8 +95,13 @@ export const TableComponent = <T,>({
   const handleExtraFilterChange = (key?: string) => {
     const newSelectedFields = selectedFields;
     const keyParent = dataHead.filter((field) => field.isSelectColor)[0].key;
+    const index = selectedFields.indexOf(keyParent);
     if (extraSelectedFields.length === 0) {
       newSelectedFields.push(keyParent);
+    } else {
+      if (index !== -1) {
+        newSelectedFields.splice(index, 1);
+      }
     }
 
     setSelectedFields(newSelectedFields);
@@ -152,6 +156,7 @@ export const TableComponent = <T,>({
                 .includes(searchTerm.toLowerCase())
             )
           );
+    console.log(filteredData);
 
     if (dataHead.filter((field) => field.isSelectColor).length !== 0) {
       const keyParent = dataHead.filter((field) => field.isSelectColor)[0].key;
@@ -162,6 +167,7 @@ export const TableComponent = <T,>({
               extraSelectedFields.includes(String(item[keyParent as keyof T]))
             );
 
+      console.log(newFilteredData);
       setDataFilteed(newFilteredData);
     } else {
       setDataFilteed(filteredData);

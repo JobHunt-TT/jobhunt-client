@@ -28,8 +28,19 @@ const MySwal = withReactContent(Swal);
 
 export const ProfileEnterprisePage = () => {
 
-  const handleChangeStatus = () => {
-    console.log('Endpoint para cambiar status');
+  const handleChangeStatusOferta = (id: string, idStatus: string) => {
+    console.log('Endpoint para cambiar status', id, idStatus);
+    axios
+      .post("/cambio_status_oferta", {
+        id,
+        id2: idStatus
+      })
+      .then((data) => {
+        console.log("success", data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   }
   
   const dataHeadPersonal: DataHeadTable[] = [
@@ -61,6 +72,7 @@ export const ProfileEnterprisePage = () => {
       nombre: "Fecha",
     },
     {
+      keyId: "ofertaId",
       key: "estatusId",
       nombre: "Estatus",
       isSelectColor: true,
@@ -81,7 +93,7 @@ export const ProfileEnterprisePage = () => {
           color: 'error'
         },
       ],
-      onChange: handleChangeStatus
+      onChange: handleChangeStatusOferta
     },
     {
       key: "nombrePuesto",
@@ -190,6 +202,7 @@ export const ProfileEnterprisePage = () => {
               textButtonCreate="Crear Reclutador"
               formCreate={<VacanteForm />}
               handleForm={handleDeletePersonal}
+              showActions={false}
               width="md"
             />
             <TableComponent

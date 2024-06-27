@@ -24,7 +24,9 @@ export const TableRow = <T,>({
         const dataCell: DataHeadTable = {
           ...data,
           nombre: String(item[data.key as keyof T]),
+          id: String(item[data.keyId as keyof T])
         };
+        // return <TableCell dataHead={dataCell} key={index} />
         return data.isSelectColor ? (
           <TableCellSelect item={dataCell} key={index} />
         ) : (

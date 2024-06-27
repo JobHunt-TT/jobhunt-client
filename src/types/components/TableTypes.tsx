@@ -1,10 +1,12 @@
 export interface DataHeadTable{
+  id?: string
+  keyId?: string
   key: string;
   nombre: string;
   center?: boolean;
   isSelectColor?: boolean;
   configSelectColor?: ConfigSelectColor[]
-  onChange?: () => void
+  onChange?: (id: string, idStatus: string) => void
 }
 
 export interface ConfigSelectColor{

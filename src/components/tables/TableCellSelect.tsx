@@ -1,18 +1,25 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DataHeadTable } from "../../types";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TableCellSelectProps {
   item: DataHeadTable;
 }
 
 export const TableCellSelect = ({ item }: TableCellSelectProps) => {
-  const { configSelectColor, nombre, onChange } = item;
+  const { id, configSelectColor, nombre, onChange } = item;
   const [showData, setShowData] = useState(false);
   const [config, setConfig] = useState(configSelectColor?.find(
     (config) => config.value.toString() === nombre
   ));
+
+  useEffect(() => {
+    setConfig(configSelectColor?.find(
+      (config) => config.value.toString() === nombre
+    ))
+  }, [item])
+  
 
   return (
     <td className="px-4 py-3">
@@ -42,7 +49,7 @@ export const TableCellSelect = ({ item }: TableCellSelectProps) => {
               key={index}
               onClick={() => {
                 setConfig(config);
-                !!onChange && onChange();
+                !!onChange && onChange(id!, config.value.toString());
               }}
               className={`inline px-3 py-1 rounded-full text-sm font-semibold relative ${
                 config?.color === "success"
