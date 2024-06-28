@@ -8,10 +8,11 @@ export const OfertasPage = () => {
   const [ofertas, setOfertas] = useState<Oferta[]>([]);
 
   useEffect(() => {
-    
+    localStorage.removeItem("idOferta");
+
     axios
       .post("/consulta_oferta_estudiante", {
-        id: localStorage.getItem("idUser")
+        id: localStorage.getItem("idUser"),
       })
       .then((data) => {
         console.log("success", data);
@@ -20,8 +21,7 @@ export const OfertasPage = () => {
       .catch((error) => {
         console.log("error", error);
       });
-  }, [])
-  
+  }, []);
 
   return (
     <ContentLayout>

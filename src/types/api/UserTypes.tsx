@@ -1,7 +1,7 @@
 export interface DataUser {
   cedula_Profesional: string;
   direccion: string;
-  direccionID: number;
+  direccionId: number;
   estatusCarrera: string;
   fechaEgreso: string;
   id: number;

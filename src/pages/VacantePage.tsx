@@ -38,9 +38,9 @@ export const VacantePage = () => {
         console.log("error", error);
       });
 
-      return () => {
-          localStorage.removeItem("idOferta")
-      }
+    // return () => {
+    //     localStorage.removeItem("idOferta")
+    // }
   }, []);
   return (
     <ContentLayout>

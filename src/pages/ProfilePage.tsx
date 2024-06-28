@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle, faCirclePlus, faPhone } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircle,
+  faCirclePlus,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 import { ContentLayout } from "../layouts";
 import { SkillForm } from "../forms";
-import { faInstagram, faSquareFacebook, faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import {
+  faInstagram,
+  faSquareFacebook,
+  faXTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import { DataUser, SkillUser } from "../types";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { CardAddress, CardUserInfo } from "../components";
@@ -17,7 +25,7 @@ const MySwal = withReactContent(Swal);
 const INITIAL_STATE: DataUser = {
   cedula_Profesional: "",
   direccion: "",
-  direccionID: 0,
+  direccionId: 0,
   estatusCarrera: "",
   fechaEgreso: "",
   id: 0,
@@ -38,6 +46,7 @@ const INITIAL_STATE: DataUser = {
 export const ProfilePage = () => {
   const [user, setUser] = useState(INITIAL_STATE);
   const [skillsUser, setSkillsUser] = useState<SkillUser[]>([]);
+  const [userCarrera, setuserCarrera] = useState<any>(null);
 
   useEffect(() => {
     axios
@@ -45,7 +54,7 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        console.log("success", data);
+        // console.log("success", data);
         setUser(data.data);
       })
       .catch((error) => {
@@ -57,13 +66,41 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        console.log("success", data);
+        // console.log("success", data);
         setSkillsUser(data.data);
       })
       .catch((error) => {
         console.log("error", error);
       });
+
+    axios
+      .post("/consulta_carreras", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        console.log("success", data);
+        setuserCarrera(data.data[0]);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   }, []);
+
+  // useEffect(() => {
+  //   if (userCarrera) {
+  //     axios
+  //       .post("/alta_carrera_alumno", {
+  //         id: localStorage.getItem("idUser"),
+  //         id2: 3,
+  //       })
+  //       .then((data) => {
+  //         console.log("success", data);
+  //       })
+  //       .catch((error) => {
+  //         console.log("error", error);
+  //       });
+  //   }
+  // }, [userCarrera]);
 
   return (
     <ContentLayout>
@@ -86,20 +123,29 @@ export const ProfilePage = () => {
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
               <div className="flex items-center mt-2">
-              <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
+                <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
                 <div>{user.userEmail}</div>
               </div>
               <div className="flex items-center mt-2">
-              <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
+                <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
                 <div>{user.userPhone}</div>
               </div>
               <div className="flex justify-center mt-2">
-                <FontAwesomeIcon icon={faSquareFacebook} className="text-3xl text-facebook mx-2" />
-                <FontAwesomeIcon icon={faXTwitter} className="text-3xl text-x-twitter mx-2" />
-                <FontAwesomeIcon icon={faInstagram} className="text-3xl text-instagram mx-2" />
+                <FontAwesomeIcon
+                  icon={faSquareFacebook}
+                  className="text-3xl text-facebook mx-2"
+                />
+                <FontAwesomeIcon
+                  icon={faXTwitter}
+                  className="text-3xl text-x-twitter mx-2"
+                />
+                <FontAwesomeIcon
+                  icon={faInstagram}
+                  className="text-3xl text-instagram mx-2"
+                />
               </div>
             </div>
-            <CardAddress type="alumno" />
+            <CardAddress type="alumno" direccionID={user.direccionId} />
             {/* <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Idiomas</div>
               <div className="mt-2">
@@ -110,7 +156,12 @@ export const ProfilePage = () => {
             </div> */}
           </div>
           <div className="col-span-2">
-            <CardUserInfo titulo="Skills" data={skillsUser} formCreate={<SkillForm />} keyName="descripcion" />
+            <CardUserInfo
+              titulo="Skills"
+              data={skillsUser}
+              formCreate={<SkillForm />}
+              keyName="descripcion"
+            />
             {/* <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">
                 Extra Skills

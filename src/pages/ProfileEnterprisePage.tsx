@@ -69,7 +69,7 @@ export const ProfileEnterprisePage = () => {
     {
       key: "vigencia",
       nombre: "Fecha",
-      isDate: true
+      isDate: true,
     },
     {
       keyId: "ofertaId",
@@ -104,6 +104,7 @@ export const ProfileEnterprisePage = () => {
   const [adminEmpresa, setAdminEmpresa] = useState<AdminEmpresa[]>([]);
   const [ofertaEmpresa, setOfertaEmpresa] = useState<Oferta[]>([]);
   const [isFocused3, setIsFocused3] = useState(false);
+  const [dataEmpresa, setDataEmpresa] = useState<any>(null);
 
   const handleDeletePersonal = () => {
     MySwal.fire({
@@ -150,6 +151,18 @@ export const ProfileEnterprisePage = () => {
       .catch((error) => {
         console.log("error", error);
       });
+
+    axios
+      .post("/consulta_empresa", {
+        id: localStorage.getItem("idEmpresa"),
+      })
+      .then((data) => {
+        console.log("success", data);
+        setDataEmpresa(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   }, []);
 
   return (
@@ -164,8 +177,12 @@ export const ProfileEnterprisePage = () => {
                 width="350"
                 className="block mx-auto my-5"
               />
-              <div className="text-xl font-bold text-center">Microsoft</div>
-              <div className="text-center">Desarrollo de Software</div>
+              <div className="text-xl font-bold text-center">
+                {dataEmpresa !== null ? dataEmpresa.empresaNombre : "--"}
+              </div>
+              <div className="text-center">
+                {dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"}
+              </div>
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
@@ -215,7 +232,9 @@ export const ProfileEnterprisePage = () => {
               textButtonCreate="Crear Oferta"
               formCreate={<VacanteForm />}
               handleForm={handleDeletePersonal}
-              enabledChangeSelect={localStorage.getItem("tipoUsuarioEmpresa") === "1"}
+              enabledChangeSelect={
+                localStorage.getItem("tipoUsuarioEmpresa") === "1"
+              }
               showActions={false}
               width="md"
             />

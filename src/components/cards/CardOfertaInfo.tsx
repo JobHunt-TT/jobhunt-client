@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Oferta } from "../../types";
 
 interface CardOfertaInfoProps {
@@ -6,13 +6,15 @@ interface CardOfertaInfoProps {
 }
 
 export const CardOfertaInfo = ({ item }: CardOfertaInfoProps) => {
-  
+  const navigate = useNavigate();
+
   const handleClickOferta = () => {
-    localStorage.setItem("idOferta", item.ofertaId.toString())
-  }
+    localStorage.setItem("idOferta", item.ofertaId.toString());
+    navigate("/oferta");
+  };
 
   return (
-    <Link to={"/oferta"} className="bg-white rounded-md p-3" onClick={handleClickOferta}>
+    <div className="bg-white rounded-md p-3" onClick={handleClickOferta}>
       <div className="font-bold text-xl text-politectico mb-2">
         {item.nombreOferta}
       </div>
@@ -24,6 +26,6 @@ export const CardOfertaInfo = ({ item }: CardOfertaInfoProps) => {
         <div className="font-bold">Nombre del Puesto</div>
         <div>{item.nombrePuesto}</div>
       </div>
-    </Link>
+    </div>
   );
 };

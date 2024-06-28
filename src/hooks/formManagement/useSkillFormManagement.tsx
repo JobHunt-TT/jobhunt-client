@@ -17,7 +17,10 @@ const defaultValues: SkillFormFields = {
 
 export const useSkillFormManagement = () => {
   const schema = yup.object().shape({
-    descripcion: yup.string().required("El nombre es requerido").matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras"),
+    descripcion: yup
+      .string()
+      .required("El nombre es requerido")
+      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras"),
   });
 
   const methods = useForm({
@@ -26,12 +29,9 @@ export const useSkillFormManagement = () => {
   });
 
   const validForm = async () => {
-    
-    const result = await methods.trigger([
-      "descripcion",
-    ]);
+    const result = await methods.trigger(["descripcion"]);
     return result;
-  }
+  };
 
   const submit: SubmitHandler<SkillFormFields> = async ({ descripcion }) => {
     MySwal.fire({
@@ -42,15 +42,29 @@ export const useSkillFormManagement = () => {
       },
       allowOutsideClick: false,
     });
-    
+
     axios
       .post("/cambio_estudiante_tag", {
         id: localStorage.getItem("idUser"),
-        descripcion
+        descripcion,
       })
       .then((data) => {
         console.log("success", data);
-        
+
+        if (data.status === 200) {
+          axios
+            .post("/consulta_estudiante_tag", {
+              id: localStorage.getItem("idUser"),
+            })
+            .then((data) => {
+              console.log("success", data);
+              console.log(data);
+            })
+            .catch((error) => {
+              console.log("error", error);
+            });
+        }
+
         MySwal.fire({
           icon: "success",
           title: "Skill registrada con éxito",
@@ -64,7 +78,7 @@ export const useSkillFormManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: 'Hubo un error al agregar la skill',
+          text: "Hubo un error al agregar la skill",
           timer: 3000,
           showConfirmButton: false,
         });
