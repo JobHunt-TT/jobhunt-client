@@ -5,6 +5,7 @@ export interface DataHeadTable{
   nombre: string;
   center?: boolean;
   isSelectColor?: boolean;
+  isDate?: boolean;
   configSelectColor?: ConfigSelectColor[]
   onChange?: (id: string, idStatus: string) => void
 }

@@ -1,7 +1,28 @@
-import { Link } from "react-router-dom";
 import { ContentLayout } from "../layouts";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Oferta } from "../types";
+import { CardOfertaInfo } from "../components";
 
 export const OfertasPage = () => {
+  const [ofertas, setOfertas] = useState<Oferta[]>([]);
+
+  useEffect(() => {
+    
+    axios
+      .post("/consulta_oferta_estudiante", {
+        id: localStorage.getItem("idUser")
+      })
+      .then((data) => {
+        console.log("success", data);
+        setOfertas(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, [])
+  
+
   return (
     <ContentLayout>
       <div className="w-4/5 mx-auto my-16">
@@ -47,56 +68,9 @@ export const OfertasPage = () => {
         </div>
 
         <div className="grid grid-cols-2 mt-8 gap-4">
-          <Link to={'/oferta'} className="bg-white rounded-md p-3">
-            <div className="font-bold text-xl text-politectico mb-2">
-              Desarrollador Backend
-            </div>
-            <div>
-              <div className="font-bold">Ubicación</div>
-              <div>Ciudad de México</div>
-            </div>
-            <div>
-              <div className="font-bold">Modalidad</div>
-              <div>Remota</div>
-            </div>
-          </Link>
-          <Link to={'/oferta'} className="bg-white rounded-md p-3">
-            <div className="font-bold text-xl text-politectico mb-2">
-              Java Developer
-            </div>
-            <div>
-              <div className="font-bold">Ubicación</div>
-              <div>Ciudad de México</div>
-            </div>
-            <div>
-              <div className="font-bold">Modalidad</div>
-              <div>Remota</div>
-            </div>
-          </Link>
-          <Link to={'/oferta'} className="bg-white rounded-md p-3">
-            <div className="font-bold text-xl text-politectico mb-2">
-              Desarrollador FrontEnd
-            </div>
-            <div>
-              <div className="font-bold">Ubicación</div>
-              <div>Ciudad de México</div>
-            </div>
-            <div>
-              <div className="font-bold">Modalidad</div>
-              <div>Remota</div>
-            </div>
-          </Link>
-          <Link to={'/oferta'} className="bg-white rounded-md p-3">
-            <div className="font-bold text-xl text-politectico mb-2">DBA</div>
-            <div>
-              <div className="font-bold">Ubicación</div>
-              <div>Ciudad de México</div>
-            </div>
-            <div>
-              <div className="font-bold">Modalidad</div>
-              <div>Remota</div>
-            </div>
-          </Link>
+          {ofertas.map((oferta, index) => (
+            <CardOfertaInfo item={oferta} key={index} />
+          ))}
         </div>
 
         <div className="grid grid-cols-3 mt-16">

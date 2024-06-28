@@ -27,6 +27,8 @@ export const ContentLayout = ({ children }: ContentLayoutProps) => {
       if (isConfirmed) {
         localStorage.removeItem("idUser");
         localStorage.removeItem("idEmpresa");
+        localStorage.removeItem("idOferta");
+        localStorage.removeItem("tipoUsuarioEmpresa");
         navigate("/");
       }
     });

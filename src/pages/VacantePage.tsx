@@ -1,43 +1,72 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Oferta } from "../types";
+import { ContentLayout } from "../layouts";
+import { formatDate } from "../utils";
+
+const INITIAL_STATE: Oferta = {
+  ofertaId: 0,
+  nombreOferta: "",
+  empresaID: 0,
+  nombreEmpresa: "",
+  vigencia: "",
+  duracionContrato: "",
+  rangoEdad: 0,
+  rangoExperiencia: 0,
+  jornadaID: 0,
+  jornadaString: 0,
+  direccionId: 0,
+  estatusId: 0,
+  visibilidad: 0,
+  nombrePuesto: "",
+  salario: "",
+};
+
 export const VacantePage = () => {
+  const [oferta, setOferta] = useState<Oferta>(INITIAL_STATE);
+
+  useEffect(() => {
+    axios
+      .post("/consulta_oferta", {
+        ofertaId: localStorage.getItem("idOferta"),
+      })
+      .then((data) => {
+        console.log("success", data);
+        setOferta(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+
+      return () => {
+          localStorage.removeItem("idOferta")
+      }
+  }, []);
   return (
-    <div>
-      <div className="bg-politectico">
-        <div className="w-4/5 m-auto flex justify-between items-center text-white">
-          <a href="./principal.html" className="font-bold text-2xl py-1">
-            JobHunt
-          </a>
-          <div className="flex">
-            <a
-              href="./profileAlumno.html"
-              className="py-4 px-5 hover:bg-white/30"
-            >
-              Perfil
-            </a>
-            <a href="./index.html" className="py-4 px-5 hover:bg-white/30">
-              Salir
-            </a>
-          </div>
-        </div>
-      </div>
+    <ContentLayout>
       <div className="w-4/5 mx-auto my-16">
         <div className="bg-white rounded-md p-3">
           <div className="w-1/2">
             <div className="text-3xl text-politectico font-bold">
-              Desarrollador Backend
+              {oferta.nombreOferta}
             </div>
             <div className="mt-4">
-              <div className="font-semibold">Acerca del Empleo</div>
-              <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi,
-                praesentium veritatis quis dignissimos dolore id numquam
-                voluptates corrupti. Soluta tenetur veniam, natus error aliquam
-                consectetur a atque architecto fuga ipsum tempore quia voluptate
-                debitis accusantium excepturi doloremque aut neque maiores.
-                Voluptas fuga nobis repellendus consectetur dignissimos
-                voluptates tenetur id commodi.
-              </div>
+              <div className="font-semibold">Nombre del Puesto</div>
+              <div>{oferta.nombrePuesto}</div>
             </div>
             <div className="mt-4">
+              <div className="font-semibold">Vigencia</div>
+              <div>{formatDate(oferta.vigencia)}</div>
+            </div>
+            <div className="mt-4">
+              <div className="font-semibold">Duración</div>
+              <div>{oferta.duracionContrato}</div>
+            </div>
+            <div className="mt-4">
+              <div className="font-semibold">Salario</div>
+              <div>{oferta.salario}</div>
+            </div>
+            {/* <div className="mt-4">
               <div className="font-semibold">Requisitos</div>
               <div>
                 <div className="flex items-center">
@@ -97,7 +126,7 @@ export const VacantePage = () => {
                 Voluptas fuga nobis repellendus consectetur dignissimos
                 voluptates tenetur id commodi.
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -134,6 +163,6 @@ export const VacantePage = () => {
           <div className="text-politectico font-semibold mt-6">&copy; 2023</div>
         </div>
       </div>
-    </div>
+    </ContentLayout>
   );
 };

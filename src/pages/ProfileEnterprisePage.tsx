@@ -69,6 +69,7 @@ export const ProfileEnterprisePage = () => {
     {
       key: "vigencia",
       nombre: "Fecha",
+      isDate: true
     },
     {
       keyId: "ofertaId",

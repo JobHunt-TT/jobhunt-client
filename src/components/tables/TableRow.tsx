@@ -2,6 +2,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DataHeadTable } from "../../types";
 import { TableCell, TableCellSelect } from "./";
+import { formatDate } from "../../utils";
 
 interface TableRowProps<T> {
   item: T;
@@ -25,10 +26,9 @@ export const TableRow = <T,>({
       {dataHead.map((data, index) => {
         const dataCell: DataHeadTable = {
           ...data,
-          nombre: String(item[data.key as keyof T]),
+          nombre: data.isDate ? formatDate(String(item[data.key as keyof T])) : String(item[data.key as keyof T]),
           id: String(item[data.keyId as keyof T])
         };
-        // return <TableCell dataHead={dataCell} key={index} />
         return data.isSelectColor ? (
           <TableCellSelect item={dataCell} key={index} enabledChangeSelect={enabledChangeSelect} />
         ) : (
