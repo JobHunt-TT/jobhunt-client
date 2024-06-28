@@ -109,7 +109,7 @@ export const ProfilePage = () => {
           <div className="col-span-1">
             <div className="bg-white rounded-md p-4">
               <img
-                src="./img/Homer.jpg"
+                src="./img/Burrito.jpg"
                 alt="Profile"
                 width="200"
                 height="200"
@@ -118,7 +118,7 @@ export const ProfilePage = () => {
               <div className="text-xl font-bold text-center">
                 {user.userName} {user.userApellido}
               </div>
-              {/* <div className="text-center">Ingeniería en Sistemas</div> */}
+               <div className="text-center">Ingeniería en Sistemas</div>
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
