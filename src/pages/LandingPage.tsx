@@ -153,10 +153,10 @@ export const LandingPage = () => {
                       </div>
                       <div className=" flex text-center items-center justify-start m-3">
                         <img
-                          src="./img/Homer.jpg"
+                          src="./img/Karo.jpeg"
                           alt="Profile"
                           width="100"
-                          height="100"
+                          height="200"
                           className="my-2 rounded-full justify-start items-center "
                         />
                         <div className="block m-3">
@@ -167,7 +167,7 @@ export const LandingPage = () => {
                       </div>
                       <div className=" flex text-center items-center justify-start m-3">
                         <img
-                          src="./img/Homer.jpg"
+                          src="./img/Neto.jpeg"
                           alt="Profile"
                           width="100"
                           height="100"
