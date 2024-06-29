@@ -70,6 +70,8 @@ export const useSkillFormManagement = () => {
           title: "Skill registrada con éxito",
           timer: 3000,
           showConfirmButton: false,
+        }).then(()=>{
+          window.location.reload();
         });
       })
       .catch((error) => {

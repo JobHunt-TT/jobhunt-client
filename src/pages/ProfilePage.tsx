@@ -19,6 +19,7 @@ import {
 import { DataUser, SkillUser } from "../types";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { CardAddress, CardUserInfo } from "../components";
+import { CarreraForm } from "../components/form-inputs/CarreraSelect";
 
 const MySwal = withReactContent(Swal);
 
@@ -78,7 +79,7 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        console.log("success", data);
+        // console.log("success carreers", data);
         setuserCarrera(data.data[0]);
       })
       .catch((error) => {
@@ -118,9 +119,15 @@ export const ProfilePage = () => {
               <div className="text-xl font-bold text-center">
                 {user.userName} {user.userApellido}
               </div>
-               <div className="text-center">Ingeniería en Sistemas</div>
+              <pre className="text-center">
+                <CarreraForm
+                  userCarrera={userCarrera}
+                  carreraUserId={user.id}
+                  user
+                />
+              </pre>
             </div>
-            <div className="bg-white rounded-md p-4 mt-6">
+            {/* <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
               <div className="flex items-center mt-2">
                 <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
@@ -144,7 +151,7 @@ export const ProfilePage = () => {
                   className="text-3xl text-instagram mx-2"
                 />
               </div>
-            </div>
+            </div> */}
             <CardAddress type="alumno" direccionID={user.direccionId} />
             {/* <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Idiomas</div>

@@ -48,17 +48,21 @@ export const ContentLayout = ({ children }: ContentLayoutProps) => {
     <div>
       <div className="bg-politectico">
         <div className="w-4/5 m-auto flex justify-between items-center text-white">
-          {idEmpresa === null ? (
-            <Link to={"/ofertas"} className="font-bold text-2xl py-1">
-              Adopta Un Burrito: Bolsa de Trabajo IPN
-            </Link>
-          ) : (
-            <div className="font-bold text-2xl py-1">
-              Adopta Un Burrito: Bolsa de Trabajo IPN
-            </div>
-          )}
+          <div className="font-bold text-2xl py-1">
+            Adopta Un Burrito: Bolsa de Trabajo IPN
+          </div>
 
           <div className="flex">
+            {idEmpresa === null ? (
+              <Link
+                to={idEmpresa === null ? "/ofertas" : "/profileEnterprise"}
+                className="py-4 px-5 hover:bg-white/30"
+              >
+                Ofertas
+              </Link>
+            ) : (
+              <></>
+            )}{" "}
             <Link
               to={idEmpresa === null ? "/profile" : "/profileEnterprise"}
               className="py-4 px-5 hover:bg-white/30"

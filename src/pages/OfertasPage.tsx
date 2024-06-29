@@ -3,19 +3,62 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Oferta } from "../types";
 import { CardOfertaInfo } from "../components";
+import { get } from "http";
 
 export const OfertasPage = () => {
   const [ofertas, setOfertas] = useState<Oferta[]>([]);
-
+  const initialData: any = {
+    keywords: "",
+    location: "",
+    salary: "10,000 - 20,000",
+    modality: "Presencial",
+  };
+  const [keywords, setKeywords] = useState(initialData.keywords);
+  const [location, setLocation] = useState(initialData.location);
+  const [salary, setSalary] = useState(initialData.salary);
+  const [modality, setModality] = useState(initialData.modality);
+  const getSkills = () => {
+    axios
+      .post("/consulta_estudiante_tags", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        console.log("success", data);
+        let keywords = "";
+        data.data.map((e: any) => {
+          keywords += "" + e.descripcion + " ";
+        });
+        setKeywords(keywords);
+        getLocation();
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+  const getLocation = () => {
+    axios
+      .post("/consulta_direccion", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        console.log("success", data.data);
+        let location = data.data.estado + ", " + data.data.municipio;
+        setLocation(location);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
   useEffect(() => {
     localStorage.removeItem("idOferta");
-
+    getLocation();
+    getSkills();
     axios
       .post("/consulta_oferta_estudiante", {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        console.log("success", data);
+        // console.log("success", data);
         setOfertas(data.data);
       })
       .catch((error) => {
@@ -44,24 +87,24 @@ export const OfertasPage = () => {
           </div>
           <div className="col-span-3">
             <div className="text-2xl font-bold mb-2 text-politectico">
-              Filtros
+              Búsqueda avanzada
             </div>
             <div className="grid grid-cols-4">
               <div>
                 <div className="font-bold">Palabras Clave</div>
-                <div>Java, SQL, Python, C</div>
+                <div>{keywords}</div>
               </div>
               <div>
                 <div className="font-bold">Ubicación</div>
-                <div>México</div>
+                <div>{location}</div>
               </div>
               <div>
                 <div className="font-bold">Rango Salarial</div>
-                <div>10,000 - 20,000</div>
+                <div>{salary}</div>
               </div>
               <div>
                 <div className="font-bold">Modalidad</div>
-                <div>Remota</div>
+                <div>{modality}</div>
               </div>
             </div>
           </div>
@@ -73,7 +116,7 @@ export const OfertasPage = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-3 mt-16">
+        {/* <div className="grid grid-cols-3 mt-16">
           <div>
             <div className="text-politectico text-lg font-semibold">
               Company
@@ -104,7 +147,7 @@ export const OfertasPage = () => {
             <i className="fa-brands fa-instagram text-3xl text-politectico mx-1"></i>
           </div>
           <div className="text-politectico font-semibold mt-6">&copy; 2023</div>
-        </div>
+        </div>*/}
       </div>
     </ContentLayout>
   );

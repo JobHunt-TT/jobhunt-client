@@ -28,15 +28,19 @@ export const CardAddress = ({ type, direccionID }: CardAddressProps) => {
         // }
         return null;
       },
+    }).then(()=>{
+      window.location.reload();
     });
   };
 
   useEffect(() => {
     axios
       .post(`/consulta_direccion`, { id: direccionID })
-      .then((data) => setDireccion(data.data))
+      .then((data) => {
+        
+        setDireccion(data.data)})
       .catch((e) => console.log(e));
-  }, [direccionID]);
+  }, [direccionID,direccion]);
 
   return (
     <div className="bg-white rounded-md p-4 mt-6 relative">
