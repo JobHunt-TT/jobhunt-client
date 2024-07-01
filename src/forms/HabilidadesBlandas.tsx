@@ -1,12 +1,12 @@
 import { FormProvider } from "react-hook-form";
 import { AlertNotification, FormInput } from "../components";
 import { useEffect, useState } from "react";
-import { useExperienciaManagement } from "../hooks/formManagement/useExperienciaManagement copy";
+import { useHabilidadesBlandasManagement } from "../hooks/formManagement/useHabilidadesBlandasManagement";
 
-export const ExperienciaForm = () => {
+export const HabilidadesBlandasForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { methods, validForm, submit } = useExperienciaManagement();/*AQUÍ*/
+  const { methods, validForm, submit } = useHabilidadesBlandasManagement();/*AQUÍ*/
   const {
     handleSubmit,
     formState: { errors },
@@ -37,7 +37,7 @@ export const ExperienciaForm = () => {
   return(
     
     <FormProvider {...methods}>
-      <div className="text-4xl font-bold mt-5">Agregar Experiencia Laboral</div>
+      <div className="text-4xl font-bold mt-5">Agregar HabilidadesBlandas Laboral</div>
 
       <form
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"

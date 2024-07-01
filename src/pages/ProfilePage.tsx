@@ -11,6 +11,7 @@ import withReactContent from "sweetalert2-react-content";
 
 import { ContentLayout } from "../layouts";
 import { ExperienciaForm } from "../forms/ExperienciaLaboral";
+import { HabilidadesBlandasForm } from "../forms/HabilidadesBlandas";
 import { SkillForm } from "../forms";
 import {
   faInstagram,
@@ -21,6 +22,7 @@ import { DataUser, SkillUser } from "../types";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { CardAddress, CardUserInfo } from "../components";
 import { CarreraForm } from "../components/form-inputs/CarreraSelect";
+
 
 const MySwal = withReactContent(Swal);
 
@@ -171,31 +173,12 @@ export const ProfilePage = () => {
               keyName="descripcion"
             />
              <div className="bg-white rounded-md p-4 mt-6">
-              <div className="text-xl text-politectico font-bold">
-                Extra Skills
-              </div>
-              <div className="mt-1">
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 1
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 2
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 3
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 4
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Habilidad 5
-                </div>
-              </div>
+              <CardUserInfo
+                titulo="Habilidades Blandas"
+                data={skillsUser} /*Modificar*/
+                formCreate={<HabilidadesBlandasForm />}
+                keyName="descripcion"
+              />
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">
