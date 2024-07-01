@@ -37,13 +37,13 @@ export const HabilidadesBlandasForm = () => {
   return(
     
     <FormProvider {...methods}>
-      <div className="text-4xl font-bold mt-5">Agregar HabilidadesBlandas Laboral</div>
-
+      <div className="text-4xl font-bold mt-5">Agregar</div>
+      <div className="text-4xl font-bold mt-5">HabilidadesBlandas </div>
       <form
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
         onSubmit={handleSubmit(submit)}
       >
-        <FormInput label="Nombre del Empleo" name="descripcion" />
+        <FormInput label="Nombre de la Habilidad" name="descripcion" />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
