@@ -1,11 +1,12 @@
 import { FormProvider } from "react-hook-form";
-import { AlertNotification, FormInput } from "../components";
+import { AlertNotification, FormSelect } from "../components";
 import { useEffect, useState } from "react";
-import { useActividadesExtracurricularesManagement } from "../hooks/formManagement/useActividadesManagement";
-export const ActividadesExtracurricularesForm = () => {
+import { useModalidadManagement } from "../hooks/formManagement/useModalidadManagement";
+
+export const ModalidadForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { methods, validForm, submit } = useActividadesExtracurricularesManagement();/*AQUÍ*/
+  const { methods, validForm, submit } = useModalidadManagement();
   const {
     handleSubmit,
     formState: { errors },
@@ -22,44 +23,48 @@ export const ActividadesExtracurricularesForm = () => {
   const setErrors = () => {
     const errorsTemp: string[] = [];
 
-    if (!!errors.descripcion && !!errors.descripcion.message) {
-      errorsTemp.push(errors.descripcion.message);
+    if (!!errors.modalidad && !!errors.modalidad.message) {
+      errorsTemp.push(errors.modalidad.message);
     }
-
-    console.log(errorsTemp);
 
     setErrorsForm(errorsTemp);
   };
 
   useEffect(setErrors, [errors]);
 
-  return(
-    
+  return (
     <FormProvider {...methods}>
-      <div className="text-4xl font-bold mt-5">Agregar Actividades</div>
-      <div className="text-4xl font-bold mt-5">Extracurriculares</div>
+      <div className="text-4xl font-bold mt-5">Modalidad</div>
       <form
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
         onSubmit={handleSubmit(submit)}
       >
-        <FormInput label="Nombre de la Actividad" name="descripcion" />
+        <FormSelect
+          label="Modalidad"
+          name="modalidad"
+          options={[
+            { value: "presencial", label: "Presencial" },
+            { value: "hibrida", label: "Híbrida" },
+            { value: "remoto", label: "Remoto" },
+            { value: "indistinto", label: "Indistinto" },
+          ]}
+        />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.descripcion) {
+              if (!!errors.modalidad) {
                 setErrors();
               }
               handleShowNotification();
             }
           }}
         >
-          Agregar
+          Enviar
         </button>
       </form>
-
       <AlertNotification
         show={showNotification}
         title="Error"
@@ -67,5 +72,5 @@ export const ActividadesExtracurricularesForm = () => {
         onClose={handleHideNotification}
       />
     </FormProvider>
-  )
-}
+  );
+};

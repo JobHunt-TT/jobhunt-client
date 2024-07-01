@@ -1,11 +1,12 @@
 import { FormProvider } from "react-hook-form";
-import { AlertNotification, FormInput } from "../components";
+import { AlertNotification, FormSelect } from "../components";
 import { useEffect, useState } from "react";
-import { useActividadesExtracurricularesManagement } from "../hooks/formManagement/useActividadesManagement";
-export const ActividadesExtracurricularesForm = () => {
+import { useCambioResidenciaManagement } from "../hooks/formManagement/useCambioResidenciaManagement";
+
+export const CambioResidenciaForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { methods, validForm, submit } = useActividadesExtracurricularesManagement();/*AQUÍ*/
+  const { methods, validForm, submit } = useCambioResidenciaManagement();
   const {
     handleSubmit,
     formState: { errors },
@@ -22,44 +23,46 @@ export const ActividadesExtracurricularesForm = () => {
   const setErrors = () => {
     const errorsTemp: string[] = [];
 
-    if (!!errors.descripcion && !!errors.descripcion.message) {
-      errorsTemp.push(errors.descripcion.message);
+    if (!!errors.cambioResidencia && !!errors.cambioResidencia.message) {
+      errorsTemp.push(errors.cambioResidencia.message);
     }
-
-    console.log(errorsTemp);
 
     setErrorsForm(errorsTemp);
   };
 
   useEffect(setErrors, [errors]);
 
-  return(
-    
+  return (
     <FormProvider {...methods}>
-      <div className="text-4xl font-bold mt-5">Agregar Actividades</div>
-      <div className="text-4xl font-bold mt-5">Extracurriculares</div>
+      <div className="text-4xl font-bold mt-5">Cambio de Residencia</div>
       <form
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
         onSubmit={handleSubmit(submit)}
       >
-        <FormInput label="Nombre de la Actividad" name="descripcion" />
+        <FormSelect
+          label="¿Está dispuesto a cambiar de residencia?"
+          name="cambioResidencia"
+          options={[
+            { value: "si", label: "Sí" },
+            { value: "no", label: "No" },
+          ]}
+        />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.descripcion) {
+              if (!!errors.cambioResidencia) {
                 setErrors();
               }
               handleShowNotification();
             }
           }}
         >
-          Agregar
+          Enviar
         </button>
       </form>
-
       <AlertNotification
         show={showNotification}
         title="Error"
@@ -67,5 +70,5 @@ export const ActividadesExtracurricularesForm = () => {
         onClose={handleHideNotification}
       />
     </FormProvider>
-  )
-}
+  );
+};

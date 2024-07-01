@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCircle,
-  faCirclePlus,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
@@ -12,9 +10,8 @@ import { ActividadesExtracurricularesForm } from "../forms/Actividades";
 import { ContentLayout } from "../layouts";
 import { ExperienciaLaboralForm } from "../forms/ExperienciaLaboral";
 import { HorarioForm } from "../forms/HorarioForm";
-
-
-
+import { CambioResidenciaForm } from "../forms/CambioResidenciaForm";
+import { ModalidadForm } from "../forms/ModalidadForm"; // Importar el nuevo formulario
 import { SkillForm } from "../forms";
 import {
   faInstagram,
@@ -25,7 +22,6 @@ import { DataUser, SkillUser } from "../types";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { CardAddress, CardUserInfo } from "../components";
 import { CarreraForm } from "../components/form-inputs/CarreraSelect";
-
 
 const MySwal = withReactContent(Swal);
 
@@ -61,7 +57,6 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        // console.log("success", data);
         setUser(data.data);
       })
       .catch((error) => {
@@ -73,7 +68,6 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        // console.log("success", data);
         setSkillsUser(data.data);
       })
       .catch((error) => {
@@ -85,29 +79,12 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        // console.log("success carreers", data);
         setuserCarrera(data.data[0]);
       })
       .catch((error) => {
         console.log("error", error);
       });
   }, []);
-
-  // useEffect(() => {
-  //   if (userCarrera) {
-  //     axios
-  //       .post("/alta_carrera_alumno", {
-  //         id: localStorage.getItem("idUser"),
-  //         id2: 3,
-  //       })
-  //       .then((data) => {
-  //         console.log("success", data);
-  //       })
-  //       .catch((error) => {
-  //         console.log("error", error);
-  //       });
-  //   }
-  // }, [userCarrera]);
 
   return (
     <ContentLayout>
@@ -133,7 +110,7 @@ export const ProfilePage = () => {
                 />
               </pre>
             </div>
-            { <div className="bg-white rounded-md p-4 mt-6">
+            <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
               <div className="flex items-center mt-2">
                 <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
@@ -157,16 +134,8 @@ export const ProfilePage = () => {
                   className="text-3xl text-instagram mx-2"
                 />
               </div>
-            </div> }
+            </div>
             <CardAddress type="alumno" direccionID={user.direccionId} />
-            {/* <div className="bg-white rounded-md p-4 mt-6">
-              <div className="text-xl text-politectico font-bold">Idiomas</div>
-              <div className="mt-2">
-                <div>Español</div>
-                <div>Inglés</div>
-                <div>Alemán</div>
-              </div>
-            </div> */}
           </div>
           <div className="col-span-2">
             <CardUserInfo
@@ -175,27 +144,22 @@ export const ProfilePage = () => {
               formCreate={<SkillForm />}
               keyName="descripcion"
             />
-            
-          
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Experiencia Laboral"
-                data={skillsUser} /*Modificar*/
+                data={skillsUser}
                 formCreate={<ExperienciaLaboralForm />}
                 keyName="descripcion"
               />
             </div>
-
-
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Actividades Extracurrículares"
-                data={skillsUser} /*Modificar*/
-                formCreate={<ActividadesExtracurricularesForm/>}
+                data={skillsUser}
+                formCreate={<ActividadesExtracurricularesForm />}
                 keyName="descripcion"
               />
             </div>
-
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Horario"
@@ -203,17 +167,33 @@ export const ProfilePage = () => {
                 formCreate={<HorarioForm />}
                 keyName="descripcion"
               />
-
-
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Cambio de Residencia"
+                data={skillsUser}
+                formCreate={<CambioResidenciaForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Modalidad"
+                data={skillsUser}
+                formCreate={<ModalidadForm />}
+                keyName="descripcion"
+              />
+            </div>
            
 
 
 
-            
+           
           </div>
         </div>
-      </div>
       </div>
     </ContentLayout>
   );
 };
+
+export default ProfilePage;
