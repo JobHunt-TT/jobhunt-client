@@ -28,7 +28,7 @@ export const CardAddress = ({ type, direccionID }: CardAddressProps) => {
         // }
         return null;
       },
-    }).then(()=>{
+    }).then(() => {
       window.location.reload();
     });
   };
@@ -37,17 +37,24 @@ export const CardAddress = ({ type, direccionID }: CardAddressProps) => {
     axios
       .post(`/consulta_direccion`, { id: direccionID })
       .then((data) => {
-        
-        setDireccion(data.data)})
+        console.log(data.data);
+
+        setDireccion(data.data)
+      })
       .catch((e) => console.log(e));
-  }, [direccionID,direccion]);
+  }, [direccionID]);
 
   return (
     <div className="bg-white rounded-md p-4 mt-6 relative">
       <div className="text-xl text-politectico font-bold">Dirección</div>
       <div className="mt-2">
-        {direccion !== null && (
-          <div>{`${direccion.estado} ${direccion.colonia}`}</div>
+        {direccion && (direccion.estado || direccion.colonia) ? (
+          <div>
+            {direccion.estado ? direccion.estado : "Estado no disponible"}{" "}
+            {direccion.colonia ? direccion.colonia : "Colonia no disponible"}
+          </div>
+        ) : (
+          <div>Información no disponible</div>
         )}
       </div>
       <FontAwesomeIcon

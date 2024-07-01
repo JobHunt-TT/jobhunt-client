@@ -29,7 +29,7 @@ export const OfertasPage = () => {
           keywords += "" + e.descripcion + " ";
         });
         setKeywords(keywords);
-        getLocation();
+        //getLocation();
       })
       .catch((error) => {
         console.log("error", error);
@@ -51,7 +51,7 @@ export const OfertasPage = () => {
   };
   useEffect(() => {
     localStorage.removeItem("idOferta");
-    getLocation();
+    //getLocation();
     getSkills();
     axios
       .post("/consulta_oferta_estudiante", {

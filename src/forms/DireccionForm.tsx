@@ -5,13 +5,13 @@ import { DireccionFormFields, useDireccionFormManagement } from "../hooks";
 import axios from "axios";
 import { CPInfo, DataSelect } from "../types";
 
-interface DireccionFormProps{
+interface DireccionFormProps {
   type: 'alumno' | 'empresa' | 'oferta'
 }
 
 export const DireccionForm = ({ type }: DireccionFormProps) => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
-  const [dataCPSelect, setDataCPSelect] = useState<DataSelect[]>([]);
+  const [dataCPSelect, setDataCPSelect] = useState<any[]>([]);
   const [showNotification, setShowNotification] = useState(false);
   const { methods, validForm, submit } = useDireccionFormManagement();
   const {
@@ -28,30 +28,43 @@ export const DireccionForm = ({ type }: DireccionFormProps) => {
   };
 
   const changeCP = ({ cp }: DireccionFormFields) => {
-    axios
-      .get(
-        `https://api.copomex.com/query/info_cp/${cp}?token=53df27f0-49c4-489c-ba8e-7afa5266f0bd`
-      )
+    axios.get(`https://apicodigospostales.com/v1/cp/`, {
+      params: {
+        token: "pruebas",
+        valor: cp
+      },
+    })
       .then((data) => {
         console.log("success", data);
-        const responseCP = data.data as CPInfo[];
-        const selectData: DataSelect[] = responseCP.map(({ response }) => {
-          const { asentamiento } = response;
+        const responseCP = data.data;
+        const selectData: any[] = responseCP.map((response: any) => {
           return {
-            label: asentamiento,
-            value: asentamiento,
+            label: response.Colonia,
+            value: response.Colonia,
+            municipio: response.Municipio,
+            estado: response.Entidad,
           };
         });
+        console.log(selectData);
+
         setDataCPSelect(selectData);
         if (selectData.length === 1) {
           methods.setValue("colonia", selectData[0].value);
+          methods.setValue("municipio", selectData[0].municipio);
+          methods.setValue("estado", selectData[0].estado);
         }
-        methods.setValue("municipio",responseCP[0].response.municipio)
-        methods.setValue("estado",responseCP[0].response.estado)
       })
       .catch((error) => {
         console.log("error", error);
       });
+  };
+
+  const handleColoniaChange = (selectedColonia: string) => {
+    const selectedData = dataCPSelect.find(item => item.value === selectedColonia);
+    if (selectedData) {
+      methods.setValue("municipio", selectedData.municipio);
+      methods.setValue("estado", selectedData.estado);
+    }
   };
 
   const setErrors = () => {
@@ -116,7 +129,14 @@ export const DireccionForm = ({ type }: DireccionFormProps) => {
         <FormInput label="Calle" name="vialidad" />
         <FormInput label="No. Ext." name="noExt" />
         <FormInput label="No. Int." name="noInt" />
-        <FormSelect label="Colonia" data={dataCPSelect} name="colonia" disabled={dataCPSelect.length === 1} selectFirst={dataCPSelect.length === 1} />
+        <FormSelect
+          label="Colonia"
+          data={dataCPSelect}
+          name="colonia"
+          disabled={dataCPSelect.length === 1}
+          selectFirst={dataCPSelect.length === 1}
+          onChangeInput={(value: string) => handleColoniaChange(value)}
+        />
         <FormInput label="Municipio" name="municipio" disabled />
         <FormInput label="Estado" name="estado" disabled />
         <FormInput label="Entre Calles" name="entreCalles" />
