@@ -64,11 +64,11 @@ export const useRegisterEnterpriseFormManagement = () => {
     nameUser: yup
       .string()
       .required("El nombre de administrador es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras para el nombre"),
+      .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Solo se admiten letras para el nombre"),
     lastNameUser: yup
       .string()
       .required("El apellido es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras para el apellido"),
+      .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Solo se admiten letras para el apellido"),
     phoneUser: yup
       .string()
       .required("El teléfono es requerido")
