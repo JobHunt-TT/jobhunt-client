@@ -52,7 +52,7 @@ export const useRegisterFormManagement = () => {
     lastName: yup
       .string()
       .required("El apellido es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras para el apellido"),
+      .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Solo se admiten letras para el apellido"),
     birthDate: yup
       .string()
       .required("La fecha de nacimiento es requerida")
@@ -74,7 +74,10 @@ export const useRegisterFormManagement = () => {
         /^[a-z]+[0-9]{4}@(alumno\.ipn\.mx|egresado\.ipn\.mx)$/,
         "El formato del correo es incorrecto"
       ),
-    password: yup.string().required("La contraseña es requerida"),
+    password: yup
+    .string()
+    .required("La contraseña es requerida")
+    .min(8, "La contraseña requiere al menos 8 caracteres"),
     gender: yup.string().required("El género es requerido"),
     status: yup.string().required("El estatus de carrera es requerido"),
     fechaTermino: yup.string().when("status", (status, schema) => {
