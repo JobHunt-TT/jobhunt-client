@@ -229,7 +229,7 @@ export const ProfileEnterprisePage = () => {
                 titulo="Personal"
                 dataHead={dataHeadPersonal}
                 data={adminEmpresa}
-                showButtonCreate={true}
+                showButtonCreate={false}
                 textButtonCreate="Crear Reclutador"
                 formCreate={<VacanteForm />}
                 handleForm={handleDeletePersonal}
@@ -241,7 +241,7 @@ export const ProfileEnterprisePage = () => {
               titulo="Ofertas"
               dataHead={dataHeadOferta}
               data={ofertaEmpresa}
-              showButtonCreate={true}
+              showButtonCreate={false}
               textButtonCreate="Crear Oferta"
               formCreate={<VacanteForm />}
               handleForm={handleDeletePersonal}
