@@ -8,10 +8,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import { ActividadesExtracurricularesForm } from "../forms/Actividades";
 import { ContentLayout } from "../layouts";
 import { ExperienciaForm } from "../forms/ExperienciaLaboral";
 import { HabilidadesBlandasForm } from "../forms/HabilidadesBlandas";
+
+
+
+
 import { SkillForm } from "../forms";
 import {
   faInstagram,
@@ -180,21 +184,7 @@ export const ProfilePage = () => {
                 keyName="descripcion"
               />
             </div>
-            <div className="bg-white rounded-md p-4 mt-6">
-              <div className="text-xl text-politectico font-bold">
-                Certificaciones
-              </div>
-              <div className="mt-1">
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Certificación 1
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Certificación 2
-                </div>
-              </div>
-            </div>
+          
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Experiencia Laboral"
@@ -203,6 +193,34 @@ export const ProfilePage = () => {
                 keyName="descripcion"
               />
             </div>
+
+
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Actividades Extracurrículares"
+                data={skillsUser} /*Modificar*/
+                formCreate={<ActividadesExtracurricularesForm/>}
+                keyName="descripcion"
+              />
+            </div>
+
+
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">
                 Proyectos Destacados
