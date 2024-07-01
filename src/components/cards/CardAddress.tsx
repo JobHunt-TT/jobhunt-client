@@ -37,8 +37,6 @@ export const CardAddress = ({ type, direccionID }: CardAddressProps) => {
     axios
       .post(`/consulta_direccion`, { id: direccionID })
       .then((data) => {
-        console.log(data.data);
-
         setDireccion(data.data)
       })
       .catch((e) => console.log(e));

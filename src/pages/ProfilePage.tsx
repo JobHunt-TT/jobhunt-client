@@ -58,6 +58,8 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student data", data.data);
+        localStorage.setItem("userDirectionId", data.data.direccionId);
         setUser(data.data);
       })
       .catch((error) => {
@@ -69,6 +71,7 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student skills", data.data);
         setSkillsUser(data.data);
       })
       .catch((error) => {
@@ -80,6 +83,7 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student carrera", data.data);
         setuserCarrera(data.data[0]);
       })
       .catch((error) => {
@@ -140,7 +144,7 @@ export const ProfilePage = () => {
             </div>
             <CardAddress type="alumno" direccionID={user.direccionId} />
           </div>
-        
+
           <div className="col-span-2">
             <CardUserInfo
               titulo="Habilidades"
@@ -151,7 +155,7 @@ export const ProfilePage = () => {
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Experiencia Laboral"
-                data={skillsUser}
+                data={[]}
                 formCreate={<ExperienciaLaboralForm />}
                 keyName="descripcion"
               />
@@ -159,7 +163,7 @@ export const ProfilePage = () => {
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Actividades Extracurrículares"
-                data={skillsUser}
+                data={[]}
                 formCreate={<ActividadesExtracurricularesForm />}
                 keyName="descripcion"
               />
@@ -167,7 +171,7 @@ export const ProfilePage = () => {
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Horario"
-                data={skillsUser}
+                data={[]}
                 formCreate={<HorarioForm />}
                 keyName="descripcion"
               />
@@ -175,7 +179,7 @@ export const ProfilePage = () => {
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Cambio de Residencia"
-                data={skillsUser}
+                data={[]}
                 formCreate={<CambioResidenciaForm />}
                 keyName="descripcion"
               />
@@ -183,21 +187,21 @@ export const ProfilePage = () => {
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Modalidad"
-                data={skillsUser}
+                data={[]}
                 formCreate={<ModalidadForm />}
                 keyName="descripcion"
               />
             </div>
 
             <div className="bg-white rounded-md p-4 mt-6">
-          <CardUserInfo
-            titulo="Carrera"
-            data={skillsUser}
-            formCreate={<CarreraForm />}
-            keyName="descripcion"
-          />
-          </div>
-          
+              <CardUserInfo
+                titulo="Carrera"
+                data={[]}
+                formCreate={<CarreraForm />}
+                keyName="descripcion"
+              />
+            </div>
+
           </div>
         </div>
       </div>

@@ -32,20 +32,20 @@ export const CardUserInfo = <T,>({
       },
     });
   };
-  
+
   return (
     <div className="bg-white rounded-md p-4 relative">
       <div className="text-xl text-politectico font-bold">{titulo}</div>
       <div className="mt-1">
         {data.map((item, index) => (
-        <div className="flex items-center" key={index}>
-          <FontAwesomeIcon
-            icon={faCircle}
-            className="text-[.4rem] mr-1"
-          />
-          {String(item[keyName as keyof T])}
-        </div>
-      ))}
+          <div className="flex items-center" key={index}>
+            <FontAwesomeIcon
+              icon={faCircle}
+              className="text-[.4rem] mr-1"
+            />
+            {String(item[keyName as keyof T])}
+          </div>
+        ))}
       </div>
       <FontAwesomeIcon
         icon={faCirclePlus}
