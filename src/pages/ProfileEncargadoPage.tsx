@@ -23,12 +23,13 @@ import {
   import { ContentLayout } from "../layouts";
   import { AdminEmpresa, DataHeadTable, Oferta } from "../types";
   import { TableComponent } from "../components";
+import { RegistroReclutador } from "../forms/RegistroReclutador";
   
   const MySwal = withReactContent(Swal);
   
   
   
-  export const ProfileEnterprisePage = () => {
+  export const ProfileEncargadoPage = () => {
     const user = null;
     const handleChangeStatusOferta = (id: string, idStatus: string) => {
       console.log("Endpoint para cambiar status", id, idStatus);
@@ -174,26 +175,22 @@ import {
           <div className="grid grid-cols-3 gap-6">
             <div className="col-span-1">
               <div className="bg-white rounded-md p-4">
+              <div className="text-3xl font-bold text-center">Encargado</div>
                 <img
-                  src="./img/empresa.jpg"
+                  src="./img/Encargado.jpg"
                   alt="Profile"
-                  width="200"
+                  width="250"
                   className="block mx-auto my-5 rounded-full"
                 />
                 <div className="text-xl font-bold text-center">
-                  {dataEmpresa !== null ? dataEmpresa.empresaNombre : "--"}
+                  Mauricio Rodriguez
+                  {/*dataEmpresa !== null ? dataEmpresa.empresaNombre : "--"*/}
                 </div>
                 <div className="text-center">
-                  {dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"}HOLA
+                  {/*dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"*/}Gerente de Recursos Humanos
                 </div>
-              </div>
-              <div className="bg-white rounded-md p-4 mt-6">
-                <div className="text-xl text-politectico font-bold flex justify-center">Datos</div>
-                <div className="flex items-center mt-2">
-                  <div> <b>Estatus: </b> Activo</div>
-                </div>
-                <div className="flex items-center mt-2">
-                  <div><b>RFC:</b> 234567</div>
+                <div className="text-l font-bold text-center">
+                  Aerocharter
                 </div>
               </div>
               <div className="bg-white rounded-md p-4 mt-6">
@@ -231,7 +228,7 @@ import {
                   data={adminEmpresa}
                   showButtonCreate={true}
                   textButtonCreate="Crear Reclutador"
-                  formCreate={<VacanteForm />}
+                  formCreate={<RegistroReclutador />}
                   handleForm={handleDeletePersonal}
                   showActions={false}
                   width="md"

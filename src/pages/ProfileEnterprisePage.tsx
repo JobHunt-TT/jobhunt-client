@@ -160,7 +160,7 @@ export const ProfileEnterprisePage = () => {
         id: localStorage.getItem("idEmpresa"),
       })
       .then((data) => {
-        console.log("success", data);
+        console.log("ConsultaEmpresa", data);
         setDataEmpresa(data.data);
       })
       .catch((error) => {
