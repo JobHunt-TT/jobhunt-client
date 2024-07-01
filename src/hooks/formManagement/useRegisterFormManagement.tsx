@@ -48,7 +48,7 @@ export const useRegisterFormManagement = () => {
     name: yup
       .string()
       .required("El nombre es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras para el nombre"),
+      .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Solo se admiten letras para el nombre"),
     lastName: yup
       .string()
       .required("El apellido es requerido")
@@ -102,7 +102,7 @@ export const useRegisterFormManagement = () => {
         ? schema.required("El porcentaje cursado es requerido")
           .matches(
             /^(?:100|[1-9]\d|\d)$/,
-            "Solo se admiten números"
+            "Verifica el porcentaje cursado"
           )
         : schema.notRequired();
     }),
