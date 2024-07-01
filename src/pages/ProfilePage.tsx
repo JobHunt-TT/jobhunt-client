@@ -10,9 +10,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { ActividadesExtracurricularesForm } from "../forms/Actividades";
 import { ContentLayout } from "../layouts";
-import { ExperienciaForm } from "../forms/ExperienciaLaboral";
-import { HabilidadesBlandasForm } from "../forms/HabilidadesBlandas";
-
+import { ExperienciaLaboralForm } from "../forms/ExperienciaLaboral";
+import { HorarioForm } from "../forms/HorarioForm";
 
 
 
@@ -171,25 +170,18 @@ export const ProfilePage = () => {
           </div>
           <div className="col-span-2">
             <CardUserInfo
-              titulo="Skills"
+              titulo="Habilidades"
               data={skillsUser}
               formCreate={<SkillForm />}
               keyName="descripcion"
             />
-             <div className="bg-white rounded-md p-4 mt-6">
-              <CardUserInfo
-                titulo="Habilidades Blandas"
-                data={skillsUser} /*Modificar*/
-                formCreate={<HabilidadesBlandasForm />}
-                keyName="descripcion"
-              />
-            </div>
+            
           
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Experiencia Laboral"
                 data={skillsUser} /*Modificar*/
-                formCreate={<ExperienciaForm />}
+                formCreate={<ExperienciaLaboralForm />}
                 keyName="descripcion"
               />
             </div>
@@ -204,44 +196,23 @@ export const ProfilePage = () => {
               />
             </div>
 
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Horario"
+                data={skillsUser}
+                formCreate={<HorarioForm />}
+                keyName="descripcion"
+              />
+
 
            
 
 
 
-
-
-
-
-
-
-
-
-
-
-
             
-            <div className="bg-white rounded-md p-4 mt-6">
-              <div className="text-xl text-politectico font-bold">
-                Proyectos Destacados
-              </div>
-              <div className="mt-1">
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Proyecto 1
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Proyecto 2
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Proyecto 3
-                </div>
-              </div>
-            </div> 
           </div>
         </div>
+      </div>
       </div>
     </ContentLayout>
   );
