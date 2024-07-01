@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 import { ContentLayout } from "../layouts";
+import { ExperienciaForm } from "../forms/ExperienciaLaboral";
 import { SkillForm } from "../forms";
 import {
   faInstagram,
@@ -127,7 +128,7 @@ export const ProfilePage = () => {
                 />
               </pre>
             </div>
-            {/* <div className="bg-white rounded-md p-4 mt-6">
+            { <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
               <div className="flex items-center mt-2">
                 <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
@@ -151,7 +152,7 @@ export const ProfilePage = () => {
                   className="text-3xl text-instagram mx-2"
                 />
               </div>
-            </div> */}
+            </div> }
             <CardAddress type="alumno" direccionID={user.direccionId} />
             {/* <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Idiomas</div>
@@ -169,7 +170,7 @@ export const ProfilePage = () => {
               formCreate={<SkillForm />}
               keyName="descripcion"
             />
-            {/* <div className="bg-white rounded-md p-4 mt-6">
+             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">
                 Extra Skills
               </div>
@@ -212,19 +213,12 @@ export const ProfilePage = () => {
               </div>
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
-              <div className="text-xl text-politectico font-bold">
-                Expreriencia Laboral
-              </div>
-              <div className="mt-1">
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Empleo 1
-                </div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{" "}
-                  Empleo 2
-                </div>
-              </div>
+              <CardUserInfo
+                titulo="Experiencia Laboral"
+                data={skillsUser} /*Modificar*/
+                formCreate={<ExperienciaForm />}
+                keyName="descripcion"
+              />
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">
@@ -244,7 +238,7 @@ export const ProfilePage = () => {
                   Proyecto 3
                 </div>
               </div>
-            </div> */}
+            </div> 
           </div>
         </div>
       </div>
