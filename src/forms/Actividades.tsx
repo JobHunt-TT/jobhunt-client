@@ -1,12 +1,11 @@
 import { FormProvider } from "react-hook-form";
 import { AlertNotification, FormInput } from "../components";
 import { useEffect, useState } from "react";
-import { useExperienciaManagement } from "../hooks/formManagement/useExperienciaManagement";
-
-export const ExperienciaLaboralForm = () => {
+import { useActividadesExtracurricularesManagement } from "../hooks/formManagement/useActividadesManagement";
+export const ActividadesExtracurricularesForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { methods, validForm, submit } = useExperienciaManagement();
+  const { methods, validForm, submit } = useActividadesExtracurricularesManagement();/*AQUÍ*/
   const {
     handleSubmit,
     formState: { errors },
@@ -23,42 +22,34 @@ export const ExperienciaLaboralForm = () => {
   const setErrors = () => {
     const errorsTemp: string[] = [];
 
-    if (!!errors.puesto && !!errors.puesto.message) {
-      errorsTemp.push(errors.puesto.message);
-    }
-    if (!!errors.fechaInicio && !!errors.fechaInicio.message) {
-      errorsTemp.push(errors.fechaInicio.message);
-    }
-    if (!!errors.fechaFin && !!errors.fechaFin.message) {
-      errorsTemp.push(errors.fechaFin.message);
-    }
     if (!!errors.descripcion && !!errors.descripcion.message) {
       errorsTemp.push(errors.descripcion.message);
     }
+
+    console.log(errorsTemp);
 
     setErrorsForm(errorsTemp);
   };
 
   useEffect(setErrors, [errors]);
 
-  return (
+  return(
+    
     <FormProvider {...methods}>
-      <div className="text-4xl font-bold mt-5">Agregar Experiencia Laboral</div>
+      <div className="text-4xl font-bold mt-5">Agregar Actividades</div>
+      <div className="text-4xl font-bold mt-5">Extracurriculares</div>
       <form
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
         onSubmit={handleSubmit(submit)}
       >
-        <FormInput label="Nombre del Puesto" name="puesto" />
-        <FormInput label="Fecha de Inicio" name="fechaInicio" type="date" />
-        <FormInput label="Fecha de Fin" name="fechaFin" type="date" />
-        <FormInput label="Descripción" name="descripcion" />
+        <FormInput label="Nombre de la Actividad" name="descripcion" />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.puesto || !!errors.fechaInicio || !!errors.fechaFin || !!errors.descripcion) {
+              if (!!errors.descripcion) {
                 setErrors();
               }
               handleShowNotification();
@@ -68,6 +59,7 @@ export const ExperienciaLaboralForm = () => {
           Agregar
         </button>
       </form>
+
       <AlertNotification
         show={showNotification}
         title="Error"
@@ -75,5 +67,5 @@ export const ExperienciaLaboralForm = () => {
         onClose={handleHideNotification}
       />
     </FormProvider>
-  );
-};
+  )
+}

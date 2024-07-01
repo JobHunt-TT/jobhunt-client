@@ -1,12 +1,12 @@
 import { FormProvider } from "react-hook-form";
-import { AlertNotification, FormInput } from "../components";
+import { AlertNotification, FormSelect } from "../components";
 import { useEffect, useState } from "react";
-import { useExperienciaManagement } from "../hooks/formManagement/useExperienciaManagement";
+import { useModalidadManagement } from "../hooks/formManagement/useModalidadManagement";
 
-export const ExperienciaLaboralForm = () => {
+export const ModalidadForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { methods, validForm, submit } = useExperienciaManagement();
+  const { methods, validForm, submit } = useModalidadManagement();
   const {
     handleSubmit,
     formState: { errors },
@@ -23,17 +23,8 @@ export const ExperienciaLaboralForm = () => {
   const setErrors = () => {
     const errorsTemp: string[] = [];
 
-    if (!!errors.puesto && !!errors.puesto.message) {
-      errorsTemp.push(errors.puesto.message);
-    }
-    if (!!errors.fechaInicio && !!errors.fechaInicio.message) {
-      errorsTemp.push(errors.fechaInicio.message);
-    }
-    if (!!errors.fechaFin && !!errors.fechaFin.message) {
-      errorsTemp.push(errors.fechaFin.message);
-    }
-    if (!!errors.descripcion && !!errors.descripcion.message) {
-      errorsTemp.push(errors.descripcion.message);
+    if (!!errors.modalidad && !!errors.modalidad.message) {
+      errorsTemp.push(errors.modalidad.message);
     }
 
     setErrorsForm(errorsTemp);
@@ -43,29 +34,35 @@ export const ExperienciaLaboralForm = () => {
 
   return (
     <FormProvider {...methods}>
-      <div className="text-4xl font-bold mt-5">Agregar Experiencia Laboral</div>
+      <div className="text-4xl font-bold mt-5">Modalidad</div>
       <form
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
         onSubmit={handleSubmit(submit)}
       >
-        <FormInput label="Nombre del Puesto" name="puesto" />
-        <FormInput label="Fecha de Inicio" name="fechaInicio" type="date" />
-        <FormInput label="Fecha de Fin" name="fechaFin" type="date" />
-        <FormInput label="Descripción" name="descripcion" />
+        <FormSelect
+          label="Modalidad"
+          name="modalidad"
+          options={[
+            { value: "presencial", label: "Presencial" },
+            { value: "hibrida", label: "Híbrida" },
+            { value: "remoto", label: "Remoto" },
+            { value: "indistinto", label: "Indistinto" },
+          ]}
+        />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.puesto || !!errors.fechaInicio || !!errors.fechaFin || !!errors.descripcion) {
+              if (!!errors.modalidad) {
                 setErrors();
               }
               handleShowNotification();
             }
           }}
         >
-          Agregar
+          Enviar
         </button>
       </form>
       <AlertNotification

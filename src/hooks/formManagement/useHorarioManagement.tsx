@@ -7,26 +7,17 @@ import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
-export interface ExperienciaFormFields {
-  puesto: string;
-  fechaInicio: string;
-  fechaFin: string;
-  descripcion: string;
+export interface HorarioFormFields {
+  horario: string;
 }
 
-const defaultValues: ExperienciaFormFields = {
-  puesto: "",
-  fechaInicio: "",
-  fechaFin: "",
-  descripcion: "",
+const defaultValues: HorarioFormFields = {
+  horario: "",
 };
 
-export const useExperienciaManagement = () => {
+export const useHorarioManagement = () => {
   const schema = yup.object().shape({
-    puesto: yup.string().required("El nombre del puesto es requerido"),
-    fechaInicio: yup.string().required("La fecha de inicio es requerida"),
-    fechaFin: yup.string().required("La fecha de fin es requerida"),
-    descripcion: yup.string().required("La descripción es requerida"),
+    horario: yup.string().required("El horario es requerido"),
   });
 
   const methods = useForm({
@@ -35,11 +26,11 @@ export const useExperienciaManagement = () => {
   });
 
   const validForm = async () => {
-    const result = await methods.trigger(["puesto", "fechaInicio", "fechaFin", "descripcion"]);
+    const result = await methods.trigger(["horario"]);
     return result;
   };
 
-  const submit: SubmitHandler<ExperienciaFormFields> = async (data) => {
+  const submit: SubmitHandler<HorarioFormFields> = async ({ horario }) => {
     MySwal.fire({
       title: "Por favor, espere...",
       didOpen: () => {
@@ -49,14 +40,14 @@ export const useExperienciaManagement = () => {
     });
 
     axios
-      .post("/cambio_estudiante_experiencia", {
+      .post("/cambio_estudiante_horario", {
         id: localStorage.getItem("idUser"),
-        ...data,
+        horario,
       })
-      .then((response) => {
+      .then((data) => {
         MySwal.fire({
           icon: "success",
-          title: "Experiencia registrada con éxito",
+          title: "Horario registrado con éxito",
           timer: 3000,
           showConfirmButton: false,
         }).then(() => {
@@ -64,12 +55,10 @@ export const useExperienciaManagement = () => {
         });
       })
       .catch((error) => {
-        console.log("error", error);
-
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al agregar la experiencia",
+          text: "Hubo un error al agregar el horario",
           timer: 3000,
           showConfirmButton: false,
         });

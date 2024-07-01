@@ -7,26 +7,20 @@ import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
-export interface ExperienciaFormFields {
-  puesto: string;
-  fechaInicio: string;
-  fechaFin: string;
-  descripcion: string;
+export interface ModalidadFormFields {
+  modalidad: string;
 }
 
-const defaultValues: ExperienciaFormFields = {
-  puesto: "",
-  fechaInicio: "",
-  fechaFin: "",
-  descripcion: "",
+const defaultValues: ModalidadFormFields = {
+  modalidad: "",
 };
 
-export const useExperienciaManagement = () => {
+export const useModalidadManagement = () => {
   const schema = yup.object().shape({
-    puesto: yup.string().required("El nombre del puesto es requerido"),
-    fechaInicio: yup.string().required("La fecha de inicio es requerida"),
-    fechaFin: yup.string().required("La fecha de fin es requerida"),
-    descripcion: yup.string().required("La descripción es requerida"),
+    modalidad: yup
+      .string()
+      .required("Esta opción es requerida")
+      .oneOf(["presencial", "hibrida", "remoto", "indistinto"], "Seleccione una opción válida"),
   });
 
   const methods = useForm({
@@ -35,11 +29,11 @@ export const useExperienciaManagement = () => {
   });
 
   const validForm = async () => {
-    const result = await methods.trigger(["puesto", "fechaInicio", "fechaFin", "descripcion"]);
+    const result = await methods.trigger(["modalidad"]);
     return result;
   };
 
-  const submit: SubmitHandler<ExperienciaFormFields> = async (data) => {
+  const submit: SubmitHandler<ModalidadFormFields> = async ({ modalidad }) => {
     MySwal.fire({
       title: "Por favor, espere...",
       didOpen: () => {
@@ -49,14 +43,14 @@ export const useExperienciaManagement = () => {
     });
 
     axios
-      .post("/cambio_estudiante_experiencia", {
+      .post("/cambio_modalidad", {
         id: localStorage.getItem("idUser"),
-        ...data,
+        modalidad,
       })
-      .then((response) => {
+      .then((data) => {
         MySwal.fire({
           icon: "success",
-          title: "Experiencia registrada con éxito",
+          title: "Modalidad registrada con éxito",
           timer: 3000,
           showConfirmButton: false,
         }).then(() => {
@@ -69,7 +63,7 @@ export const useExperienciaManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al agregar la experiencia",
+          text: "Hubo un error al registrar la modalidad",
           timer: 3000,
           showConfirmButton: false,
         });

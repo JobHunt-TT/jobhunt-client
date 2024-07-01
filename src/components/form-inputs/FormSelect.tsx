@@ -4,10 +4,16 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DataSelect } from "../../types";
 
+interface Option {
+  value: string;
+  label: string;
+}
+
 interface FormSelectProps {
   label: string;
   name: string;
-  data: DataSelect[];
+  data?: DataSelect[];
+  options?: Option[];
   disabled?: boolean;
   selectFirst?: boolean;
   optionDefault?: string;
@@ -18,8 +24,9 @@ interface FormSelectProps {
 export const FormSelect = ({
   label,
   name,
-  optionDefault,
   data,
+  options,
+  optionDefault,
   disabled = false,
   selectFirst = false,
   onChangeInput,
@@ -65,10 +72,10 @@ export const FormSelect = ({
                 !!onBlurInput && onBlurInput();
               }}
             >
-              <option value="0">
+              <option value="">
                 {!!optionDefault ? optionDefault : "Selecciona una opción"}
               </option>
-              {data.map(({ label, value }, index) => (
+              {(data || options)?.map(({ label, value }, index) => (
                 <option value={value} key={index} selected={selectFirst && index === 0} >
                   {label}
                 </option>

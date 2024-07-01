@@ -7,26 +7,20 @@ import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
-export interface ExperienciaFormFields {
-  puesto: string;
-  fechaInicio: string;
-  fechaFin: string;
-  descripcion: string;
+export interface CambioResidenciaFormFields {
+  cambioResidencia: string;
 }
 
-const defaultValues: ExperienciaFormFields = {
-  puesto: "",
-  fechaInicio: "",
-  fechaFin: "",
-  descripcion: "",
+const defaultValues: CambioResidenciaFormFields = {
+  cambioResidencia: "",
 };
 
-export const useExperienciaManagement = () => {
+export const useCambioResidenciaManagement = () => {
   const schema = yup.object().shape({
-    puesto: yup.string().required("El nombre del puesto es requerido"),
-    fechaInicio: yup.string().required("La fecha de inicio es requerida"),
-    fechaFin: yup.string().required("La fecha de fin es requerida"),
-    descripcion: yup.string().required("La descripción es requerida"),
+    cambioResidencia: yup
+      .string()
+      .required("Esta opción es requerida")
+      .oneOf(["si", "no"], "Seleccione una opción válida"),
   });
 
   const methods = useForm({
@@ -35,11 +29,11 @@ export const useExperienciaManagement = () => {
   });
 
   const validForm = async () => {
-    const result = await methods.trigger(["puesto", "fechaInicio", "fechaFin", "descripcion"]);
+    const result = await methods.trigger(["cambioResidencia"]);
     return result;
   };
 
-  const submit: SubmitHandler<ExperienciaFormFields> = async (data) => {
+  const submit: SubmitHandler<CambioResidenciaFormFields> = async ({ cambioResidencia }) => {
     MySwal.fire({
       title: "Por favor, espere...",
       didOpen: () => {
@@ -49,14 +43,14 @@ export const useExperienciaManagement = () => {
     });
 
     axios
-      .post("/cambio_estudiante_experiencia", {
+      .post("/cambio_residencia", {
         id: localStorage.getItem("idUser"),
-        ...data,
+        cambioResidencia,
       })
-      .then((response) => {
+      .then((data) => {
         MySwal.fire({
           icon: "success",
-          title: "Experiencia registrada con éxito",
+          title: "Cambio de residencia registrado con éxito",
           timer: 3000,
           showConfirmButton: false,
         }).then(() => {
@@ -69,7 +63,7 @@ export const useExperienciaManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al agregar la experiencia",
+          text: "Hubo un error al registrar el cambio de residencia",
           timer: 3000,
           showConfirmButton: false,
         });
