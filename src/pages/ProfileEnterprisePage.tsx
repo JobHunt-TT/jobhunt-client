@@ -26,7 +26,10 @@ import { TableComponent } from "../components";
 
 const MySwal = withReactContent(Swal);
 
+
+
 export const ProfileEnterprisePage = () => {
+  const user = null;
   const handleChangeStatusOferta = (id: string, idStatus: string) => {
     console.log("Endpoint para cambiar status", id, idStatus);
     axios
@@ -172,16 +175,25 @@ export const ProfileEnterprisePage = () => {
           <div className="col-span-1">
             <div className="bg-white rounded-md p-4">
               <img
-                src="./img/Microsift.png"
+                src="./img/empresa.jpg"
                 alt="Profile"
-                width="350"
-                className="block mx-auto my-5"
+                width="200"
+                className="block mx-auto my-5 rounded-full"
               />
               <div className="text-xl font-bold text-center">
                 {dataEmpresa !== null ? dataEmpresa.empresaNombre : "--"}
               </div>
               <div className="text-center">
-                {dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"}
+                {dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"}HOLA
+              </div>
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <div className="text-xl text-politectico font-bold flex justify-center">Datos</div>
+              <div className="flex items-center mt-2">
+                <div> <b>Estatus: </b> Activo</div>
+              </div>
+              <div className="flex items-center mt-2">
+                <div><b>RFC:</b> 234567</div>
               </div>
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
@@ -210,6 +222,7 @@ export const ProfileEnterprisePage = () => {
               </div>
             </div>
           </div>
+          
           <div className="col-span-2 flex flex-col gap-6">
             {localStorage.getItem("tipoUsuarioEmpresa") === "1" && (
               <TableComponent

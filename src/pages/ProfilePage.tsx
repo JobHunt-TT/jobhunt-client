@@ -109,7 +109,7 @@ export const ProfilePage = () => {
                   user
                 />
               </pre>
-            </div>
+            </div> 
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
               <div className="flex items-center mt-2">
