@@ -42,14 +42,14 @@ export const useRegisterEnterpriseFormManagement = () => {
     nameEnterprise: yup
       .string()
       .required("El nombre de la empresa es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ\s]+$/, "Solo se admiten letras para el nombre"),
-    statusEnterprise: yup.string().required("El status es requerido"),
+      .matches(/^[0-9 a-zA-ZÀ-ÿÑñ\s ]+$/, "No se admiten carácteres especiales en el nombre"),
+    statusEnterprise: yup.string().required("El nombre es requerido"),
     rfcEnterprise: yup
       .string()
       .required("El RFC es requerido")
       .matches(
         /^([A-ZÑ&]{3,4}) ?-?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12][0-9]|3[01])) ?-?([A-Z\d]{2})([A\d])$/,
-        "El RFC no es valido"
+        "El RFC no es válido"
       ),
     emailEnterprise: yup
       .string()
@@ -58,29 +58,31 @@ export const useRegisterEnterpriseFormManagement = () => {
     phoneEnterprise: yup
       .string()
       .required("El teléfono es requerido")
-      .matches(/^[0-9]*$/, "Solo se admiten números")
+      .matches(/^[2-9]*$/, "Solo se admiten números")
       .min(10, "Debes introducir al menos 10 digitos")
       .max(10, "Solo se admiten 10 digitos"),
     nameUser: yup
       .string()
       .required("El nombre de administrador es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras para el nombre"),
+      .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Solo se admiten letras para el nombre"),
     lastNameUser: yup
       .string()
       .required("El apellido es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras para el apellido"),
+      .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Solo se admiten letras para el apellido"),
     phoneUser: yup
       .string()
       .required("El teléfono es requerido")
-      .matches(/^[0-9]*$/, "Solo se admiten números")
-      .min(10, "Debes introducir al menos 10 digitos")
+      .matches(/^[2-9]*$/, "Solo se admiten números")
+      .min(10, "Debes introducir 10 digitos")
       .max(10, "Solo se admiten 10 digitos"),
     emailUser: yup
       .string()
       .required("El correo es requerido")
       .email("El correo no es valido"),
     cargoUser: yup.string().required("El cargo es requerido"),
-    passwordUser: yup.string().required("La contraseña es requerida"),
+    passwordUser: yup
+    .string().required("La contraseña es requerida")
+    .min(8, "La contraseña requiere al menos 8 caracteres"),
   });
 
   const methods = useForm({

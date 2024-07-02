@@ -11,8 +11,9 @@ import { ContentLayout } from "../layouts";
 import { ExperienciaLaboralForm } from "../forms/ExperienciaLaboral";
 import { HorarioForm } from "../forms/HorarioForm";
 import { CambioResidenciaForm } from "../forms/CambioResidenciaForm";
-import { ModalidadForm } from "../forms/ModalidadForm"; // Importar el nuevo formulario
+import { ModalidadForm } from "../forms/ModalidadForm";
 import { SkillForm } from "../forms";
+import { CarreraForm } from "../forms/CarreraForm";
 import {
   faInstagram,
   faSquareFacebook,
@@ -21,7 +22,7 @@ import {
 import { DataUser, SkillUser } from "../types";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { CardAddress, CardUserInfo } from "../components";
-import { CarreraForm } from "../components/form-inputs/CarreraSelect";
+
 
 const MySwal = withReactContent(Swal);
 
@@ -102,6 +103,7 @@ export const ProfilePage = () => {
               <div className="text-xl font-bold text-center">
                 {user.userName} {user.userApellido}
               </div>
+              {/*
               <pre className="text-center">
                 <CarreraForm
                   userCarrera={userCarrera}
@@ -109,6 +111,8 @@ export const ProfilePage = () => {
                   user
                 />
               </pre>
+               */}
+            </div>
             </div> 
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
@@ -137,6 +141,7 @@ export const ProfilePage = () => {
             </div>
             <CardAddress type="alumno" direccionID={user.direccionId} />
           </div>
+        
           <div className="col-span-2">
             <CardUserInfo
               titulo="Habilidades"
@@ -184,11 +189,16 @@ export const ProfilePage = () => {
                 keyName="descripcion"
               />
             </div>
-           
 
-
-
-           
+            <div className="bg-white rounded-md p-4 mt-6">
+          <CardUserInfo
+            titulo="Carrera"
+            data={skillsUser}
+            formCreate={<CarreraForm />}
+            keyName="descripcion"
+          />
+          </div>
+          
           </div>
         </div>
       </div>

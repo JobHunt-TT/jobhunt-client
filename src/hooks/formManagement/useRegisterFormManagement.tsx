@@ -48,22 +48,22 @@ export const useRegisterFormManagement = () => {
     name: yup
       .string()
       .required("El nombre es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras para el nombre"),
+      .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Solo se admiten letras para el nombre"),
     lastName: yup
       .string()
       .required("El apellido es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras para el apellido"),
+      .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Solo se admiten letras para el apellido"),
     birthDate: yup
       .string()
       .required("La fecha de nacimiento es requerida")
       .matches(
-        /^[0-9-]{5}[0-9-]{3}[0-9]{2}$/,
+        /^(1950|19[5-9]\d|200[0-6])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/,
         "La fecha no es valida. Ejemplo: 2000-06-15"
       ),
     phoneNumber: yup
       .string()
       .required("El teléfono es requerido")
-      .matches(/^[0-9]*$/, "Solo se admiten números")
+      .matches(/^[2-9]*$/, "Solo se admiten números")
       .min(10, "Debes introducir al menos 10 digitos")
       .max(10, "Solo se admiten 10 digitos"),
     email: yup
@@ -71,10 +71,13 @@ export const useRegisterFormManagement = () => {
       .email("El correo no es valido")
       .required("El correo es requerido")
       .matches(
-        /^[a-zA-Z0-9._%+-]+@(alumno\.ipn\.mx|egresado\.ipn\.mx)$/,
-        "El correo debe ser de dominio alumno.ipn.mx o egresado.ipn.mx"
+        /^[a-z]+[0-9]{4}@(alumno\.ipn\.mx|egresado\.ipn\.mx)$/,
+        "El formato del correo es incorrecto"
       ),
-    password: yup.string().required("La contraseña es requerida"),
+    password: yup
+    .string()
+    .required("La contraseña es requerida")
+    .min(8, "La contraseña requiere al menos 8 caracteres"),
     gender: yup.string().required("El género es requerido"),
     status: yup.string().required("El estatus de carrera es requerido"),
     fechaTermino: yup.string().when("status", (status, schema) => {
@@ -82,7 +85,7 @@ export const useRegisterFormManagement = () => {
         ? schema
             .required("La fecha de término es requerida")
             .matches(
-              /^[0-9-]{5}[0-9-]{3}[0-9]{2}$/,
+              /^(1968|19[7-9]\d|20[01]\d|202[0-4])-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
               "La fecha no es válida. Ejemplo: 2000-06-15"
             )
         : schema.notRequired();
@@ -101,8 +104,8 @@ export const useRegisterFormManagement = () => {
       return (status as unknown as string) === "3" || (status as unknown as string) === "4"
         ? schema.required("El porcentaje cursado es requerido")
           .matches(
-            /^[0-9]*$/,
-            "Solo se admiten números"
+            /^(?:100|[1-9]\d|\d)$/,
+            "Verifica el porcentaje cursado"
           )
         : schema.notRequired();
     }),
@@ -111,7 +114,7 @@ export const useRegisterFormManagement = () => {
         ? schema
         .required("La fecha tentativa de término es requerida")
         .matches(
-          /^[0-9-]{5}[0-9-]{3}[0-9]{2}$/,
+          /^202[4-9]|20[3-9]\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
           "La fecha no es válida. Ejemplo: 2000-06-15"
         )
         : schema.notRequired();

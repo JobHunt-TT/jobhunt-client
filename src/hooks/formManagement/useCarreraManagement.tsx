@@ -7,27 +7,17 @@ import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
-export interface ExperienciaFormFields {
-  puesto: string;
-  fechaInicio: string;
-  fechaFin: string;
-  descripcion: string;
+export interface CarreraFormFields {
+  Carrera: string;
 }
 
-const defaultValues: ExperienciaFormFields = {
-  puesto: "",
-  fechaInicio: "",
-  fechaFin: "",
-  descripcion: "",
+const defaultValues: CarreraFormFields = {
+  Carrera: "",
 };
 
-export const useExperienciaManagement = () => {
+export const useCarreraManagement = () => {
   const schema = yup.object().shape({
-    puesto: yup.string().required("El nombre del puesto es requerido"),
-    fechaInicio: yup.string().required("La fecha de inicio es requerida")
-    .matches(/^\b(?!2024-07-(0[7-9]|1[0-2]))\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b$/),
-    fechaFin: yup.string().required("La fecha de termino es requerida"),
-    descripcion: yup.string().required("La descripción es requerida"),
+    Carrera: yup.string().required("La carrera es requerida"),
   });
 
   const methods = useForm({
@@ -36,11 +26,11 @@ export const useExperienciaManagement = () => {
   });
 
   const validForm = async () => {
-    const result = await methods.trigger(["puesto", "fechaInicio", "fechaFin", "descripcion"]);
+    const result = await methods.trigger(["Carrera"]);
     return result;
   };
 
-  const submit: SubmitHandler<ExperienciaFormFields> = async (data) => {
+  const submit: SubmitHandler<CarreraFormFields> = async ({ Carrera }) => {
     MySwal.fire({
       title: "Por favor, espere...",
       didOpen: () => {
@@ -50,14 +40,14 @@ export const useExperienciaManagement = () => {
     });
 
     axios
-      .post("/cambio_estudiante_experiencia", {
+      .post("/cambio_estudiante_Carrera", {
         id: localStorage.getItem("idUser"),
-        ...data,
+        Carrera,
       })
-      .then((response) => {
+      .then((data) => {
         MySwal.fire({
           icon: "success",
-          title: "Experiencia registrada con éxito",
+          title: "Carrera registrada con éxito",
           timer: 3000,
           showConfirmButton: false,
         }).then(() => {
@@ -65,12 +55,10 @@ export const useExperienciaManagement = () => {
         });
       })
       .catch((error) => {
-        console.log("error", error);
-
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al agregar la experiencia",
+          text: "Hubo un error al agregar la carrera",
           timer: 3000,
           showConfirmButton: false,
         });
