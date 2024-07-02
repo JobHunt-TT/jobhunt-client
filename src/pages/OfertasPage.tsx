@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Oferta } from "../types";
 import { CardOfertaInfo } from "../components";
-import { get } from "http";
 
 export const OfertasPage = () => {
   const [ofertas, setOfertas] = useState<Oferta[]>([]);
@@ -17,6 +16,8 @@ export const OfertasPage = () => {
   const [location, setLocation] = useState(initialData.location);
   const [salary, setSalary] = useState(initialData.salary);
   const [modality, setModality] = useState(initialData.modality);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const getSkills = () => {
     axios
       .post("/consulta_estudiante_tags", {
@@ -29,21 +30,19 @@ export const OfertasPage = () => {
           keywords += "" + e.descripcion + " ";
         });
         setKeywords(keywords);
-        getLocation();
       })
       .catch((error) => {
         console.log("error", error);
       });
   };
 
-  
   const getLocation = () => {
     axios
       .post("/consulta_direccion", {
-        id: localStorage.getItem("direccionID"),
+        id: localStorage.getItem("userDirectionId"),
       })
       .then((data) => {
-     
+
         let location = data.data.estado + ", " + data.data.municipio;
         setLocation(location);
       })
@@ -52,23 +51,44 @@ export const OfertasPage = () => {
       });
   };
 
-
-  useEffect(() => {
-    localStorage.removeItem("idOferta");
-    getLocation();
-    getSkills();
+  const fetchOfertas = () => {
     axios
       .post("/consulta_oferta_estudiante", {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        // console.log("success", data);
         setOfertas(data.data);
       })
       .catch((error) => {
         console.log("error", error);
       });
+  };
+
+  const searchOfertas = (descripcion: string) => {
+    axios
+      .post("/consulta_oferta_nombre", {
+        descripcion: descripcion,
+      })
+      .then((data) => {
+        setOfertas(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  useEffect(() => {
+    localStorage.removeItem("idOferta");
+    getLocation();
+    getSkills();
+    fetchOfertas();
   }, []);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    searchOfertas(value);
+  };
 
   return (
     <ContentLayout>
@@ -85,6 +105,8 @@ export const OfertasPage = () => {
                 name=""
                 id=""
                 placeholder="Buscar vacante..."
+                value={searchTerm}
+                onChange={handleSearchChange}
               />
               <i className="fa-solid fa-magnifying-glass mr-4 text-xl text-politectico"></i>
             </div>
@@ -119,39 +141,6 @@ export const OfertasPage = () => {
             <CardOfertaInfo item={oferta} key={index} />
           ))}
         </div>
-
-        {/* <div className="grid grid-cols-3 mt-16">
-          <div>
-            <div className="text-politectico text-lg font-semibold">
-              Company
-            </div>
-            <div className="mt-1">About</div>
-            <div className="mt-1">Career</div>
-            <div className="mt-1">Press</div>
-          </div>
-          <div>
-            <div className="text-politectico text-lg font-semibold">
-              Community
-            </div>
-            <div className="mt-1">Blog</div>
-            <div className="mt-1">Forum</div>
-            <div className="mt-1">Support</div>
-          </div>
-          <div>
-            <div className="text-politectico text-lg font-semibold">Policy</div>
-            <div className="mt-1">Privacy</div>
-            <div className="mt-1">Terms</div>
-            <div className="mt-1">Help</div>
-          </div>
-        </div>
-        <div className="flex items-center flex-col mt-28">
-          <div>
-            <i className="fa-brands fa-square-facebook text-3xl text-politectico mx-1"></i>
-            <i className="fa-brands fa-x-twitter text-3xl text-politectico mx-1"></i>
-            <i className="fa-brands fa-instagram text-3xl text-politectico mx-1"></i>
-          </div>
-          <div className="text-politectico font-semibold mt-6">&copy; 2023</div>
-        </div>*/}
       </div>
     </ContentLayout>
   );

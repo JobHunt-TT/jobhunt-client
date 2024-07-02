@@ -42,12 +42,13 @@ const INITIAL_STATE: DataUser = {
   userPass: "",
   userPhone: "",
   userSexoId: 0,
+  jornada: "",
 };
 
 export const ProfilePage = () => {
   const [user, setUser] = useState(INITIAL_STATE);
   const [skillsUser, setSkillsUser] = useState<SkillUser[]>([]);
-  const [userCarrera, setuserCarrera] = useState<any>(null);
+  const [userCarrera, setuserCarrera] = useState<any>("");
 
   useEffect(() => {
     axios
@@ -55,6 +56,8 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student data", data.data);
+        localStorage.setItem("userDirectionId", data.data.direccionId);
         setUser(data.data);
       })
       .catch((error) => {
@@ -66,6 +69,7 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student skills", data.data);
         setSkillsUser(data.data);
       })
       .catch((error) => {
@@ -77,7 +81,17 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        setuserCarrera(data.data[0]);
+        localStorage.setItem("carreras_select", JSON.stringify(data.data));
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+    axios
+      .post("/consulta_carrreras_alumno", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        setuserCarrera(data.data[data.data.length - 1]);
       })
       .catch((error) => {
         console.log("error", error);
@@ -137,61 +151,66 @@ export const ProfilePage = () => {
             </div>
             <CardAddress type="alumno" direccionID={user.direccionId} />
           </div>
-        <div className="col-span-2 flex flex-col gap">
-          <CardUserInfo
-            titulo="Habilidades "
-            data={skillsUser}
-            formCreate={<SkillForm />}
-            keyName="descripcion"
-          />
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Experiencia Laboral"
-              data={skillsUser}
-              formCreate={<ExperienciaLaboralForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Actividades Extracurrículares"
-              data={skillsUser}
-              formCreate={<ActividadesExtracurricularesForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Horario"
-              data={skillsUser}
-              formCreate={<HorarioForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Cambio de Residencia"
-              data={skillsUser}
-              formCreate={<CambioResidenciaForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Modalidad"
-              data={skillsUser}
-              formCreate={<ModalidadForm />}
-              keyName="descripcion"
-            />
-          </div>
 
-          <div className="bg-white rounded-md p-4 mt-6">
+          <div className="col-span-2">
             <CardUserInfo
-              titulo="Carrera"
+              titulo="Habilidades"
               data={skillsUser}
-              formCreate={<CarreraForm />}
+              formCreate={<SkillForm />}
               keyName="descripcion"
             />
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Experiencia Laboral"
+                data={[]}
+                formCreate={<ExperienciaLaboralForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Actividades Extracurrículares"
+                data={[]}
+                formCreate={<ActividadesExtracurricularesForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Horario"
+                data={[]}
+                formCreate={<HorarioForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Cambio de Residencia"
+                data={[]}
+                formCreate={<CambioResidenciaForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Modalidad"
+                data={[user]}
+                formCreate={<ModalidadForm />}
+                keyName="jornada"
+              />
+            </div>
+
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Carrera"
+                data={[userCarrera]}
+                formCreate={<CarreraForm />}
+                keyName="descripcion"
+              />
+            </div>
+
+
+
           </div>
           </div>
         </div>
