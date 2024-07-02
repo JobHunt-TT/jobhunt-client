@@ -63,7 +63,7 @@ export const useRegisterFormManagement = () => {
     phoneNumber: yup
       .string()
       .required("El teléfono es requerido")
-      .matches(/^[2-9]*$/, "Solo se admiten números")
+      .matches(/^[2-9]*$/, "Solo se admiten números")//*Cambiar expresión regular
       .min(10, "Debes introducir al menos 10 digitos")
       .max(10, "Solo se admiten 10 digitos"),
     email: yup

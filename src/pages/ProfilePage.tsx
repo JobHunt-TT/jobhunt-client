@@ -100,8 +100,8 @@ export const ProfilePage = () => {
 
   return (
     <ContentLayout>
-      <div className="w-4/5 mx-auto py-16">
-        <div className="grid grid-cols-3 gap-6">
+      <div className="w-4/5 mx-auto py-16 grid-2">
+        <div className="flex grid grid-cols-3  gap-6">
           <div className="col-span-1">
             <div className="bg-white rounded-md p-4">
               <img
@@ -209,6 +209,9 @@ export const ProfilePage = () => {
               />
             </div>
 
+
+
+          </div>
           </div>
         </div>
       </div>
