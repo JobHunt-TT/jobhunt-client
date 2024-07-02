@@ -13,6 +13,7 @@ import {
   VacantePage,
   ProfileEncargadoPage,
   ProfileReclutador,
+  AdminStatsPage,
 } from "./pages";
 import "./assets/css/index.css";
 
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminPage />,
+  },
+  {
+    path: "/adminStats",
+    element: <AdminStatsPage />,
   },
   {
     path: "/oferta",
