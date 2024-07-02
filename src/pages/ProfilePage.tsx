@@ -214,7 +214,6 @@ export const ProfilePage = () => {
           </div>
           </div>
         </div>
-      </div>
     </ContentLayout>
   );
 };
