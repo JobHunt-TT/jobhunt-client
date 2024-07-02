@@ -12,6 +12,7 @@ import { CambioResidenciaForm } from "../forms/CambioResidenciaForm";
 import { ModalidadForm } from "../forms/ModalidadForm";
 import { SkillForm } from "../forms";
 import { CarreraForm } from "../forms/CarreraForm";
+import { SalarioForm } from "../forms/SalarioForm"; // Importar el nuevo formulario
 import {
   faInstagram,
   faSquareFacebook,
@@ -87,7 +88,7 @@ export const ProfilePage = () => {
   return (
     <ContentLayout>
       <div className="w-4/5 mx-auto py-16 grid-2">
-        <div className="flex grid grid-cols-3  gap-6">
+        <div className="flex grid grid-cols-3 gap-6">
           <div className="col-span-1">
             <div className="bg-white rounded-md p-4">
               <img
@@ -137,62 +138,69 @@ export const ProfilePage = () => {
             </div>
             <CardAddress type="alumno" direccionID={user.direccionId} />
           </div>
-        <div className="col-span-2 flex flex-col gap">
-          <CardUserInfo
-            titulo="Habilidades "
-            data={skillsUser}
-            formCreate={<SkillForm />}
-            keyName="descripcion"
-          />
-          <div className="bg-white rounded-md p-4 mt-6">
+          <div className="col-span-2 flex flex-col gap">
             <CardUserInfo
-              titulo="Experiencia Laboral"
+              titulo="Habilidades"
               data={skillsUser}
-              formCreate={<ExperienciaLaboralForm />}
+              formCreate={<SkillForm />}
               keyName="descripcion"
             />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Actividades Extracurrículares"
-              data={skillsUser}
-              formCreate={<ActividadesExtracurricularesForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Horario"
-              data={skillsUser}
-              formCreate={<HorarioForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Cambio de Residencia"
-              data={skillsUser}
-              formCreate={<CambioResidenciaForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Modalidad"
-              data={skillsUser}
-              formCreate={<ModalidadForm />}
-              keyName="descripcion"
-            />
-          </div>
-
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Carrera"
-              data={skillsUser}
-              formCreate={<CarreraForm />}
-              keyName="descripcion"
-            />
-          </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Experiencia Laboral"
+                data={skillsUser}
+                formCreate={<ExperienciaLaboralForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Actividades Extracurrículares"
+                data={skillsUser}
+                formCreate={<ActividadesExtracurricularesForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Horario"
+                data={skillsUser}
+                formCreate={<HorarioForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Cambio de Residencia"
+                data={skillsUser}
+                formCreate={<CambioResidenciaForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Modalidad"
+                data={skillsUser}
+                formCreate={<ModalidadForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Carrera"
+                data={skillsUser}
+                formCreate={<CarreraForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Salario Deseado"
+                data={skillsUser}
+                formCreate={<SalarioForm />}
+                keyName="descripcion"
+              />
+            </div>
           </div>
         </div>
       </div>
