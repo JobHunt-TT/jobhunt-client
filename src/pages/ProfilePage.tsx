@@ -42,6 +42,7 @@ const INITIAL_STATE: DataUser = {
   userPass: "",
   userPhone: "",
   userSexoId: 0,
+  estatusId: 0,
   jornada: "",
 };
 

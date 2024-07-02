@@ -17,6 +17,7 @@ export interface DataUser {
   userPass: string;
   userPhone: string;
   userSexoId: number;
+  estatusId: number;
   jornada: string;
 }
 
