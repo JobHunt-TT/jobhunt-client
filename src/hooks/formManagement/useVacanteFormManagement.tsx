@@ -32,14 +32,16 @@ export const useVacanteFormManagement = () => {
       .string()
       .required("La fecha es requerido")
       .matches(
-        /^[0-9-]{5}[0-9-]{3}[0-9]{2}$/,
-        "La fecha no es valida. Ejemplo: 2000-06-15"
+        /^\b(?:2024-07-(?:[0-2][0-9]|30|31)|2024-(?:08|09|1[0-2])-(?:[0-2][0-9]|30|31))\b$/,
+        "Verifica la vigencia"
       ),
     duracionContrato: yup
       .string()
       .required("La duración del contrato es requerida"),
-    nombrePuesto: yup.string().required("El nombre del puesto es requerido"),
-    salario: yup.string().required("El salario es requerido"),
+    nombrePuesto: yup.string().required("El nombre del puesto es requerido")
+    .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Sólo se admiten letras en el nombre de puesto"),
+    salario: yup.string().required("El salario es requerido")
+    .matches(/^[0-9]*$/,"Sólo se admiten números en el salario"),
     tags: yup.array().of(yup.string().required()).min(1, 'Debes agregar por lo menos un tag')
   });
 

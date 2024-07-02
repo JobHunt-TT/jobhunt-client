@@ -35,13 +35,15 @@ export const OfertasPage = () => {
         console.log("error", error);
       });
   };
+
+  
   const getLocation = () => {
     axios
       .post("/consulta_direccion", {
-        id: localStorage.getItem("idUser"),
+        id: localStorage.getItem("direccionID"),
       })
       .then((data) => {
-        console.log("success", data.data);
+     
         let location = data.data.estado + ", " + data.data.municipio;
         setLocation(location);
       })
@@ -49,6 +51,8 @@ export const OfertasPage = () => {
         console.log("error", error);
       });
   };
+
+
   useEffect(() => {
     localStorage.removeItem("idOferta");
     getLocation();

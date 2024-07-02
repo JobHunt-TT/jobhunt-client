@@ -12,11 +12,11 @@ export interface DireccionFormFields {
   cp: string;
   vialidad: string;
   noExt: string;
-  noInt: string;
+  noInt?: string;
   colonia: string;
   municipio: string;
   estado: string;
-  entreCalles: string;
+  entreCalles?: string;
 }
 
 const defaultValues: DireccionFormFields = {
@@ -36,17 +36,17 @@ export const useDireccionFormManagement = () => {
     type: yup.string().required(),
     cp: yup
       .string()
-      .required("El nombre es requerido")
-      .matches(/^[0-9]+$/, "Solo se admiten letras")
+      .required("El cp es requerido")
+      .matches(/^[0-9]+$/, "Solo se admiten números")
       .min(5, "Debes introducir al menos 5 digitos")
       .max(5, "Solo se admiten 5 digitos"),
     vialidad: yup.string().required("La vialidad es requerida"),
     noExt: yup.string().required("El número exterior es requerido"),
-    noInt: yup.string().required("El número interior es requerido"),
+    noInt: yup.string().optional(),
     colonia: yup.string().required("La colonia es requerida"),
     municipio: yup.string().required("El municipio es requerido"),
     estado: yup.string().required("El estado es requerido"),
-    entreCalles: yup.string().required("Las entre calles son requeridas"),
+    entreCalles: yup.string().optional(),
   });
 
   const methods = useForm({
