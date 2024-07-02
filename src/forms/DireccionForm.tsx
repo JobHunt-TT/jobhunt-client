@@ -18,7 +18,6 @@ export const DireccionForm = ({ type }: DireccionFormProps) => {
     handleSubmit,
     formState: { errors },
   } = methods;
-
   const handleShowNotification = () => {
     setShowNotification(true);
   };
