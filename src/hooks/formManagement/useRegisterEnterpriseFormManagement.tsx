@@ -72,8 +72,8 @@ export const useRegisterEnterpriseFormManagement = () => {
     phoneUser: yup
       .string()
       .required("El teléfono es requerido")
-      .matches(/^[0-9]*$/, "Solo se admiten números")
-      .min(10, "Debes introducir al menos 10 digitos")
+      .matches(/^[2-9]*$/, "Solo se admiten números")
+      .min(10, "Debes introducir 10 digitos")
       .max(10, "Solo se admiten 10 digitos"),
     emailUser: yup
       .string()
