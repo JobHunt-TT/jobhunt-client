@@ -14,6 +14,9 @@ import {
   ProfileEncargadoPage,
   ProfileReclutador,
   AdminStatsPage,
+  ViewPostulante,
+  TerminosCondiciones,
+  AvisoPrivacidad,
 } from "./pages";
 import "./assets/css/index.css";
 
@@ -74,6 +77,18 @@ const router = createBrowserRouter([
     path: "/profileReclutador",
     element: <ProfileReclutador />,
   },
+  {
+    path: "/viewpostulante",
+    element: <ViewPostulante />,
+  },
+  {
+    path: "/TerminosCondiciones",
+    element: <TerminosCondiciones />,
+  },
+  {
+    path: "/AvisoPrivacidad",
+    element: <AvisoPrivacidad />,
+  }
 ]);
 
 function App() {

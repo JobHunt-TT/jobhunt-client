@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPhone,
+  faSearch,
+  faChevronLeft,
+  faChevronRight,
+  faBackwardStep,
+  faForwardStep
+} from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { ActividadesExtracurricularesForm } from "../forms/Actividades";
@@ -17,10 +24,9 @@ import {
   faSquareFacebook,
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import { DataUser, SkillUser } from "../types";
+import { DataUser, SkillUser, DataHeadTable } from "../types";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { CardAddress, CardUserInfo } from "../components";
-import { string } from "yup";
 
 const MySwal = withReactContent(Swal);
 var Residencia = "";
@@ -58,6 +64,27 @@ export const ProfilePage = () => {
   const [experienciaFF, setExperienciaFF] = useState<any>(null);
   const [experienciaNom, setExperienciaNom] = useState<any>(null);
   const [userCarrera, setUserCarrera] = useState<any>(null);
+  const [isFocused3, setIsFocused3] = useState(false);
+
+  const dataHeadPostulacion: DataHeadTable[] = [
+    {
+      key: "vacante",
+      nombre: "Vacante",
+    },
+    {
+      key: "fechaPostulacion",
+      nombre: "Fecha de Postulación",
+      isDate: true,
+    },
+    {
+      key: "status",
+      nombre: "Estatus",
+    },
+    {
+      key: "empresa",
+      nombre: "Empresa",
+    },
+  ];
 
   useEffect(() => {
     axios
@@ -71,30 +98,30 @@ export const ProfilePage = () => {
         setCambio(data.data.cambioResidencia);
         setHorario(data.data.jornada);
         setModalidad(data.data.modalidad);
-        console.log("Estudiante",data);
+        console.log("Estudiante", data);
       })
       .catch((error) => {
         console.log("error", error);
       });
 
-      axios
+    axios
       .post("/consulta_carrreras_alumno", {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
         setUserCarrera(data.data[0].descripcion);
-        console.log("carreraaaaa",data.data[0].descripcion);
+        console.log("carreraaaaa", data.data[0].descripcion);
       })
       .catch((error) => {
         console.log("error", error);
       });
 
-      axios
+    axios
       .post("/consulta_experiencia", {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        console.log("Experiencia",data);
+        console.log("Experiencia", data);
         setExperienciaDes(data.data[0].descripcion);
         setExperienciaFI(data.data[0].fechaInicio);
         setExperienciaFF(data.data[0].fechaFin);
@@ -115,13 +142,10 @@ export const ProfilePage = () => {
       .catch((error) => {
         console.log("error", error);
       });
-
   }, []);
 
-  if(cambioResidencia == 1)
-    Residencia = "Con disponibilidad de reubicación"
-  else  
-    Residencia = "Sin disponibilidad de reubicación"
+  if (cambioResidencia == 1) Residencia = "Con disponibilidad de reubicación";
+  else Residencia = "Sin disponibilidad de reubicación";
 
   return (
     <ContentLayout>
@@ -139,7 +163,6 @@ export const ProfilePage = () => {
               <div className="text-xl font-bold text-center">
                 {user.userName} {user.userApellido}
               </div>
-
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
@@ -168,65 +191,162 @@ export const ProfilePage = () => {
             </div>
             <CardAddress type="alumno" direccionID={user.direccionId} />
           </div>
-        <div className="col-span-2 flex flex-col gap">
-          <CardUserInfo
-            titulo="Habilidades "
-            data={skillsUser}
-            formCreate={<SkillForm />}
-            keyName="descripcion"
-          />
-          <div className="bg-white rounded-md p-4 mt-6">
+          <div className="col-span-2 flex flex-col gap">
             <CardUserInfo
-              titulo="Experiencia Laboral"
-              data={[]}
-              datos={experienciaNom}
-              datos2={experienciaFI} 
-              datos3={experienciaFF}
-              datos4={experienciaDes}
-              formCreate={<ExperienciaLaboralForm />}
+              titulo="Habilidades "
+              data={skillsUser}
+              formCreate={<SkillForm />}
               keyName="descripcion"
             />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Horario"
-              data={[]}
-              datos={horario}
-              formCreate={<HorarioForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Cambio de Residencia"
-              data={[]}
-              datos= {Residencia}
-              formCreate={<CambioResidenciaForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Modalidad"
-              data={[]}
-              datos={modalidad}
-              formCreate={<ModalidadForm />}
-              keyName="descripcion"
-            />
-          </div>
-
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Carrera"
-              data={[]}
-              datos={userCarrera}
-              formCreate={<CarreraForm/>}
-              keyName="descripcion"
-            />
-          </div>
-          </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Experiencia Laboral"
+                data={[]}
+                datos={experienciaNom}
+                datos2={experienciaFI}
+                datos3={experienciaFF}
+                datos4={experienciaDes}
+                formCreate={<ExperienciaLaboralForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Horario"
+                data={[]}
+                datos={horario}
+                formCreate={<HorarioForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Cambio de Residencia"
+                data={[]}
+                datos={Residencia}
+                formCreate={<CambioResidenciaForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Modalidad"
+                data={[]}
+                datos={modalidad}
+                formCreate={<ModalidadForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Carrera"
+                data={[]}
+                datos={userCarrera}
+                formCreate={<CarreraForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <div className="flex justify-between items-start">
+                <div className="text-xl text-politectico font-bold">
+                  Postulaciones
+                </div>
+              </div>
+              <div className="grid grid-cols-8 gap-2 my-4">
+                <div className="col-span-3 relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
+                    onFocus={() => setIsFocused3(true)}
+                    onBlur={() => setIsFocused3(false)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
+                      isFocused3 ? "text-politectico" : "text-gray-300"
+                    }`}
+                  />
+                </div>
+                <div className="col-span-5 flex justify-end gap-6">
+                  <div className="flex items-center h-full gap-2">
+                    <div className="text-gray-600">Filas por página</div>
+                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                  <div className="flex h-full items-center ">
+                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
+                    <div className="grid grid-cols-4 gap-4">
+                      <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faBackwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faForwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <table className="w-full mt-3 border-b-[3px] border-politectico">
+                <thead>
+                  <tr className="bg-politectico text-white font-semibold">
+                    <td className="px-4 py-3 rounded-tl-md">Vacante</td>
+                    <td className="px-4 py-3">Fecha de Postulación</td>
+                    <td className="px-4 py-3">Estatus</td>
+                    <td className="px-4 py-3 rounded-tr-md">Empresa</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-3">Desarrollador BackEnd</td>
+                    <td className="px-4 py-3">5 Jun. 2024</td>
+                    <td className="px-4 py-3">
+                      <div className="inline px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+                        En Proceso
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">Microsoft</td>
+                  </tr>
+                  <tr className="bg-gray-200">
+                    <td className="px-4 py-3">Desarrollador BackEnd</td>
+                    <td className="px-4 py-3">5 Jun. 2024</td>
+                    <td className="px-4 py-3">
+                      <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
+                        Aceptado
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">Microsoft</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3">Desarrollador BackEnd</td>
+                    <td className="px-4 py-3">5 Jun. 2024</td>
+                    <td className="px-4 py-3">
+                      <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
+                        Rechazado
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">Microsoft</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+      </div>
     </ContentLayout>
   );
 };
