@@ -6,6 +6,12 @@ import { DataUser, SkillUser } from "../types";
 import { useCarreraManagement } from "../hooks/formManagement/useCarreraManagement";
 import axios from "axios";
 
+interface Option{
+  value:string;
+  label: string;
+  id:number;
+}
+
 const INITIAL_STATE: DataUser = {
   cedula_Profesional: "",
   direccion: "",
@@ -25,11 +31,14 @@ const INITIAL_STATE: DataUser = {
   userPass: "",
   userPhone: "",
   userSexoId: 0,
+  estatusId: 0,
+  jornada: "",
 };
 
 export const CarreraForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
+  const [ carrerasOptions, setCarrerasOptions] = useState<Option[]>([]);
   const [user, setUser] = useState(INITIAL_STATE);
   const [userCarrera, setuserCarrera] = useState<any>(null);
   const { methods, validForm, submit } = useCarreraManagement();
@@ -148,3 +157,7 @@ export const CarreraForm = () => {
     </FormProvider>
   );
 };
+function setCarrerasOptions(options: any) {
+  throw new Error("Function not implemented.");
+}
+
