@@ -86,8 +86,8 @@ export const ProfilePage = () => {
 
   return (
     <ContentLayout>
-      <div className="w-4/5 mx-auto py-16">
-        <div className="grid grid-cols-3 gap-6">
+      <div className="w-4/5 mx-auto py-16 grid-2">
+        <div className="flex grid grid-cols-3  gap-6">
           <div className="col-span-1">
             <div className="bg-white rounded-md p-4">
               <img
@@ -110,38 +110,36 @@ export const ProfilePage = () => {
               </pre>
                */}
             </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <div className="text-xl text-politectico font-bold">Contacto</div>
+              <div className="flex items-center mt-2">
+                <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
+                <div>{user.userEmail}</div>
+              </div>
+              <div className="flex items-center mt-2">
+                <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
+                <div>{user.userPhone}</div>
+              </div>
+              <div className="flex justify-center mt-2">
+                <FontAwesomeIcon
+                  icon={faSquareFacebook}
+                  className="text-3xl text-facebook mx-2"
+                />
+                <FontAwesomeIcon
+                  icon={faXTwitter}
+                  className="text-3xl text-x-twitter mx-2"
+                />
+                <FontAwesomeIcon
+                  icon={faInstagram}
+                  className="text-3xl text-instagram mx-2"
+                />
+              </div>
+            </div>
+            <CardAddress type="alumno" direccionID={user.direccionId} />
           </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <div className="text-xl text-politectico font-bold">Contacto</div>
-            <div className="flex items-center mt-2">
-              <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
-              <div>{user.userEmail}</div>
-            </div>
-            <div className="flex items-center mt-2">
-              <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
-              <div>{user.userPhone}</div>
-            </div>
-            <div className="flex justify-center mt-2">
-              <FontAwesomeIcon
-                icon={faSquareFacebook}
-                className="text-3xl text-facebook mx-2"
-              />
-              <FontAwesomeIcon
-                icon={faXTwitter}
-                className="text-3xl text-x-twitter mx-2"
-              />
-              <FontAwesomeIcon
-                icon={faInstagram}
-                className="text-3xl text-instagram mx-2"
-              />
-            </div>
-          </div>
-          <CardAddress type="alumno" direccionID={user.direccionId} />
-        </div>
-
-        <div className="col-span-2">
+        <div className="col-span-2 flex flex-col gap">
           <CardUserInfo
-            titulo="Habilidades"
+            titulo="Habilidades "
             data={skillsUser}
             formCreate={<SkillForm />}
             keyName="descripcion"
@@ -194,6 +192,7 @@ export const ProfilePage = () => {
               formCreate={<CarreraForm />}
               keyName="descripcion"
             />
+          </div>
           </div>
         </div>
       </div>
