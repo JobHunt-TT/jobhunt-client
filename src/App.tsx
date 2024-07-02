@@ -13,6 +13,7 @@ import {
   VacantePage,
   ProfileEncargadoPage,
   ProfileReclutador,
+  ViewPostulante,
 } from "./pages";
 import "./assets/css/index.css";
 
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
   {
     path: "/profileReclutador",
     element: <ProfileReclutador />,
+  },
+  {
+    path: "/viewpostulante",
+    element: <ViewPostulante />,
   },
 ]);
 
