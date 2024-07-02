@@ -8,7 +8,7 @@ import axios from "axios";
 const MySwal = withReactContent(Swal);
 
 export interface CarreraFormFields {
-  Carrera: string;
+  Carrera: string; // Ahora este campo será el id de la carrera
 }
 
 const defaultValues: CarreraFormFields = {
@@ -40,9 +40,9 @@ export const useCarreraManagement = () => {
     });
 
     axios
-      .post("/cambio_estudiante_Carrera", {
+      .post("/alta_carrera_alumno", {
         id: localStorage.getItem("idUser"),
-        Carrera,
+        id2: Carrera, // Usamos el id de la carrera
       })
       .then((data) => {
         MySwal.fire({

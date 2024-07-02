@@ -9,6 +9,8 @@ export const CardOfertaInfo = ({ item }: CardOfertaInfoProps) => {
   const navigate = useNavigate();
 
   const handleClickOferta = () => {
+    console.log("Oferta", item);
+
     localStorage.setItem("idOferta", item.ofertaId.toString());
     navigate("/oferta");
   };

@@ -6,11 +6,11 @@ export interface CPInfo {
 }
 
 export interface CPData {
-  cp: string;
-  asentamiento: string;
-  tipo_asentamiento: string;
-  municipio: string;
-  estado: string;
+  CP: string;
+  Colonia: string;
+  tipoAsentamiento: string;
+  Municipio: string;
+  Entidad: string;
   ciudad: string;
   pais: string;
 }
