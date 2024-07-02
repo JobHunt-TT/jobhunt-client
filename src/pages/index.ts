@@ -5,6 +5,7 @@ export * from './RegisterEnterprisePage';
 export * from './ProfilePage';
 export * from './ProfileEnterprisePage';
 export * from './AdminPage';
+export * from './AdminStatsPage';
 export * from './VacantePage';
 export * from './RecoverPasswordPage';
 export * from './RestorePasswordPage';

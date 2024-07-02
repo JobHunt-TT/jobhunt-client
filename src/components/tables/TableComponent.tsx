@@ -9,7 +9,7 @@ import {
   faSquareMinus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TableCell, TableFilterCheck, TableRow } from "./";
 import { DataHeadTable, WidthTable } from "../../types";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
@@ -28,7 +28,8 @@ interface TableComponentProps<T> {
   showButtonCreate?: boolean;
   textButtonCreate?: string;
   formCreate?: JSX.Element;
-  keyId?: string;
+  keyIdByCount?: string;
+  enabledTableCount?: boolean;
   handleForm?: () => void;
 }
 
@@ -42,11 +43,15 @@ export const TableComponent = <T,>({
   showButtonCreate = false,
   textButtonCreate,
   formCreate,
+  keyIdByCount,
+  enabledTableCount = false,
   handleForm,
 }: TableComponentProps<T>) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterSelect, setFilterSelect] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const [dataFilteed, setDataFilteed] = useState<T[]>([]);
   const [selectedFields, setSelectedFields] = useState<string[]>(
     dataHead.map((field) => field.key)
@@ -58,6 +63,7 @@ export const TableComponent = <T,>({
           .configSelectColor?.map((config) => config.value.toString()) || []
       : []
   );
+  const filterRef = useRef<HTMLDivElement>(null);
 
   const handleFilterAllChange = () => {
     if (selectedFields.length !== 0) {
@@ -176,6 +182,28 @@ export const TableComponent = <T,>({
     }
   };
 
+  const startIndex = (currentPage - 1) * filterSelect;
+  const endIndex = startIndex + filterSelect;
+  const paginatedEnterprises = data.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(data.length / filterSelect);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as Node)
+      ) {
+        setShowFilter(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [filterRef]);
+
   useEffect(filterData, [
     data,
     selectedFields,
@@ -183,6 +211,11 @@ export const TableComponent = <T,>({
     searchTerm,
     dataHead,
   ]);
+
+  useEffect(() => {
+    setDataFilteed(data.slice(startIndex, endIndex))
+  }, [paginatedEnterprises])
+  
 
   useEffect(() => {
     setDataFilteed(data);
@@ -233,10 +266,13 @@ export const TableComponent = <T,>({
             </div>
             <FontAwesomeIcon
               icon={faFilter}
-              onClick={() => setShowFilter(!showFilter)}
+              onClick={() => {
+                !showFilter && setShowFilter(!showFilter);
+              }}
               className="ml-4 text-2xl text-gray-400 cursor-pointer transition-colors duration-150 hover:text-politectico"
             />
             <div
+              ref={filterRef}
               className={`absolute left-0 top-14 w-full flex-col gap-2 bg-white p-4 rounded-md shadow-float transition-all duration-300 ease-in-out ${
                 showFilter
                   ? "opacity-100 translate-y-0 pointer-events-auto visible"
@@ -316,7 +352,11 @@ export const TableComponent = <T,>({
         >
           <div className="flex items-center h-full gap-2">
             <div className="text-gray-600">Filas por página</div>
-            <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
+            <select
+              className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md"
+              value={filterSelect}
+              onChange={(e) => setFilterSelect(parseInt(e.target.value))}
+            >
               <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
@@ -324,7 +364,7 @@ export const TableComponent = <T,>({
             </select>
           </div>
           <div className="flex h-full items-center ">
-            <div className="text-gray-600 mr-4">1 - 10 de 200</div>
+            <div className="text-gray-600 mr-4">{startIndex + 1} - {Math.min(endIndex, data.length)} de {data.length}</div>
             <div className="grid grid-cols-4 gap-4">
               <FontAwesomeIcon
                 icon={faChevronLeft}
@@ -346,6 +386,85 @@ export const TableComponent = <T,>({
           </div>
         </div>
       </div>
+      {enabledTableCount &&
+        dataHead.filter((filter) => filter.key === keyIdByCount).length !==
+          0 && (
+          <table className="w-full border-b-[3px] border-politectico my-4">
+            <tr className="bg-politectico text-white font-semibold">
+              <TableCell
+                dataHead={{
+                  key: "noCounter",
+                  nombre: `No. ${titulo}`,
+                  center: true,
+                }}
+              />
+              {dataHead
+                .filter((filter) => filter.key === keyIdByCount)[0]
+                .configSelectColor?.map(({ label, value }, index) => (
+                  <TableCell
+                    dataHead={{
+                      key: `${value}${label}`,
+                      nombre: `${label}s`,
+                      center: true,
+                    }}
+                    key={index}
+                  />
+                ))}
+            </tr>
+            <tbody>
+              {dataFilteed.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={dataHead.length + 1}
+                    className={`px-4 py-3 text-center`}
+                  >
+                    No hay información
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <TableCell
+                    dataHead={{
+                      key: "noCounter",
+                      nombre: `${dataFilteed.length}`,
+                      center: true,
+                    }}
+                  />
+                  {/* {dataHead
+                  .filter((filter) => filter.key === keyIdByCount)[0]
+                  .configSelectColor?.map(({ label, value }, index) => (
+                    <TableCell
+                      dataHead={{
+                        key: `${value}${label}`,
+                        nombre: `${label}s`,
+                      }}
+                      key={index}
+                    />
+                  ))} */}
+                  {dataHead
+                    .filter((filter) => filter.key === keyIdByCount)[0]
+                    .configSelectColor?.map(({ label, value }, index) => {
+                      const count = dataFilteed.filter(
+                        (filter) =>
+                          String(filter[keyIdByCount as keyof T]) ===
+                          value.toString()
+                      );
+                      return (
+                        <TableCell
+                          dataHead={{
+                            key: `${value}${label}`,
+                            nombre: `${count.length}`,
+                            center: true,
+                          }}
+                          key={index}
+                        />
+                      );
+                    })}
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       <table className="w-full border-b-[3px] border-politectico">
         <tr className="bg-politectico text-white font-semibold">
           {dataHead.map((head, index) => (

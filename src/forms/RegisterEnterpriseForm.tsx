@@ -230,6 +230,29 @@ export const RegisterEnterpriseForm = () => {
             Registrar
           </button>
         </div>
+        <div className="text-center col-span-2 mt-2">
+          <div className="h-1 border-t-[1px] border-gray-400"></div>
+          <div className="mt-3">
+            Al registrarse en el sistema, usted esta de acuerdon con el&nbsp;
+            <a
+              href={require("../assets/Aviso de Privacidad.pdf")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold"
+            >
+              Aviso de Privacidad
+            </a>
+            &nbsp;y&nbsp;
+            <a
+              href={require("../assets/Términos y condiciones.pdf")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold"
+            >
+              Términos y Condiciones
+            </a>
+          </div>
+        </div>
       </form>
 
       <AlertNotification

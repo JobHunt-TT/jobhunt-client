@@ -34,7 +34,7 @@ export const useLoginFormManagement = () => {
   });
 
   const validForm = async () => {
-    
+
     const result = await methods.trigger([
       "email",
       "password",
@@ -55,12 +55,12 @@ export const useLoginFormManagement = () => {
         console.log("success", data);
         if (typeof data.data === "object") {
           localStorage.setItem("idUser", data.data.id);
-          if (data.data.empresaId !== 0) {
+          if (data.data.empresaId === 1) {
             localStorage.setItem("idEmpresa", data.data.usuarioEmpresaId);
             localStorage.setItem("tipoUsuarioEmpresa", data.data.empresaId);
-            navigate("/profileEnterprise");
-          } else {
-            navigate("/profile");
+            navigate("/profileEncargado");
+          } else if (data.data.empresaId === 2) {
+            navigate("/profilereclutador");
           }
         } else {
           MySwal.fire({

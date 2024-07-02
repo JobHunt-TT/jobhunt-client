@@ -80,10 +80,10 @@ export const LoginForm = () => {
             </Link>
           </div>
         </div>
-        
+
         <div className="text-center col-span-2">
-        <div className="h-1 border-t-[1px] border-gray-400"></div>
-        <div className="mt-3">
+          <div className="h-1 border-t-[1px] border-gray-400"></div>
+          <div className="mt-3">
             ¿Olvidaste tu contraseña? -&nbsp;
             <Link to="/recoverPassword" className="font-semibold">
               Recupera tu contraseña
