@@ -79,10 +79,7 @@ export const RegisterForm = () => {
       errorsTemp.push(errors.cedula.message);
     }
 
-    if (
-      !!errors.porcentajeCursado &&
-      !!errors.porcentajeCursado.message
-    ) {
+    if (!!errors.porcentajeCursado && !!errors.porcentajeCursado.message) {
       errorsTemp.push(errors.porcentajeCursado.message);
     }
 
@@ -167,9 +164,7 @@ export const RegisterForm = () => {
         {(statusEstudiante === "1" || statusEstudiante === "2") && (
           <FormInput label="Fecha de Termino" name="fechaTermino" type="date" />
         )}
-        {statusEstudiante === "1" && (
-          <FormInput label="Cédula" name="cedula" />
-        )}
+        {statusEstudiante === "1" && <FormInput label="Cédula" name="cedula" />}
         {(statusEstudiante === "3" || statusEstudiante === "4") && (
           <FormInput label="Porcentaje cursado" name="porcentajeCursado" />
         )}
@@ -208,6 +203,29 @@ export const RegisterForm = () => {
         >
           Registrar
         </button>
+        <div className="text-center col-span-2 mt-2">
+          <div className="h-1 border-t-[1px] border-gray-400"></div>
+          <div className="mt-3">
+            Al registrarse en el sistema, usted esta de acuerdon con el&nbsp;
+            <a
+              href={require("../assets/Aviso de Privacidad.pdf")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold"
+            >
+              Aviso de Privacidad
+            </a>
+            &nbsp;y&nbsp;
+            <a
+              href={require("../assets/Términos y condiciones.pdf")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold"
+            >
+              Términos y Condiciones
+            </a>
+          </div>
+        </div>
       </form>
 
       <AlertNotification
