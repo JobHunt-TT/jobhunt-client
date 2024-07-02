@@ -18,6 +18,7 @@ export interface DataUser {
   userPhone: string;
   userSexoId: number;
   estatusId: number;
+  jornada: string;
 }
 
 export interface SkillUser {

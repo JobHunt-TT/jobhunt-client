@@ -17,7 +17,7 @@ interface FormSelectProps {
   disabled?: boolean;
   selectFirst?: boolean;
   optionDefault?: string;
-  onChangeInput?: () => void;
+  onChangeInput?: (value: string) => void;
   onBlurInput?: () => void;
 }
 
@@ -42,18 +42,21 @@ export const FormSelect = ({
       render={({ fieldState: { error }, field: { value, onChange } }) => {
         const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
           const newValue = event.target.value;
-          !!onChange && onChange(newValue);
+          onChange(newValue);
           setValue(name, newValue);
+          if (onChangeInput) {
+            onChangeInput(newValue);
+          }
         };
+
         return (
           <div
-            className={`col-span-2 bg-gray-200 rounded-md relative border-2 ${
-              !!error && "border-red-400"
-            }`}
+            className={`col-span-2 bg-gray-200 rounded-md relative border-2 ${error ? "border-red-400" : ""
+              }`}
           >
             <label
               htmlFor={label.toLowerCase()}
-              className={`absolute left-4 transition-label-form duration-100 ease-linear text-gray-600 top-1 text-xs`}
+              className="absolute left-4 transition-label-form duration-100 ease-linear text-gray-600 top-1 text-xs"
             >
               {label}
             </label>
@@ -62,30 +65,29 @@ export const FormSelect = ({
               name={label.toLowerCase()}
               id={label.toLowerCase()}
               disabled={disabled}
-              onChange={(e) => {
-                handleChange(e);
-                !!onChangeInput && onChangeInput();
-              }}
+              value={value}
+              onChange={handleChange}
               onClick={() => setFocused(!focused)}
               onBlur={() => {
                 setFocused(false);
-                !!onBlurInput && onBlurInput();
+                if (onBlurInput) {
+                  onBlurInput();
+                }
               }}
             >
               <option value="">
-                {!!optionDefault ? optionDefault : "Selecciona una opción"}
+                {optionDefault || "Selecciona una opción"}
               </option>
               {(data || options)?.map(({ label, value }, index) => (
-                <option value={value} key={index} selected={selectFirst && index === 0} >
+                <option value={value} key={index}>
                   {label}
                 </option>
               ))}
             </select>
             <FontAwesomeIcon
               icon={faChevronDown}
-              className={`absolute right-3 top-1/3 text-sm ${
-                focused ? "-rotate-180" : "rotate-0"
-              }`}
+              className={`absolute right-3 top-1/3 text-sm ${focused ? "-rotate-180" : "rotate-0"
+                }`}
             />
           </div>
         );

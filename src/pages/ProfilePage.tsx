@@ -42,13 +42,14 @@ const INITIAL_STATE: DataUser = {
   userPass: "",
   userPhone: "",
   userSexoId: 0,
-  estatusId: 0
+  estatusId: 0,
+  jornada: "",
 };
 
 export const ProfilePage = () => {
   const [user, setUser] = useState(INITIAL_STATE);
   const [skillsUser, setSkillsUser] = useState<SkillUser[]>([]);
-  const [userCarrera, setuserCarrera] = useState<any>(null);
+  const [userCarrera, setuserCarrera] = useState<any>("");
 
   useEffect(() => {
     axios
@@ -56,6 +57,8 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student data", data.data);
+        localStorage.setItem("userDirectionId", data.data.direccionId);
         setUser(data.data);
       })
       .catch((error) => {
@@ -67,6 +70,7 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student skills", data.data);
         setSkillsUser(data.data);
       })
       .catch((error) => {
@@ -78,7 +82,17 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        setuserCarrera(data.data[0]);
+        localStorage.setItem("carreras_select", JSON.stringify(data.data));
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+    axios
+      .post("/consulta_carrreras_alumno", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        setuserCarrera(data.data[data.data.length - 1]);
       })
       .catch((error) => {
         console.log("error", error);
@@ -87,8 +101,8 @@ export const ProfilePage = () => {
 
   return (
     <ContentLayout>
-      <div className="w-4/5 mx-auto py-16">
-        <div className="grid grid-cols-3 gap-6">
+      <div className="w-4/5 mx-auto py-16 grid-2">
+        <div className="flex grid grid-cols-3  gap-6">
           <div className="col-span-1">
             <div className="bg-white rounded-md p-4">
               <img
@@ -111,90 +125,94 @@ export const ProfilePage = () => {
               </pre>
                */}
             </div>
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <div className="text-xl text-politectico font-bold">Contacto</div>
-            <div className="flex items-center mt-2">
-              <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
-              <div>{user.userEmail}</div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <div className="text-xl text-politectico font-bold">Contacto</div>
+              <div className="flex items-center mt-2">
+                <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
+                <div>{user.userEmail}</div>
+              </div>
+              <div className="flex items-center mt-2">
+                <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
+                <div>{user.userPhone}</div>
+              </div>
+              <div className="flex justify-center mt-2">
+                <FontAwesomeIcon
+                  icon={faSquareFacebook}
+                  className="text-3xl text-facebook mx-2"
+                />
+                <FontAwesomeIcon
+                  icon={faXTwitter}
+                  className="text-3xl text-x-twitter mx-2"
+                />
+                <FontAwesomeIcon
+                  icon={faInstagram}
+                  className="text-3xl text-instagram mx-2"
+                />
+              </div>
             </div>
-            <div className="flex items-center mt-2">
-              <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
-              <div>{user.userPhone}</div>
-            </div>
-            <div className="flex justify-center mt-2">
-              <FontAwesomeIcon
-                icon={faSquareFacebook}
-                className="text-3xl text-facebook mx-2"
-              />
-              <FontAwesomeIcon
-                icon={faXTwitter}
-                className="text-3xl text-x-twitter mx-2"
-              />
-              <FontAwesomeIcon
-                icon={faInstagram}
-                className="text-3xl text-instagram mx-2"
-              />
-            </div>
-          </div>
-          <CardAddress type="alumno" direccionID={user.direccionId} />
-        </div>
-
-        <div className="col-span-2">
-          <CardUserInfo
-            titulo="Habilidades"
-            data={skillsUser}
-            formCreate={<SkillForm />}
-            keyName="descripcion"
-          />
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Experiencia Laboral"
-              data={skillsUser}
-              formCreate={<ExperienciaLaboralForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Actividades Extracurrículares"
-              data={skillsUser}
-              formCreate={<ActividadesExtracurricularesForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Horario"
-              data={skillsUser}
-              formCreate={<HorarioForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Cambio de Residencia"
-              data={skillsUser}
-              formCreate={<CambioResidenciaForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
-              titulo="Modalidad"
-              data={skillsUser}
-              formCreate={<ModalidadForm />}
-              keyName="descripcion"
-            />
+            <CardAddress type="alumno" direccionID={user.direccionId} />
           </div>
 
-          <div className="bg-white rounded-md p-4 mt-6">
+          <div className="col-span-2">
             <CardUserInfo
-              titulo="Carrera"
+              titulo="Habilidades"
               data={skillsUser}
-              formCreate={<CarreraForm />}
+              formCreate={<SkillForm />}
               keyName="descripcion"
             />
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Experiencia Laboral"
+                data={[]}
+                formCreate={<ExperienciaLaboralForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Actividades Extracurrículares"
+                data={[]}
+                formCreate={<ActividadesExtracurricularesForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Horario"
+                data={[]}
+                formCreate={<HorarioForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Cambio de Residencia"
+                data={[]}
+                formCreate={<CambioResidenciaForm />}
+                keyName="descripcion"
+              />
+            </div>
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Modalidad"
+                data={[user]}
+                formCreate={<ModalidadForm />}
+                keyName="jornada"
+              />
+            </div>
+
+            <div className="bg-white rounded-md p-4 mt-6">
+              <CardUserInfo
+                titulo="Carrera"
+                data={[userCarrera]}
+                formCreate={<CarreraForm />}
+                keyName="descripcion"
+              />
+            </div>
+
+
+
+          </div>
           </div>
         </div>
       </div>
