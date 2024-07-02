@@ -12,3 +12,4 @@ export * from './OfertasPage';
 export * from './ProfileEncargadoPage';
 export * from './ProfileReclutador';
 export * from './ViewPostulante';
+export * from './TerminosCondiciones';
