@@ -8,7 +8,7 @@ import axios from "axios";
 const MySwal = withReactContent(Swal);
 
 export interface CarreraFormFields {
-  Carrera: string;
+  Carrera: string; // Ahora este campo será el id de la carrera
 }
 
 const defaultValues: CarreraFormFields = {
@@ -17,7 +17,7 @@ const defaultValues: CarreraFormFields = {
 
 export const useCarreraManagement = () => {
   const schema = yup.object().shape({
-    Carrera: yup.string().required("El Carrera es requerido"),
+    Carrera: yup.string().required("La Carrera es requerida"),
   });
 
   const methods = useForm({
@@ -40,14 +40,14 @@ export const useCarreraManagement = () => {
     });
 
     axios
-      .post("/cambio_estudiante_Carrera", {
+      .post("/alta_carrera_alumno", {
         id: localStorage.getItem("idUser"),
-        Carrera,
+        id2: Carrera, // Usamos el id de la carrera
       })
       .then((data) => {
         MySwal.fire({
           icon: "success",
-          title: "Carrera registrado con éxito",
+          title: "Carrera registrada con éxito",
           timer: 3000,
           showConfirmButton: false,
         }).then(() => {
@@ -58,7 +58,7 @@ export const useCarreraManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al agregar el Carrera",
+          text: "Hubo un error al agregar la Carrera",
           timer: 3000,
           showConfirmButton: false,
         });

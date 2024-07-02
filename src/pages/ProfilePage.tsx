@@ -45,12 +45,13 @@ const INITIAL_STATE: DataUser = {
   userPass: "",
   userPhone: "",
   userSexoId: 0,
+  jornada: "",
 };
 
 export const ProfilePage = () => {
   const [user, setUser] = useState(INITIAL_STATE);
   const [skillsUser, setSkillsUser] = useState<SkillUser[]>([]);
-  const [userCarrera, setuserCarrera] = useState<any>(null);
+  const [userCarrera, setuserCarrera] = useState<any>("");
 
   useEffect(() => {
     axios
@@ -83,8 +84,17 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
-        console.log("Student carrera", data.data);
-        setuserCarrera(data.data[0]);
+        localStorage.setItem("carreras_select", JSON.stringify(data.data));
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+    axios
+      .post("/consulta_carrreras_alumno", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        setuserCarrera(data.data[data.data.length - 1]);
       })
       .catch((error) => {
         console.log("error", error);
@@ -187,16 +197,16 @@ export const ProfilePage = () => {
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Modalidad"
-                data={[]}
+                data={[user]}
                 formCreate={<ModalidadForm />}
-                keyName="descripcion"
+                keyName="jornada"
               />
             </div>
 
             <div className="bg-white rounded-md p-4 mt-6">
               <CardUserInfo
                 titulo="Carrera"
-                data={[]}
+                data={[userCarrera]}
                 formCreate={<CarreraForm />}
                 keyName="descripcion"
               />

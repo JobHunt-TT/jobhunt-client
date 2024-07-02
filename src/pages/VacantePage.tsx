@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { Oferta } from "../types";
 import { ContentLayout } from "../layouts";
 import { formatDate } from "../utils";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const INITIAL_STATE: Oferta = {
   ofertaId: 0,
@@ -37,11 +41,57 @@ export const VacantePage = () => {
       .catch((error) => {
         console.log("error", error);
       });
-
-    // return () => {
-    //     localStorage.removeItem("idOferta")
-    // }
   }, []);
+
+  const handleApply = () => {
+    const alumnoId = localStorage.getItem("idUser");
+    const ofertaId = localStorage.getItem("idOferta");
+
+    if (!alumnoId || !ofertaId) {
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se encontró el ID del alumno o de la oferta.",
+        timer: 3000,
+        showConfirmButton: false,
+      });
+      return;
+    }
+
+    MySwal.fire({
+      title: "Por favor, espere...",
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+      allowOutsideClick: false,
+    });
+
+    axios
+      .post("/alta_aplicacion", {
+        id: alumnoId,
+        id2: ofertaId,
+      })
+      .then((response) => {
+        MySwal.fire({
+          icon: "success",
+          title: "Aplicación registrada con éxito",
+          timer: 3000,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      })
+      .catch((error) => {
+        MySwal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Hubo un error al registrar la aplicación.",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      });
+  };
+
   return (
     <ContentLayout>
       <div className="w-4/5 mx-auto my-16">
@@ -57,7 +107,7 @@ export const VacantePage = () => {
               </div>
               <div className="item pl-4 pr-4">
                 <div className="font-semibold flex justify-center">Nombre de la empresa: </div>
-                <div className="font-bold flex justify-center text-xl/10">Empresa</div> {/*Colocar empresa */}
+                <div className="font-bold flex justify-center text-xl/10">{oferta.nombreEmpresa}</div>
               </div>
               <div className="item mr-6 pl-4 pr-4">
                 <div className="font-semibold flex justify-center">Vigencia:</div>
@@ -71,13 +121,13 @@ export const VacantePage = () => {
                 praesentium veritatis quis dignissimos dolore id numquam
                 voluptates corrupti. Soluta tenetur veniam, natus error aliquam
                 consectetur a atque architecto fuga ipsum tempore quia voluptate
-                debitis accusantium excepturi doloremque aut neque maiores.
+                debitis accusantium excepturi doloremque aut neque mayores.
                 Voluptas fuga nobis repellendus consectetur dignissimos
                 voluptates tenetur id commodi.
-              </div> 
+              </div>
             </div>
             <div>
-              <hr/>
+              <hr />
               <div className="font-bold text-xl mt-3 text-center">Detalles: </div>
             </div>
             <div className="mt-4 grid grid-cols-4 mb-4">
@@ -99,7 +149,7 @@ export const VacantePage = () => {
               </div>
             </div>
             <div>
-              <hr/>
+              <hr />
               <div className="font-bold text-xl mt-3 text-center">Requisitos: </div>
             </div>
             <div className="mt-4 grid grid-cols-2 mb-4">
@@ -112,37 +162,37 @@ export const VacantePage = () => {
                 <div className="flex justify-center">Ciudad de México</div>{/*Llenar*/}
               </div>
             </div>
-            <hr/>
+            <hr />
             <div className="mt-8">
               <div className="font-bold text-xl">Habilidades:</div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{"- "}
-                  Habilidad 1
-                </div>
+              <div className="flex items-center">
+                <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{"- "}
+                Habilidad 1
+              </div>
             </div>
             <div className="mt-8">
               <div className="font-bold text-xl">Idiomas:</div>
-                <div className="flex items-center">
-                  <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{"- "}
-                  Idioma 1
-                </div>
+              <div className="flex items-center">
+                <i className="fa-solid fa-circle text-[.4rem] mr-1"></i>{"- "}
+                Idioma 1
+              </div>
             </div>
             <div className="mt-8">
               <div className="font-bold text-xl text-center">Experiencia Laboral:</div>
-                <div className="mt-4 grid grid-cols-2 mb-4">
-                  <div className="item pl-4 pr-4">
-                    <div className="font-semibold flex justify-center">Puesto Deseable</div>
-                    <div className="flex justify-center">Programador</div>{/*Llenar*/}
-                  </div>
-                  <div className="item pl-4 pr-4">
-                    <div className="font-semibold flex justify-center">Tiempo</div>
-                    <div className="flex justify-center">2 años</div>{/*Llenar*/}
-                  </div>
+              <div className="mt-4 grid grid-cols-2 mb-4">
+                <div className="item pl-4 pr-4">
+                  <div className="font-semibold flex justify-center">Puesto Deseable</div>
+                  <div className="flex justify-center">Programador</div>{/*Llenar*/}
+                </div>
+                <div className="item pl-4 pr-4">
+                  <div className="font-semibold flex justify-center">Tiempo</div>
+                  <div className="flex justify-center">2 años</div>{/*Llenar*/}
+                </div>
               </div>
             </div>
             <div className="mt-24 grid grid-cols-3 mb-4 flex justify-center ">
               <div className="item flex justify-center">
-                <button className="col-span-2 bg-black text-white py-3 rounded-md font-semibold p-4">
+                <button className="col-span-2 bg-black text-white py-3 rounded-md font-semibold p-4" onClick={handleApply}>
                   Aplicar
                 </button>
               </div>
