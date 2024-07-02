@@ -43,6 +43,8 @@ const INITIAL_STATE: DataUser = {
   userPass: "",
   userPhone: "",
   userSexoId: 0,
+  estatusId: 0,
+  jornada: "",
 };
 
 export const ProfilePage = () => {
@@ -63,6 +65,8 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student data", data.data);
+        localStorage.setItem("userDirectionId", data.data.direccionId);
         setUser(data.data);
         setCambio(data.data.cambioResidencia);
         setHorario(data.data.jornada);
@@ -105,6 +109,7 @@ export const ProfilePage = () => {
         id: localStorage.getItem("idUser"),
       })
       .then((data) => {
+        console.log("Student skills", data.data);
         setSkillsUser(data.data);
       })
       .catch((error) => {
@@ -220,8 +225,8 @@ export const ProfilePage = () => {
             />
           </div>
           </div>
+          </div>
         </div>
-      </div>
     </ContentLayout>
   );
 };

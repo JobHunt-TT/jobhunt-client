@@ -23,6 +23,7 @@ import axios from "axios";
 import { ContentLayout } from "../layouts";
 import { AdminEmpresa, DataHeadTable, Oferta } from "../types";
 import { TableComponent } from "../components";
+import { DataEnterprise } from '../types/api/EmpresaTypes';
 
 const MySwal = withReactContent(Swal);
 
@@ -107,6 +108,7 @@ export const ProfileEnterprisePage = () => {
   const [adminEmpresa, setAdminEmpresa] = useState<AdminEmpresa[]>([]);
   const [ofertaEmpresa, setOfertaEmpresa] = useState<Oferta[]>([]);
   const [isFocused3, setIsFocused3] = useState(false);
+  const [dataAplicantes, setAplicantes] = useState<any>(null);
   const [dataEmpresa, setDataEmpresa] = useState<any>(null);
 
   const handleDeletePersonal = () => {
@@ -156,6 +158,18 @@ export const ProfileEnterprisePage = () => {
       });
 
     axios
+      .post("/consulta_aplicantes", {
+        id:  "4",
+      })
+      .then((data) => {
+        console.log("aplicantes", data);
+        setAplicantes(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+
+    axios
       .post("/consulta_empresa", {
         id: localStorage.getItem("idEmpresa"),
       })
@@ -167,6 +181,13 @@ export const ProfileEnterprisePage = () => {
         console.log("error", error);
       });
   }, []);
+
+  
+
+
+
+
+
 
   return (
     <ContentLayout>
@@ -184,27 +205,48 @@ export const ProfileEnterprisePage = () => {
                 {dataEmpresa !== null ? dataEmpresa.empresaNombre : "--"}
               </div>
               <div className="text-center">
-                {dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"}HOLA
+                {dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"}
               </div>
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold flex justify-center">Datos</div>
               <div className="flex items-center mt-2">
-                <div> <b>Estatus: </b> Activo</div>
+                <div>
+                  {dataEmpresa !== null && (
+                    <div>
+                      <b>Estado:</b> {dataEmpresa.statusId === 1 ? "Aprobada" :
+                        dataEmpresa.statusId === 2 ? "Inactivo" :
+                          dataEmpresa.statusId === 3 ? "Bloqueada" :
+                            ""}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="flex items-center mt-2">
-                <div><b>RFC:</b> 234567</div>
+                <div>
+                  <b>RFC:</b> {dataEmpresa !== null ? dataEmpresa.userRFC : ''}
+                </div>
               </div>
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
               <div className="flex items-center mt-2">
                 <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
-                <div>contacto@microsoft.com</div>
+                <div>
+                  {dataEmpresa !== null && (
+                    <div><b>Contacto:</b> {dataEmpresa.empresaMail}</div>
+                  )}
+                </div>
+
               </div>
               <div className="flex items-center mt-2">
                 <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
-                <div>+52 55 1234 5678</div>
+                <div>
+                  {dataEmpresa !== null && (
+                    <div>+52 {dataEmpresa.empresaMail}</div>
+                  )}
+                </div>
+
               </div>
               <div className="flex justify-center mt-2">
                 <FontAwesomeIcon
@@ -222,7 +264,7 @@ export const ProfileEnterprisePage = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="col-span-2 flex flex-col gap-6">
             {localStorage.getItem("tipoUsuarioEmpresa") === "1" && (
               <TableComponent
@@ -269,9 +311,8 @@ export const ProfileEnterprisePage = () => {
                   />
                   <FontAwesomeIcon
                     icon={faSearch}
-                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
-                      isFocused3 ? "text-politectico" : "text-gray-300"
-                    }`}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${isFocused3 ? "text-politectico" : "text-gray-300"
+                      }`}
                   />
                 </div>
                 <div className="col-span-5 flex justify-end gap-6">
@@ -307,79 +348,60 @@ export const ProfileEnterprisePage = () => {
                   </div>
                 </div>
               </div>
-              <table className="w-full mt-3 border-b-[3px] border-politectico">
-                <tr className="bg-politectico text-white font-semibold">
-                  <td className="px-4 py-3 rounded-tl-md">Nombre</td>
-                  <td className="px-4 py-3">Fecha</td>
-                  <td className="px-4 py-3">Estatus</td>
-                  <td className="px-4 py-3">Aspirante</td>
-                  <td className="px-4 py-3 rounded-tr-md text-center">
-                    Acciones
-                  </td>
-                </tr>
-                <tbody>
-                  <tr>
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
-                        En Validación
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Juanito Pérez</td>
-                    <td className="px-4 py-3 text-center">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        className="fa-solid fa-pen mx-1 text-yellow-500"
-                      />
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        className="fa-solid fa-trash mx-1 text-red-500"
-                      />
-                    </td>
+              {dataAplicantes && dataAplicantes.length > 0  ? (
+                
+                <table className="w-full mt-3 border-b-[3px] border-politectico">
+                  <tr className="bg-politectico text-white font-semibold">
+                    <th className="px-4 py-3 rounded-tr-md text-left">Nombre</th>
+                    <th className="px-4 py-3 text-left">Fecha</th>
+                    <th className="px-4 py-3 text-left">Estatus</th>
+                    <th className="px-4 py-3 text-left">Aspirante</th>
+                    <th className="px-4 py-3 rounded-tr-md text-center">Acciones</th>
                   </tr>
-                  <tr className="bg-gray-200">
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
-                        Validado
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Juanito Pérez</td>
-                    <td className="px-4 py-3 text-center">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        className="fa-solid fa-pen mx-1 text-yellow-500"
-                      />
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        className="fa-solid fa-trash mx-1 text-red-500"
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
-                        Rechazada
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Juanito Pérez</td>
-                    <td className="px-4 py-3 text-center">
-                      <FontAwesomeIcon
-                        icon={faPen}
-                        className="fa-solid fa-pen mx-1 text-yellow-500"
-                      />
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        className="fa-solid fa-trash mx-1 text-red-500"
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+
+                  <tbody>
+                    {dataAplicantes.map((aplicante: any, index: number) => (
+                      <tr key={index} className={index % 2 === 0 ? '' : 'bg-gray-200'}>
+                        <td className="px-4 py-3">{aplicante.nombreOferta}</td>
+                        <td className="px-4 py-3">
+                          {new Date(aplicante.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
+                        </td>
+                        <td className="px-4 py-3">
+                          {aplicante.estatusId === 1 && (
+                            <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
+                              Validado
+                            </div>
+                          )}
+                          {aplicante.estatusId === 2 && (
+                            <div className="inline px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+                              En Validación
+                            </div>
+                          )}
+                          {aplicante.estatusId === 3 && (
+                            <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
+                              Rechazada
+                            </div>
+                          )}
+                        </td>
+
+                        <td className="px-4 py-3">{aplicante.nombre}</td>
+                        <td className="px-4 py-3 text-center">
+                          <FontAwesomeIcon
+                            icon={faPen}
+                            className="fa-solid fa-pen mx-1 text-yellow-500"
+                          />
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="fa-solid fa-trash mx-1 text-red-500"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No Hay datos</p>
+              )}
             </div>
           </div>
         </div>

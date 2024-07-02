@@ -5,6 +5,7 @@ export interface DataEnterprise {
   tipoEmpresa: string;
   userRFC: string;
   empresaGiro: string;
+  statusId: number;
 }
 
 export interface TipoEmpresa {

@@ -15,3 +15,14 @@ export interface Oferta {
   nombrePuesto: string;
   salario: string;
 }
+
+export interface Postulacion {
+  id: number;
+  fecha: string;
+  estudianteId: number;
+  ofertaId: number;
+  estatusId: number;
+  nombre: string;
+  apellido: string;
+  nombreOferta: string;
+}

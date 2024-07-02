@@ -41,7 +41,7 @@ export const CardUserInfo = <T,>({
       },
     });
   };
-  
+
   return (
     <div className="bg-white rounded-md p-4 relative">
       <div className="text-xl text-politectico font-bold">{titulo}</div>

@@ -85,12 +85,35 @@ export const CarreraForm = () => {
 
   useEffect(setErrors, [errors]);
 
+  useEffect(() => {
+    // Cargar carreras desde el localStorage
+    const storedCarreras = localStorage.getItem("carreras_select");
+    if (storedCarreras) {
+      const carrerasArray = JSON.parse(storedCarreras);
+      const options = carrerasArray.map((carrera: { id: number; carreraNombre: string }) => ({
+        value: carrera.carreraNombre,
+        label: carrera.carreraNombre,
+        id: carrera.id, // Agregamos el id
+      }));
+      setCarrerasOptions(options);
+    }
+  }, []);
+
+  const handleFormSubmit = async (data: any) => {
+    const selectedCarrera = carrerasOptions.find(option => option.value === data.Carrera);
+    if (selectedCarrera) {
+      console.log("Selected carrera", selectedCarrera);
+
+      await submit({ Carrera: selectedCarrera.id.toString() });
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <div className="text-4xl font-bold mt-5">Agregar Carrera</div>
       <form
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
-        onSubmit={handleSubmit(submit)}
+        onSubmit={handleSubmit(handleFormSubmit)}
       >
          <pre className="text-center">
                 <CarreraSelectForm
