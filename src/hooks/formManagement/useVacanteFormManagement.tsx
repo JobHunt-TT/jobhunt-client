@@ -40,9 +40,9 @@ export const useVacanteFormManagement = () => {
       .required("La duración del contrato es requerida"),
     nombrePuesto: yup.string().required("El nombre del puesto es requerido")
     .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Sólo se admiten letras en el nombre de puesto"),
-    salario: yup.string().required("El salario es requerido")
-    .matches(/^[0-9]*$/,"Sólo se admiten números en el salario"),
-    tags: yup.array().of(yup.string().required()).min(1, 'Debes agregar por lo menos un tag')
+    salario: yup.string().required("El salario es requerido"),
+
+    tags: yup.array().of(yup.string().required())
   });
 
   const methods = useForm({
@@ -71,7 +71,7 @@ export const useVacanteFormManagement = () => {
 
     const formatData = {
       ...fields,
-      tags: tagsData.trim()
+      tags: "java"//tagsData.trim()
     }
     console.log(formatData);
 
@@ -87,10 +87,15 @@ export const useVacanteFormManagement = () => {
     axios
       .post("/alta_oferta_trabajo", {
         empresaID: localStorage.getItem("idEmpresa"),
-        ...formatData,
+        nombreOferta: formatData.nombreOferta,
+        vigencia: formatData.vigencia,
+        duracionContrato: formatData.duracionContrato,
+        nombrePuesto: formatData.nombrePuesto,
+        salario: formatData.salario,
+        tags: formatData.tags,
+        descripcion: "",
       })
       .then((data) => {
-        console.log("success", data);
 
         MySwal.fire({
           icon: "success",

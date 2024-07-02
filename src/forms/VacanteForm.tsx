@@ -63,7 +63,7 @@ export const VacanteForm = () => {
       >
         <FormInput label="Nombre de la Oferta" name="nombreOferta" />
         <FormInput label="Nombre del Puesto" name="nombrePuesto" />
-        <FormInput label="Descripción de la Vacante" name="descripcion" />
+   
         <FormInput label="Vigencia" name="vigencia" type="date" />
         <FormInput label="Duración de Contrato" name="duracionContrato" />
         <FormSelect
@@ -97,8 +97,8 @@ export const VacanteForm = () => {
             { value: "indistinto", label: "Indistinto" },
           ]}
         />
-        <FormInput label="Estado" name="modalidad" />{/*Cambiar por endpoints*/}
-        <FormInput label="Estatus del Alumno" name="modalidad" />
+        <FormInput label="Estado" name="estado" />{/*Cambiar por endpoints*/}
+        <FormInput label="Estatus del Alumno" name="estatus" />
         <FormMultiTagInput label="Habilidades" name="habilidades" />
         <FormMultiTagInput label="Idiomas" name="idiomas" />
         <div className="font-bold text-center">Experiencia Laboral</div>

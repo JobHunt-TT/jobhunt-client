@@ -159,7 +159,7 @@ export const ProfileEnterprisePage = () => {
 
     axios
       .post("/consulta_aplicantes", {
-        id:  "4",
+        id:  localStorage.getItem("idEmpresa"),
       })
       .then((data) => {
         console.log("aplicantes", data);

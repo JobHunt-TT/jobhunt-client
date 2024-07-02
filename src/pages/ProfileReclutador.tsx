@@ -108,6 +108,7 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
     const [adminEmpresa, setAdminEmpresa] = useState<AdminEmpresa[]>([]);
     const [ofertaEmpresa, setOfertaEmpresa] = useState<Oferta[]>([]);
     const [isFocused3, setIsFocused3] = useState(false);
+    const [dataAplicantes, setAplicantes] = useState<any>(null);
     const [dataEmpresa, setDataEmpresa] = useState<any>(null);
   
     const handleDeletePersonal = () => {
@@ -132,6 +133,18 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
     };
   
     useEffect(() => {
+      axios
+      .post("/consulta_aplicantes", {
+        id:  localStorage.getItem("idEmpresa"),
+      })
+      .then((data) => {
+        console.log("aplicantes", data);
+        setAplicantes(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+
       axios
         .post("/consulta_admin_x_empresa", {
           id: localStorage.getItem("idEmpresa"),
@@ -236,135 +249,115 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
                 width="md"
               />
   
-              <div className="bg-white rounded-md p-4">
-                <div className="flex justify-between items-start">
-                  <div className="text-xl text-politectico font-bold">
-                    Postulaciones
-                  </div>
+  <div className="bg-white rounded-md p-4">
+              <div className="flex justify-between items-start">
+                <div className="text-xl text-politectico font-bold">
+                  Postulaciones
                 </div>
-                <div className="grid grid-cols-8 gap-2 my-4">
-                  <div className="col-span-3 relative">
-                    <input
-                      type="text"
-                      placeholder="Buscar..."
-                      className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
-                      onFocus={() => setIsFocused3(true)}
-                      onBlur={() => setIsFocused3(false)}
-                    />
-                    <FontAwesomeIcon
-                      icon={faSearch}
-                      className={`absolute right-4 top-3.5 text-lg transition-colors ${
-                        isFocused3 ? "text-politectico" : "text-gray-300"
+              </div>
+              <div className="grid grid-cols-8 gap-2 my-4">
+                <div className="col-span-3 relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar..."
+                    className="w-full py-2 px-5 border-[3px] text-base transition-all duration-300 ease-in-out border-gray-300 rounded-full outline-none focus:border-politectico"
+                    onFocus={() => setIsFocused3(true)}
+                    onBlur={() => setIsFocused3(false)}
+                  />
+                  <FontAwesomeIcon
+                    icon={faSearch}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${isFocused3 ? "text-politectico" : "text-gray-300"
                       }`}
-                    />
+                  />
+                </div>
+                <div className="col-span-5 flex justify-end gap-6">
+                  <div className="flex items-center h-full gap-2">
+                    <div className="text-gray-600">Filas por página</div>
+                    <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
                   </div>
-                  <div className="col-span-5 flex justify-end gap-6">
-                    <div className="flex items-center h-full gap-2">
-                      <div className="text-gray-600">Filas por página</div>
-                      <select className="bg-white border-[3px] border-gray-300 pl-2 py-1 rounded-md">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                      </select>
-                    </div>
-                    <div className="flex h-full items-center ">
-                      <div className="text-gray-600 mr-4">1 - 10 de 200</div>
-                      <div className="grid grid-cols-4 gap-4">
-                        <FontAwesomeIcon
-                          icon={faChevronLeft}
-                          className="col-span-1 text-gray-400 text-2xl"
-                        />
-                        <FontAwesomeIcon
-                          icon={faBackwardStep}
-                          className="col-span-1 text-gray-400 text-2xl"
-                        />
-                        <FontAwesomeIcon
-                          icon={faForwardStep}
-                          className="col-span-1 text-gray-400 text-2xl"
-                        />
-                        <FontAwesomeIcon
-                          icon={faChevronRight}
-                          className="col-span-1 text-gray-400 text-2xl"
-                        />
-                      </div>
+                  <div className="flex h-full items-center ">
+                    <div className="text-gray-600 mr-4">1 - 10 de 200</div>
+                    <div className="grid grid-cols-4 gap-4">
+                      <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faBackwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faForwardStep}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="col-span-1 text-gray-400 text-2xl"
+                      />
                     </div>
                   </div>
                 </div>
+              </div>
+              {dataAplicantes && dataAplicantes.length > 0  ? (
+                
                 <table className="w-full mt-3 border-b-[3px] border-politectico">
                   <tr className="bg-politectico text-white font-semibold">
-                    <td className="px-4 py-3 rounded-tl-md">Nombre</td>
-                    <td className="px-4 py-3">Fecha</td>
-                    <td className="px-4 py-3">Estatus</td>
-                    <td className="px-4 py-3">Aspirante</td>
-                    <td className="px-4 py-3 rounded-tr-md text-center">
-                      Acciones
-                    </td>
+                    <th className="px-4 py-3 rounded-tr-md text-left">Nombre</th>
+                    <th className="px-4 py-3 text-left">Fecha</th>
+                    <th className="px-4 py-3 text-left">Estatus</th>
+                    <th className="px-4 py-3 text-left">Aspirante</th>
+                    <th className="px-4 py-3 rounded-tr-md text-center">Acciones</th>
                   </tr>
+
                   <tbody>
-                    <tr>
-                      <td className="px-4 py-3">Desarrollador BackEnd</td>
-                      <td className="px-4 py-3">5 Jun. 2024</td>
-                      <td className="px-4 py-3">
-                        <div className="inline px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
-                          En Validación
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">Juanito Pérez</td>
-                      <td className="px-4 py-3 text-center">
-                        <FontAwesomeIcon
-                          icon={faPen}
-                          className="fa-solid fa-pen mx-1 text-yellow-500"
-                        />
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          className="fa-solid fa-trash mx-1 text-red-500"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-200">
-                      <td className="px-4 py-3">Desarrollador BackEnd</td>
-                      <td className="px-4 py-3">5 Jun. 2024</td>
-                      <td className="px-4 py-3">
-                        <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
-                          Validado
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">Juanito Pérez</td>
-                      <td className="px-4 py-3 text-center">
-                        <FontAwesomeIcon
-                          icon={faPen}
-                          className="fa-solid fa-pen mx-1 text-yellow-500"
-                        />
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          className="fa-solid fa-trash mx-1 text-red-500"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3">Desarrollador BackEnd</td>
-                      <td className="px-4 py-3">5 Jun. 2024</td>
-                      <td className="px-4 py-3">
-                        <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
-                          Rechazada
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">Juanito Pérez</td>
-                      <td className="px-4 py-3 text-center">
-                        <FontAwesomeIcon
-                          icon={faPen}
-                          className="fa-solid fa-pen mx-1 text-yellow-500"
-                        />
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          className="fa-solid fa-trash mx-1 text-red-500"
-                        />
-                      </td>
-                    </tr>
+                    {dataAplicantes.map((aplicante: any, index: number) => (
+                      <tr key={index} className={index % 2 === 0 ? '' : 'bg-gray-200'}>
+                        <td className="px-4 py-3">{aplicante.nombreOferta}</td>
+                        <td className="px-4 py-3">
+                          {new Date(aplicante.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
+                        </td>
+                        <td className="px-4 py-3">
+                          {aplicante.estatusId === 1 && (
+                            <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
+                              Validado
+                            </div>
+                          )}
+                          {aplicante.estatusId === 2 && (
+                            <div className="inline px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+                              En Validación
+                            </div>
+                          )}
+                          {aplicante.estatusId === 3 && (
+                            <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
+                              Rechazada
+                            </div>
+                          )}
+                        </td>
+
+                        <td className="px-4 py-3">{aplicante.nombre}</td>
+                        <td className="px-4 py-3 text-center">
+                          <FontAwesomeIcon
+                            icon={faPen}
+                            className="fa-solid fa-pen mx-1 text-yellow-500"
+                          />
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="fa-solid fa-trash mx-1 text-red-500"
+                          />
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
-              </div>
+              ) : (
+                <p>No Hay datos</p>
+              )}
+            </div>
             </div>
           </div>
         </div>
