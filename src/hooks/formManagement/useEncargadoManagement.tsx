@@ -7,20 +7,20 @@ import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
-export interface SkillFormFields {
-  descripcion: string;
+export interface EncargadoFormFields {
+  modalidad: string;
 }
 
-const defaultValues: SkillFormFields = {
-  descripcion: "",
+const defaultValues: EncargadoFormFields = {
+  modalidad: "",
 };
 
-export const useSkillFormManagement = () => {
+export const useModalidadManagement = () => {
   const schema = yup.object().shape({
-    descripcion: yup
+    modalidad: yup
       .string()
-      .required("El nombre es requerido")
-     // .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras"),
+      .required("Esta opción es requerida")
+      .oneOf(["presencial", "hibrida", "remoto", "indistinto"], "Seleccione una opción válida"),
   });
 
   const methods = useForm({
@@ -29,48 +29,31 @@ export const useSkillFormManagement = () => {
   });
 
   const validForm = async () => {
-    const result = await methods.trigger(["descripcion"]);
+    const result = await methods.trigger(["modalidad"]);
     return result;
   };
 
-  const submit: SubmitHandler<SkillFormFields> = async ({ descripcion }) => {
+  const submit: SubmitHandler<EncargadoFormFields> = async ({ modalidad }) => {
     MySwal.fire({
       title: "Por favor, espere...",
       didOpen: () => {
-        // `MySwal` is a subclass of `Swal` with all the same instance & static methods
         MySwal.showLoading();
       },
       allowOutsideClick: false,
     });
 
     axios
-      .post("/cambio_estudiante_tag", {
+      .post("/cambio_modalidad", {
         id: localStorage.getItem("idUser"),
-        descripcion,
+        modalidad,
       })
       .then((data) => {
-        console.log("success", data);
-
-        if (data.status === 200) {
-          axios
-            .post("/consulta_estudiante_tag", {
-              id: localStorage.getItem("idUser"),
-            })
-            .then((data) => {
-              console.log("success", data);
-              console.log(data);
-            })
-            .catch((error) => {
-              console.log("error", error);
-            });
-        }
-
         MySwal.fire({
           icon: "success",
-          title: "Skill registrada con éxito",
+          title: "Modalidad registrada con éxito",
           timer: 3000,
           showConfirmButton: false,
-        }).then(()=>{
+        }).then(() => {
           window.location.reload();
         });
       })
@@ -80,7 +63,7 @@ export const useSkillFormManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al agregar la skill",
+          text: "Hubo un error al registrar la modalidad",
           timer: 3000,
           showConfirmButton: false,
         });
