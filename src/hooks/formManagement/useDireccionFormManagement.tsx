@@ -12,11 +12,11 @@ export interface DireccionFormFields {
   cp: string;
   vialidad: string;
   noExt: string;
-  noInt: string;
+  noInt?: string;
   colonia: string;
   municipio: string;
   estado: string;
-  entreCalles: string;
+  entreCalles?: string;
 }
 
 const defaultValues: DireccionFormFields = {
