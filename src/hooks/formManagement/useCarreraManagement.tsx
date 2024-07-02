@@ -17,11 +17,7 @@ const defaultValues: CarreraFormFields = {
 
 export const useCarreraManagement = () => {
   const schema = yup.object().shape({
-<<<<<<< HEAD
-    Carrera: yup.string().required("La Carrera es requerida"),
-=======
     Carrera: yup.string().required("La carrera es requerida"),
->>>>>>> 73b91fc1026d56f2140d5c4fd135f6283f17689a
   });
 
   const methods = useForm({
@@ -62,11 +58,7 @@ export const useCarreraManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-<<<<<<< HEAD
-          text: "Hubo un error al agregar la Carrera",
-=======
           text: "Hubo un error al agregar la carrera",
->>>>>>> 73b91fc1026d56f2140d5c4fd135f6283f17689a
           timer: 3000,
           showConfirmButton: false,
         });
