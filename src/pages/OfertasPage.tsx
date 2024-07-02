@@ -42,7 +42,7 @@ export const OfertasPage = () => {
         id: localStorage.getItem("userDirectionId"),
       })
       .then((data) => {
-        console.log("success", data.data);
+
         let location = data.data.estado + ", " + data.data.municipio;
         setLocation(location);
       })

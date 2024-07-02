@@ -1,5 +1,4 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import {
   AdminPage,
   LandingPage,
@@ -12,6 +11,8 @@ import {
   RegisterPage,
   RestorePasswordPage,
   VacantePage,
+  ProfileEncargadoPage,
+  ProfileReclutador,
 } from "./pages";
 import "./assets/css/index.css";
 
@@ -59,6 +60,14 @@ const router = createBrowserRouter([
   {
     path: "/ofertas",
     element: <OfertasPage />,
+  },
+  {
+    path: "/profileEncargado",
+    element: <ProfileEncargadoPage />,
+  },
+  {
+    path: "/profileReclutador",
+    element: <ProfileReclutador />,
   },
 ]);
 

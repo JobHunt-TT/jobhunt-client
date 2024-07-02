@@ -20,7 +20,7 @@ export const useSkillFormManagement = () => {
     descripcion: yup
       .string()
       .required("El nombre es requerido")
-      .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras"),
+     // .matches(/^[a-zA-ZÀ-ÿÑñ]+$/, "Solo se admiten letras"),
   });
 
   const methods = useForm({

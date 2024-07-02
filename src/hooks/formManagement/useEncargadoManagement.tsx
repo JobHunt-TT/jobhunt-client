@@ -7,21 +7,20 @@ import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
-export interface CarreraFormFields {
-  Carrera: string; // Ahora este campo será el id de la carrera
+export interface EncargadoFormFields {
+  modalidad: string;
 }
 
-const defaultValues: CarreraFormFields = {
-  Carrera: "",
+const defaultValues: EncargadoFormFields = {
+  modalidad: "",
 };
 
-export const useCarreraManagement = () => {
+export const useModalidadManagement = () => {
   const schema = yup.object().shape({
-<<<<<<< HEAD
-    Carrera: yup.string().required("La Carrera es requerida"),
-=======
-    Carrera: yup.string().required("La carrera es requerida"),
->>>>>>> 73b91fc1026d56f2140d5c4fd135f6283f17689a
+    modalidad: yup
+      .string()
+      .required("Esta opción es requerida")
+      .oneOf(["presencial", "hibrida", "remoto", "indistinto"], "Seleccione una opción válida"),
   });
 
   const methods = useForm({
@@ -30,11 +29,11 @@ export const useCarreraManagement = () => {
   });
 
   const validForm = async () => {
-    const result = await methods.trigger(["Carrera"]);
+    const result = await methods.trigger(["modalidad"]);
     return result;
   };
 
-  const submit: SubmitHandler<CarreraFormFields> = async ({ Carrera }) => {
+  const submit: SubmitHandler<EncargadoFormFields> = async ({ modalidad }) => {
     MySwal.fire({
       title: "Por favor, espere...",
       didOpen: () => {
@@ -44,14 +43,14 @@ export const useCarreraManagement = () => {
     });
 
     axios
-      .post("/alta_carrera_alumno", {
+      .post("/cambio_modalidad", {
         id: localStorage.getItem("idUser"),
-        id2: Carrera, // Usamos el id de la carrera
+        modalidad,
       })
       .then((data) => {
         MySwal.fire({
           icon: "success",
-          title: "Carrera registrada con éxito",
+          title: "Modalidad registrada con éxito",
           timer: 3000,
           showConfirmButton: false,
         }).then(() => {
@@ -59,14 +58,12 @@ export const useCarreraManagement = () => {
         });
       })
       .catch((error) => {
+        console.log("error", error);
+
         MySwal.fire({
           icon: "error",
           title: "Error",
-<<<<<<< HEAD
-          text: "Hubo un error al agregar la Carrera",
-=======
-          text: "Hubo un error al agregar la carrera",
->>>>>>> 73b91fc1026d56f2140d5c4fd135f6283f17689a
+          text: "Hubo un error al registrar la modalidad",
           timer: 3000,
           showConfirmButton: false,
         });
