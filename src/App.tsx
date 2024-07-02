@@ -15,6 +15,7 @@ import {
   ProfileReclutador,
   ViewPostulante,
   TerminosCondiciones,
+  AvisoPrivacidad,
 } from "./pages";
 import "./assets/css/index.css";
 
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
   {
     path: "/TerminosCondiciones",
     element: <TerminosCondiciones />,
+  },
+  {
+    path: "/AvisoPrivacidad",
+    element: <AvisoPrivacidad />,
   }
 ]);
 

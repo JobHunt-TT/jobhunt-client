@@ -13,3 +13,4 @@ export * from './ProfileEncargadoPage';
 export * from './ProfileReclutador';
 export * from './ViewPostulante';
 export * from './TerminosCondiciones';
+export * from './AvisoPrivacidad';
