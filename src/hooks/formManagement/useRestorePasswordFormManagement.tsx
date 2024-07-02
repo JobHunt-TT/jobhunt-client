@@ -24,7 +24,8 @@ export const useRestorePasswordFormManagement = () => {
   // const navigate = useNavigate();
   const schema = yup.object().shape({
     codeUser: yup.string().required("El código es requerido"),
-    passwordUser: yup.string().required("La contraseña es requerida"),
+    passwordUser: yup.string().required("La contraseña es requerida")
+    .min(8, "La contraseña debe ser de al menos 8 caracteres"),
     confirmPasswordUser: yup.string().required("La confirmación de contraseña es requerida"),
   });
 

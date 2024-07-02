@@ -24,8 +24,9 @@ const defaultValues: ExperienciaFormFields = {
 export const useExperienciaManagement = () => {
   const schema = yup.object().shape({
     puesto: yup.string().required("El nombre del puesto es requerido"),
-    fechaInicio: yup.string().required("La fecha de inicio es requerida"),
-    fechaFin: yup.string().required("La fecha de fin es requerida"),
+    fechaInicio: yup.string().required("La fecha de inicio es requerida")
+    .matches(/^\b(?!2024-07-(0[7-9]|1[0-2]))\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b$/),
+    fechaFin: yup.string().required("La fecha de termino es requerida"),
     descripcion: yup.string().required("La descripción es requerida"),
   });
 
