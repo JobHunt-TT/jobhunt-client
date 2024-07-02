@@ -43,8 +43,8 @@ export const CambioResidenciaForm = () => {
           label="¿Está dispuesto a cambiar de residencia?"
           name="cambioResidencia"
           options={[
-            { value: "si", label: "Sí" },
-            { value: "no", label: "No" },
+            { value: "1", label: "Sí" },
+            { value: "0", label: "No" },
           ]}
         />
         <button

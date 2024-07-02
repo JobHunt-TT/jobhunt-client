@@ -43,10 +43,10 @@ export const ModalidadForm = () => {
           label="Modalidad"
           name="modalidad"
           options={[
-            { value: "presencial", label: "Presencial" },
-            { value: "hibrida", label: "Híbrida" },
-            { value: "remoto", label: "Remoto" },
-            { value: "indistinto", label: "Indistinto" },
+            { value: "Presencial", label: "Presencial" },
+            { value: "Hibrida", label: "Híbrida" },
+            { value: "Remoto", label: "Remoto" },
+            { value: "Indistinto", label: "Indistinto" },
           ]}
         />
         <button

@@ -50,11 +50,15 @@ export const useExperienciaManagement = () => {
     });
 
     axios
-      .post("/cambio_estudiante_experiencia", {
-        id: localStorage.getItem("idUser"),
-        ...data,
+      .post("/alta_experiencia", {
+        idEst: localStorage.getItem("idUser"),
+        nombre: data.puesto,
+        fechaInicio: data.fechaInicio,
+        fechaFin: data.fechaFin,
+        descrpcion: data.descripcion,
       })
       .then((response) => {
+        console.log(data);
         MySwal.fire({
           icon: "success",
           title: "Experiencia registrada con éxito",

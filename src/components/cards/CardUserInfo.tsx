@@ -8,6 +8,11 @@ const MySwal = withReactContent(Swal);
 interface CardUserInfoProps<T> {
   titulo: string;
   data: T[];
+  datos?: string;
+  datos2?: string;
+  datos3?: string;
+  datos4?: string;
+  experiencia?:[];
   keyName: string
   formCreate: JSX.Element;
 }
@@ -15,6 +20,10 @@ interface CardUserInfoProps<T> {
 export const CardUserInfo = <T,>({
   titulo,
   data,
+  datos,
+  datos2,
+  datos3,
+  datos4,
   keyName,
   formCreate,
 }: CardUserInfoProps<T>) => {
@@ -36,6 +45,7 @@ export const CardUserInfo = <T,>({
   return (
     <div className="bg-white rounded-md p-4 relative">
       <div className="text-xl text-politectico font-bold">{titulo}</div>
+      
       <div className="mt-1">
         {data.map((item, index) => (
         <div className="flex items-center" key={index}>
@@ -46,6 +56,7 @@ export const CardUserInfo = <T,>({
           {String(item[keyName as keyof T])}
         </div>
       ))}
+        {datos} {datos2} {datos3} {datos4}
       </div>
       <FontAwesomeIcon
         icon={faCirclePlus}

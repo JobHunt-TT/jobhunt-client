@@ -20,7 +20,7 @@ export const useModalidadManagement = () => {
     modalidad: yup
       .string()
       .required("Esta opción es requerida")
-      .oneOf(["presencial", "hibrida", "remoto", "indistinto"], "Seleccione una opción válida"),
+      .oneOf(["Presencial", "Hibrida", "Remoto", "Indistinto"], "Seleccione una opción válida"),
   });
 
   const methods = useForm({
@@ -45,7 +45,7 @@ export const useModalidadManagement = () => {
     axios
       .post("/cambio_modalidad", {
         id: localStorage.getItem("idUser"),
-        modalidad,
+        descripcion: modalidad,
       })
       .then((data) => {
         MySwal.fire({

@@ -20,9 +20,10 @@ import {
 import { DataUser, SkillUser } from "../types";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { CardAddress, CardUserInfo } from "../components";
+import { string } from "yup";
 
 const MySwal = withReactContent(Swal);
-
+var Residencia = "";
 const INITIAL_STATE: DataUser = {
   cedula_Profesional: "",
   direccion: "",
@@ -47,7 +48,14 @@ const INITIAL_STATE: DataUser = {
 export const ProfilePage = () => {
   const [user, setUser] = useState(INITIAL_STATE);
   const [skillsUser, setSkillsUser] = useState<SkillUser[]>([]);
-  const [userCarrera, setuserCarrera] = useState<any>(null);
+  const [cambioResidencia, setCambio] = useState<any>(null);
+  const [horario, setHorario] = useState<any>(null);
+  const [modalidad, setModalidad] = useState<any>(null);
+  const [experienciaDes, setExperienciaDes] = useState<any>(null);
+  const [experienciaFI, setExperienciaFI] = useState<any>(null);
+  const [experienciaFF, setExperienciaFF] = useState<any>(null);
+  const [experienciaNom, setExperienciaNom] = useState<any>(null);
+  const [userCarrera, setUserCarrera] = useState<any>(null);
 
   useEffect(() => {
     axios
@@ -56,6 +64,37 @@ export const ProfilePage = () => {
       })
       .then((data) => {
         setUser(data.data);
+        setCambio(data.data.cambioResidencia);
+        setHorario(data.data.jornada);
+        setModalidad(data.data.modalidad);
+        console.log("Estudiante",data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+
+      axios
+      .post("/consulta_carrreras_alumno", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        setUserCarrera(data.data[0].descripcion);
+        console.log("carreraaaaa",data.data[0].descripcion);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+
+      axios
+      .post("/consulta_experiencia", {
+        id: localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        console.log("Experiencia",data);
+        setExperienciaDes(data.data[0].descripcion);
+        setExperienciaFI(data.data[0].fechaInicio);
+        setExperienciaFF(data.data[0].fechaFin);
+        setExperienciaNom(data.data[0].nombre);
       })
       .catch((error) => {
         console.log("error", error);
@@ -72,17 +111,12 @@ export const ProfilePage = () => {
         console.log("error", error);
       });
 
-    axios
-      .post("/consulta_carreras", {
-        id: localStorage.getItem("idUser"),
-      })
-      .then((data) => {
-        setuserCarrera(data.data[0]);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
   }, []);
+
+  if(cambioResidencia == 1)
+    Residencia = "Con disponibilidad de reubicación"
+  else  
+    Residencia = "Sin disponibilidad de reubicación"
 
   return (
     <ContentLayout>
@@ -100,15 +134,7 @@ export const ProfilePage = () => {
               <div className="text-xl font-bold text-center">
                 {user.userName} {user.userApellido}
               </div>
-              {/*
-              <pre className="text-center">
-                <CarreraForm
-                  userCarrera={userCarrera}
-                  carreraUserId={user.id}
-                  user
-                />
-              </pre>
-               */}
+
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
@@ -147,23 +173,20 @@ export const ProfilePage = () => {
           <div className="bg-white rounded-md p-4 mt-6">
             <CardUserInfo
               titulo="Experiencia Laboral"
-              data={skillsUser}
+              data={[]}
+              datos={experienciaNom}
+              datos2={experienciaFI} 
+              datos3={experienciaFF}
+              datos4={experienciaDes}
               formCreate={<ExperienciaLaboralForm />}
               keyName="descripcion"
             />
           </div>
           <div className="bg-white rounded-md p-4 mt-6">
             <CardUserInfo
-              titulo="Actividades Extracurrículares"
-              data={skillsUser}
-              formCreate={<ActividadesExtracurricularesForm />}
-              keyName="descripcion"
-            />
-          </div>
-          <div className="bg-white rounded-md p-4 mt-6">
-            <CardUserInfo
               titulo="Horario"
-              data={skillsUser}
+              data={[]}
+              datos={horario}
               formCreate={<HorarioForm />}
               keyName="descripcion"
             />
@@ -171,7 +194,8 @@ export const ProfilePage = () => {
           <div className="bg-white rounded-md p-4 mt-6">
             <CardUserInfo
               titulo="Cambio de Residencia"
-              data={skillsUser}
+              data={[]}
+              datos= {Residencia}
               formCreate={<CambioResidenciaForm />}
               keyName="descripcion"
             />
@@ -179,7 +203,8 @@ export const ProfilePage = () => {
           <div className="bg-white rounded-md p-4 mt-6">
             <CardUserInfo
               titulo="Modalidad"
-              data={skillsUser}
+              data={[]}
+              datos={modalidad}
               formCreate={<ModalidadForm />}
               keyName="descripcion"
             />
@@ -188,8 +213,9 @@ export const ProfilePage = () => {
           <div className="bg-white rounded-md p-4 mt-6">
             <CardUserInfo
               titulo="Carrera"
-              data={skillsUser}
-              formCreate={<CarreraForm />}
+              data={[]}
+              datos={userCarrera}
+              formCreate={<CarreraForm/>}
               keyName="descripcion"
             />
           </div>

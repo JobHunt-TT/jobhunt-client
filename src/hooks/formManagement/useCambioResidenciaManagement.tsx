@@ -20,7 +20,7 @@ export const useCambioResidenciaManagement = () => {
     cambioResidencia: yup
       .string()
       .required("Esta opción es requerida")
-      .oneOf(["si", "no"], "Seleccione una opción válida"),
+      .oneOf(["0", "1"], "Seleccione una opción válida"),
   });
 
   const methods = useForm({
@@ -41,11 +41,11 @@ export const useCambioResidenciaManagement = () => {
       },
       allowOutsideClick: false,
     });
-
+    const valor = localStorage.getItem("idUser");
     axios
       .post("/cambio_residencia", {
         id: localStorage.getItem("idUser"),
-        cambioResidencia,
+        id2: cambioResidencia,
       })
       .then((data) => {
         MySwal.fire({

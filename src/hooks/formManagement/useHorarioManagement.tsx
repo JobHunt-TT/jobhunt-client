@@ -40,11 +40,12 @@ export const useHorarioManagement = () => {
     });
 
     axios
-      .post("/cambio_estudiante_horario", {
+      .post("/cambio_jornada", {
         id: localStorage.getItem("idUser"),
-        horario,
+        descripcion: horario,
       })
       .then((data) => {
+        console.log("Horario",data);
         MySwal.fire({
           icon: "success",
           title: "Horario registrado con éxito",
