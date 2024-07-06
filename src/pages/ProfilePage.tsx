@@ -7,7 +7,9 @@ import {
   faChevronLeft,
   faChevronRight,
   faBackwardStep,
-  faForwardStep
+  faForwardStep,
+  faPen,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -19,6 +21,7 @@ import { CambioResidenciaForm } from "../forms/CambioResidenciaForm";
 import { ModalidadForm } from "../forms/ModalidadForm";
 import { SkillForm } from "../forms";
 import { CarreraForm } from "../forms/CarreraForm";
+import { Oferta } from "../types";
 import {
   faInstagram,
   faSquareFacebook,
@@ -53,6 +56,25 @@ const INITIAL_STATE: DataUser = {
   jornada: "",
 };
 
+const INITIAL_STATEOFER: Oferta = {
+  ofertaId: 0,
+  nombreOferta: "",
+  empresaID: 0,
+  nombreEmpresa: "",
+  vigencia: "",
+  duracionContrato: "",
+  rangoEdad: 0,
+  rangoExperiencia: 0,
+  jornadaID: 0,
+  jornadaString: 0,
+  direccionId: 0,
+  estatusId: 0,
+  visibilidad: 0,
+  nombrePuesto: "",
+  salario: "",
+  descripcion: "",
+};
+
 export const ProfilePage = () => {
   const [user, setUser] = useState(INITIAL_STATE);
   const [skillsUser, setSkillsUser] = useState<SkillUser[]>([]);
@@ -65,6 +87,9 @@ export const ProfilePage = () => {
   const [experienciaNom, setExperienciaNom] = useState<any>(null);
   const [userCarrera, setUserCarrera] = useState<any>(null);
   const [isFocused3, setIsFocused3] = useState(false);
+  const [dataAplicantes, setAplicantes] = useState<any>(null);
+  const [dataVacante, setVacante] = useState<any>(null);
+  const [dataVacante2, setVacante2] = useState(INITIAL_STATEOFER);
 
   const dataHeadPostulacion: DataHeadTable[] = [
     {
@@ -104,6 +129,18 @@ export const ProfilePage = () => {
         console.log("error", error);
       });
 
+      axios
+      .post("/aplicaciones_estudiante", {
+        id:  localStorage.getItem("idUser"),
+      })
+      .then((data) => {
+        console.log("Usuarios", data);
+        setAplicantes(data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });   
+      
     axios
       .post("/consulta_carrreras_alumno", {
         id: localStorage.getItem("idUser"),
@@ -163,6 +200,9 @@ export const ProfilePage = () => {
               <div className="text-xl font-bold text-center">
                 {user.userName} {user.userApellido}
               </div>
+              <div>
+                {userCarrera}
+              </div>
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="text-xl text-politectico font-bold">Contacto</div>
@@ -193,7 +233,7 @@ export const ProfilePage = () => {
           </div>
           <div className="col-span-2 flex flex-col gap">
             <CardUserInfo
-              titulo="Habilidades "
+              titulo="Habilidades"
               data={skillsUser}
               formCreate={<SkillForm />}
               keyName="descripcion"
@@ -248,6 +288,8 @@ export const ProfilePage = () => {
             </div>
             <div className="bg-white rounded-md p-4 mt-6">
               <div className="flex justify-between items-start">
+              <div className="bg-white rounded-md p-4">
+              <div className="flex justify-between items-start">
                 <div className="text-xl text-politectico font-bold">
                   Postulaciones
                 </div>
@@ -263,9 +305,8 @@ export const ProfilePage = () => {
                   />
                   <FontAwesomeIcon
                     icon={faSearch}
-                    className={`absolute right-4 top-3.5 text-lg transition-colors ${
-                      isFocused3 ? "text-politectico" : "text-gray-300"
-                    }`}
+                    className={`absolute right-4 top-3.5 text-lg transition-colors ${isFocused3 ? "text-politectico" : "text-gray-300"
+                      }`}
                   />
                 </div>
                 <div className="col-span-5 flex justify-end gap-6">
@@ -301,48 +342,63 @@ export const ProfilePage = () => {
                   </div>
                 </div>
               </div>
-              <table className="w-full mt-3 border-b-[3px] border-politectico">
-                <thead>
+              {dataAplicantes && dataAplicantes.length > 0  ? (
+                
+                <table className="w-full mt-3 border-b-[3px] border-politectico">
                   <tr className="bg-politectico text-white font-semibold">
-                    <td className="px-4 py-3 rounded-tl-md">Vacante</td>
-                    <td className="px-4 py-3">Fecha de Postulación</td>
-                    <td className="px-4 py-3">Estatus</td>
-                    <td className="px-4 py-3 rounded-tr-md">Empresa</td>
+                    <th className="px-4 py-3 rounded-tr-md text-left">Vacante</th>
+                    <th className="px-4 py-3 text-left">Fecha de Postulación</th>
+                    <th className="px-4 py-3 text-left">Estatus</th>
+                    <th className="px-4 py-3 text-left">Empresa</th>
+                    <th className="px-4 py-3 rounded-tr-md text-center">Acciones</th>
                   </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
-                        En Proceso
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Microsoft</td>
-                  </tr>
-                  <tr className="bg-gray-200">
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
-                        Aceptado
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Microsoft</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3">Desarrollador BackEnd</td>
-                    <td className="px-4 py-3">5 Jun. 2024</td>
-                    <td className="px-4 py-3">
-                      <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
-                        Rechazado
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">Microsoft</td>
-                  </tr>
-                </tbody>
-              </table>
+
+                  <tbody>
+                    {dataAplicantes.map((aplicante: any, index: number) => (
+                      <tr key={index} className={index % 2 === 0 ? '' : 'bg-gray-200'}>
+                        <td className="px-4 py-3">{aplicante.nombreOferta}</td>
+                        <td className="px-4 py-3">
+                          {new Date(aplicante.fecha).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
+                        </td>
+                        <td className="px-4 py-3">
+                          {aplicante.estatusId === 1 && (
+                            <div className="inline px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold">
+                              Validado
+                            </div>
+                          )}
+                          {aplicante.estatusId === 2 && (
+                            <div className="inline px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+                              En Validación
+                            </div>
+                          )}
+                          {aplicante.estatusId === 3 && (
+                            <div className="inline px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold">
+                              Rechazada
+                            </div>
+                          )}
+                        </td>
+
+                        <td className="px-4 py-3"></td>
+                        <td className="px-4 py-3 text-center">
+                          <FontAwesomeIcon
+                            icon={faPen}
+                            className="fa-solid fa-pen mx-1 text-yellow-500"
+                          />
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="fa-solid fa-trash mx-1 text-red-500"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No Hay datos</p>
+              )}
+            </div>
+              </div>
+              
             </div>
           </div>
         </div>

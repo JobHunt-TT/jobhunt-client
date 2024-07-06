@@ -67,8 +67,8 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
   
     const dataHeadOferta: DataHeadTable[] = [
       {
-        key: "nombreOferta",
-        nombre: "Nombre",
+        key: "nombrePuesto",
+        nombre: "Nombre del Puesto",
       },
       {
         key: "vigencia",
@@ -100,8 +100,8 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
         onChange: handleChangeStatusOferta,
       },
       {
-        key: "nombrePuesto",
-        nombre: "Creador",
+        key: "nombreOferta",
+        nombre: "Descripción",
       },
     ];
   
@@ -150,7 +150,7 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
           id: localStorage.getItem("idEmpresa"),
         })
         .then((data) => {
-          console.log("success", data);
+          console.log("ADMINISTRADORES", data);
           setAdminEmpresa(data.data);
         })
         .catch((error) => {
@@ -162,7 +162,7 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
           ofertaId: localStorage.getItem("idEmpresa"),
         })
         .then((data) => {
-          console.log("success", data);
+          console.log("Oferta", data);
           setOfertaEmpresa(data.data);
         })
         .catch((error) => {
@@ -175,12 +175,24 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
         })
         .then((data) => {
           console.log("success", data);
-          setDataEmpresa(data.data);
+          setDataEmpresa(data.data.empresaNombre);
         })
         .catch((error) => {
           console.log("error", error);
         });
     }, []);
+
+    var administradorEmpresa;
+    var idUser: any;
+    idUser = localStorage.getItem("idUser");
+  
+    for(let num of adminEmpresa){
+      if(num.usuarioEmpresaId == 2 && num.id == idUser)
+      {
+        administradorEmpresa = num;
+        console.log("EMPRESA",num);
+      } 
+    }
   
     return (
       <ContentLayout>
@@ -196,25 +208,24 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
                   className="block mx-auto my-5 rounded-full"
                 />
                 <div className="text-xl font-bold text-center">
-                  Mauricio Rodriguez
-                  {/*dataEmpresa !== null ? dataEmpresa.empresaNombre : "--"*/}
+                  {administradorEmpresa?.userName} {administradorEmpresa?.userName}
                 </div>
                 <div className="text-center">
-                  {/*dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"*/}Gerente de Recursos Humanos
+                  {administradorEmpresa?.userCargo}
                 </div>
                 <div className="text-l font-bold text-center">
-                  Aerocharter
+                  {dataEmpresa}
                 </div>
               </div>
               <div className="bg-white rounded-md p-4 mt-6">
                 <div className="text-xl text-politectico font-bold">Contacto</div>
                 <div className="flex items-center mt-2">
                   <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
-                  <div>contacto@microsoft.com</div>
+                  <div>{administradorEmpresa?.userEmail}</div>
                 </div>
                 <div className="flex items-center mt-2">
                   <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
-                  <div>+52 55 1234 5678</div>
+                  <div>{administradorEmpresa?.userPhone}</div>
                 </div>
                 <div className="flex justify-center mt-2">
                   <FontAwesomeIcon

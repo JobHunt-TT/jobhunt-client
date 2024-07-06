@@ -1,12 +1,12 @@
 import { FormProvider } from "react-hook-form";
 import { AlertNotification, FormInput } from "../components";
 import { useEffect, useState } from "react";
-import { useModalidadManagement } from "../hooks/formManagement/useModalidadManagement";
+import { useEncargadoManagement } from "../hooks";
 
 export const RegistroReclutador = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
   const [showNotification, setShowNotification] = useState(false);
-  const { methods, validForm, submit } = useModalidadManagement();
+  const { methods, validForm, submit } = useEncargadoManagement();
   const {
     handleSubmit,
     formState: { errors },
@@ -22,11 +22,21 @@ export const RegistroReclutador = () => {
 
   const setErrors = () => {
     const errorsTemp: string[] = [];
-
-    if (!!errors.modalidad && !!errors.modalidad.message) {
-      errorsTemp.push(errors.modalidad.message);
+    if (!!errors.userApellido && !!errors.userApellido.message) {
+      errorsTemp.push(errors.userApellido.message);
     }
-
+    if (!!errors.userCargo && !!errors.userCargo.message) {
+      errorsTemp.push(errors.userCargo.message);
+    }
+    if (!!errors.userContrasena && !!errors.userContrasena.message) {
+      errorsTemp.push(errors.userContrasena.message);
+    }
+    if (!!errors.userName && !!errors.userName.message) {
+      errorsTemp.push(errors.userName.message);
+    }
+    if (!!errors.userEmail && !!errors.userEmail.message) {
+      errorsTemp.push(errors.userEmail.message);
+    }
     setErrorsForm(errorsTemp);
   };
 
@@ -40,19 +50,19 @@ export const RegistroReclutador = () => {
         onSubmit={handleSubmit(submit)}
       >
         
-        <FormInput label="Nombre" name="nameUser" />
-          <FormInput label="Apellido" name="lastNameUser" />
-          <FormInput label="Teléfono" name="phoneUser" />
-          <FormInput label="Correo" name="emailUser" />
-          <FormInput label="Cargo" name="cargoUser" />
-          <FormInput label="Contraseña" name="passwordUser" type="password" />
+        <FormInput label="Nombre" name="userName" />
+          <FormInput label="Apellido" name="userApellido" />
+          <FormInput label="Teléfono" name="userPhone" />
+          <FormInput label="Correo" name="userEmail" />
+          <FormInput label="Cargo" name="userCargo" />
+          <FormInput label="Contraseña" name="userContrasena" type="password" />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
           onClick={async () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.modalidad) {
+              if (!!errors.userApellido || !!errors.userCargo || !!errors.userContrasena || !!errors.userName || !!errors.userPhone || !!errors.userEmail) {
                 setErrors();
               }
               handleShowNotification();

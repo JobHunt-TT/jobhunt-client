@@ -24,6 +24,7 @@ const INITIAL_STATE: Oferta = {
   visibilidad: 0,
   nombrePuesto: "",
   salario: "",
+  descripcion: "",
 };
 
 export const VacantePage = () => {
@@ -35,7 +36,7 @@ export const VacantePage = () => {
         ofertaId: localStorage.getItem("idOferta"),
       })
       .then((data) => {
-        console.log("success", data);
+        console.log("Vacantes", data);
         setOferta(data.data);
       })
       .catch((error) => {
@@ -43,6 +44,15 @@ export const VacantePage = () => {
       });
   }, []);
 
+  var horario: string;
+  if(oferta.jornadaString == 0)
+    horario="Medio Turno Matutino";
+  else{
+    if(oferta.jornadaString == 1)
+      horario="Medio Turno Vespertino"
+    else  
+      horario="Tiempo Completo"
+  }
   const handleApply = () => {
     const alumnoId = localStorage.getItem("idUser");
     const ofertaId = localStorage.getItem("idOferta");
@@ -117,13 +127,7 @@ export const VacantePage = () => {
             <div className="mt-8">
               <div className="font-bold text-xl">Descripción: </div>
               <div className="text-justify m-4 mr-3">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi,
-                praesentium veritatis quis dignissimos dolore id numquam
-                voluptates corrupti. Soluta tenetur veniam, natus error aliquam
-                consectetur a atque architecto fuga ipsum tempore quia voluptate
-                debitis accusantium excepturi doloremque aut neque mayores.
-                Voluptas fuga nobis repellendus consectetur dignissimos
-                voluptates tenetur id commodi.
+                {oferta.descripcion}
               </div>
             </div>
             <div>
@@ -141,7 +145,7 @@ export const VacantePage = () => {
               </div>
               <div className="item pl-4 pr-4">
                 <div className="font-semibold flex justify-center">Horario</div>
-                <div className="flex justify-center">10:00 - 11:00</div>{/*Llenar*/}
+                <div className="flex justify-center">{horario}</div>
               </div>
               <div className="item pl-4 pr-4">
                 <div className="font-semibold flex justify-center">Modalidad</div>
@@ -190,13 +194,13 @@ export const VacantePage = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-24 grid grid-cols-3 mb-4 flex justify-center ">
+            <div className="mt-24 mb-4 flex justify-center ">
               <div className="item flex justify-center">
                 <button className="col-span-2 bg-black text-white py-3 rounded-md font-semibold p-4" onClick={handleApply}>
                   Aplicar
                 </button>
               </div>
-              <div className="item flex justify-center">
+             {/*} <div className="item flex justify-center">
                 <button className="col-span-2 bg-black text-white py-3 rounded-md font-semibold p-4">
                   Editar
                 </button>
@@ -205,7 +209,7 @@ export const VacantePage = () => {
                 <button className="col-span-2 bg-black text-white py-3 rounded-md font-semibold p-4">
                   Cancelar
                 </button>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>

@@ -14,6 +14,7 @@ export interface Oferta {
   visibilidad: number;
   nombrePuesto: string;
   salario: string;
+  descripcion: string;
 }
 
 export interface Postulacion {

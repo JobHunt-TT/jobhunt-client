@@ -1,4 +1,4 @@
-import { faCircle, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faCircle, faCirclePlus, faDeleteLeft, faTimesCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -49,10 +49,14 @@ export const CardUserInfo = <T,>({
       <div className="mt-1">
         {data.map((item, index) => (
         <div className="flex items-center" key={index}>
-          <FontAwesomeIcon
-            icon={faCircle}
-            className="text-[.4rem] mr-1"
-          />
+          <button>
+            <FontAwesomeIcon
+              icon={faTimesCircle}
+              className="text-[.7rem] mr-1"
+            />
+          </button>
+          
+          
           {String(item[keyName as keyof T])}
         </div>
       ))}

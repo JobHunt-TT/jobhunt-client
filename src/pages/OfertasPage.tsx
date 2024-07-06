@@ -42,9 +42,11 @@ export const OfertasPage = () => {
         id: localStorage.getItem("userDirectionId"),
       })
       .then((data) => {
-
         let location = data.data.estado + ", " + data.data.municipio;
-        setLocation(location);
+        if (location == "null, null")
+          setLocation("")
+        else
+          setLocation(location);
       })
       .catch((error) => {
         console.log("error", error);
@@ -123,10 +125,6 @@ export const OfertasPage = () => {
               <div>
                 <div className="font-bold">Ubicación</div>
                 <div>{location}</div>
-              </div>
-              <div>
-                <div className="font-bold">Rango Salarial</div>
-                <div>{salary}</div>
               </div>
               <div>
                 <div className="font-bold">Modalidad</div>

@@ -8,19 +8,44 @@ import axios from "axios";
 const MySwal = withReactContent(Swal);
 
 export interface EncargadoFormFields {
-  modalidad: string;
+  userName: string;
+  userApellido: string;
+  userPhone: string;
+  userCargo: string;
+  userEmail: string;
+  userContrasena: string;
 }
 
 const defaultValues: EncargadoFormFields = {
-  modalidad: "",
+  userName: "",
+  userApellido: "",
+  userPhone: "",
+  userCargo: "",
+  userEmail: "",
+  userContrasena: "",
 };
 
-export const useModalidadManagement = () => {
+export const useEncargadoManagement = () => {
   const schema = yup.object().shape({
-    modalidad: yup
+    userName: yup
       .string()
-      .required("Esta opción es requerida")
-      .oneOf(["presencial", "hibrida", "remoto", "indistinto"], "Seleccione una opción válida"),
+      .required("El nombre es requerido"),
+      userApellido: yup
+      .string()
+      .required("El Apelido es requerido"),
+      userCargo: yup
+      .string()
+      .required("El cargo es requerido"),
+      userContrasena: yup
+      .string()
+      .required("La contraseña es requerido"),
+      userPhone: yup
+      .string()
+      .required("El telefono es requerido"),
+      userEmail: yup
+      .string()
+      .required("El correo es requerido")
+      .email("El correo no es valido"),
   });
 
   const methods = useForm({
@@ -29,28 +54,35 @@ export const useModalidadManagement = () => {
   });
 
   const validForm = async () => {
-    const result = await methods.trigger(["modalidad"]);
+    const result = await methods.trigger(["userName", "userApellido", "userCargo", "userContrasena", "userPhone", "userEmail"]);
     return result;
   };
 
-  const submit: SubmitHandler<EncargadoFormFields> = async ({ modalidad }) => {
+  const submit: SubmitHandler<EncargadoFormFields> = async (data) => {
     MySwal.fire({
       title: "Por favor, espere...",
       didOpen: () => {
+        // `MySwal` is a subclass of `Swal` with all the same instance & static methods
         MySwal.showLoading();
       },
       allowOutsideClick: false,
     });
 
     axios
-      .post("/cambio_modalidad", {
-        id: localStorage.getItem("idUser"),
-        modalidad,
+      .post("/alta_reclutador", {
+        empresaId: localStorage.getItem("idEmpresa"),        
+        userName: data.userName,
+        userApellido: data.userApellido,
+        userPhone: data.userPhone,
+        userCargo: data.userCargo,
+        userEmail: data.userEmail,
+        userContrasena: data.userContrasena,
       })
-      .then((data) => {
+      .then((response) => {
+        console.log(data);
         MySwal.fire({
           icon: "success",
-          title: "Modalidad registrada con éxito",
+          title: "Usuario registrada con éxito",
           timer: 3000,
           showConfirmButton: false,
         }).then(() => {
@@ -63,7 +95,7 @@ export const useModalidadManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al registrar la modalidad",
+          text: "Hubo un error al agregar la experiencia",
           timer: 3000,
           showConfirmButton: false,
         });

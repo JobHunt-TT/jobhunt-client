@@ -109,8 +109,7 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
     const [ofertaEmpresa, setOfertaEmpresa] = useState<Oferta[]>([]);
     const [dataAplicantes, setAplicantes] = useState<any>(null);
     const [isFocused3, setIsFocused3] = useState(false);
-    const [dataEmpresa, setDataEmpresa] = useState<any>(null);
-  
+    const [dataEmpresa, setDataEmpresa] = useState<any>(null);  
     const handleDeletePersonal = () => {
       MySwal.fire({
         title: "Por favor, espere...",
@@ -150,7 +149,7 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
           id: localStorage.getItem("idEmpresa"),
         })
         .then((data) => {
-          console.log("success", data);
+          console.log("AdminEmpresa", data);
           setAdminEmpresa(data.data);
         })
         .catch((error) => {
@@ -175,12 +174,23 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
         })
         .then((data) => {
           console.log("success", data);
-          setDataEmpresa(data.data);
+          setDataEmpresa(data.data.empresaNombre);
         })
         .catch((error) => {
           console.log("error", error);
         });
     }, []);
+
+    //adminEmpresas
+    var administradorEmpresa;
+
+    for(let num of adminEmpresa){
+      if(num.usuarioEmpresaId == 1)
+      {
+        administradorEmpresa = num;
+        console.log("EMPRESA",num);
+      } 
+    }
   
     return (
       <ContentLayout>
@@ -196,25 +206,24 @@ import { RegistroReclutador } from "../forms/RegistroReclutador";
                   className="block mx-auto my-5 rounded-full"
                 />
                 <div className="text-xl font-bold text-center">
-                  Mauricio Rodriguez
-                  {/*dataEmpresa !== null ? dataEmpresa.empresaNombre : "--"*/}
+                  {administradorEmpresa?.userName} {administradorEmpresa?.userApellido}
                 </div>
                 <div className="text-center">
-                  {/*dataEmpresa !== null ? dataEmpresa.tipoEmpresa : "--"*/}Gerente de Recursos Humanos
+                  {administradorEmpresa?.userCargo}
                 </div>
                 <div className="text-l font-bold text-center">
-                  Aerocharter
+                  {dataEmpresa}
                 </div>
               </div>
               <div className="bg-white rounded-md p-4 mt-6">
                 <div className="text-xl text-politectico font-bold">Contacto</div>
                 <div className="flex items-center mt-2">
                   <FontAwesomeIcon icon={faEnvelope} className="text-lg mr-2" />
-                  <div>contacto@microsoft.com</div>
+                  <div>{administradorEmpresa?.userEmail}</div>
                 </div>
                 <div className="flex items-center mt-2">
                   <FontAwesomeIcon icon={faPhone} className="text-lg mr-2" />
-                  <div>+52 55 1234 5678</div>
+                  <div>{administradorEmpresa?.userPhone}</div>
                 </div>
                 <div className="flex justify-center mt-2">
                   <FontAwesomeIcon

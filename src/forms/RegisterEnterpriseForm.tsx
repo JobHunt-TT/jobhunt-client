@@ -233,7 +233,7 @@ export const RegisterEnterpriseForm = () => {
         <div className="text-center col-span-2 mt-2">
           <div className="h-1 border-t-[1px] border-gray-400"></div>
           <div className="mt-3">
-            Al registrarse en el sistema, usted esta de acuerdon con el&nbsp;
+            Al registrarse en el sistema, usted esta de acuerdo con el&nbsp;
             <a
               href={require("../assets/Aviso de Privacidad.pdf")}
               target="_blank"

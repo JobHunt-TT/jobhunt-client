@@ -55,11 +55,14 @@ export const useLoginFormManagement = () => {
         console.log("success", data);
         if (typeof data.data === "object") {
           localStorage.setItem("idUser", data.data.id);
+          navigate("/profile");
           if (data.data.empresaId === 1) {
             localStorage.setItem("idEmpresa", data.data.usuarioEmpresaId);
             localStorage.setItem("tipoUsuarioEmpresa", data.data.empresaId);
             navigate("/profileEncargado");
           } else if (data.data.empresaId === 2) {
+            localStorage.setItem("idEmpresa", data.data.usuarioEmpresaId);
+            localStorage.setItem("tipoUsuarioEmpresa", data.data.empresaId);
             navigate("/profilereclutador");
           }
         } else {
