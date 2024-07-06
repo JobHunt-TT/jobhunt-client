@@ -273,16 +273,7 @@ export const AdminPage = () => {
               keyIdByCount="estatusId"
             />
           </div>
-          <div className="col-span-2">
-            <TableComponent
-              titulo="Estudiantes"
-              dataHead={dataHeadEstudiante}
-              data={estudiantes}
-              showActions={false}
-              enabledTableCount
-              keyIdByCount="estatusId"
-            />
-          </div>
+        
           {/* <div className="col-span-2">
             <TableComponent
               titulo="Postulaciones"

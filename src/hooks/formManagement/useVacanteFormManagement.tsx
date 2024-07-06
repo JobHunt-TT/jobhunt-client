@@ -13,7 +13,8 @@ export interface VacanteFormFields {
   duracionContrato: string;
   nombrePuesto: string;
   salario: string;
-  tags?: string[]
+  tags?: string[];
+  descripcion: string;
 }
 
 const defaultValues: VacanteFormFields = {
@@ -22,7 +23,8 @@ const defaultValues: VacanteFormFields = {
   duracionContrato: "",
   nombrePuesto: "",
   salario: "",
-  tags: []
+  tags: [],
+  descripcion: "",
 };
 
 export const useVacanteFormManagement = () => {
@@ -41,7 +43,7 @@ export const useVacanteFormManagement = () => {
     nombrePuesto: yup.string().required("El nombre del puesto es requerido")
     .matches(/^[a-zA-ZÀ-ÿÑñ ]+$/, "Sólo se admiten letras en el nombre de puesto"),
     salario: yup.string().required("El salario es requerido"),
-
+    descripcion: yup.string().required("La descripción es requerido"),
     tags: yup.array().of(yup.string().required())
   });
 
@@ -57,7 +59,8 @@ export const useVacanteFormManagement = () => {
       "duracionContrato",
       "nombrePuesto",
       "salario",
-      "tags"
+      "tags",
+      "descripcion"
     ]);
     return result;
   };
@@ -93,10 +96,10 @@ export const useVacanteFormManagement = () => {
         nombrePuesto: formatData.nombrePuesto,
         salario: formatData.salario,
         tags: formatData.tags,
-        descripcion: "",
+        descripcion: formatData.descripcion,
       })
       .then((data) => {
-
+        console.log("alta oferta", data);
         MySwal.fire({
           icon: "success",
           title: data.data,
@@ -110,7 +113,7 @@ export const useVacanteFormManagement = () => {
         MySwal.fire({
           icon: "error",
           title: "Error",
-          text: "Hubo un error al agregar la skill",
+          text: "Hubo un error al agregar la oferta",
           timer: 3000,
           showConfirmButton: false,
         });
