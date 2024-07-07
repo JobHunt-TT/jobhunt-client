@@ -1,10 +1,20 @@
 import { FormProvider } from "react-hook-form";
-import { AlertNotification, FormInput, FormMultiTagInput, FormSelect } from "../components";
+import {
+  AlertNotification,
+  FormInput,
+  FormMultiTagInput,
+  FormSelect,
+} from "../components";
 import { useEffect, useState } from "react";
 import { useVacanteFormManagement } from "../hooks";
+import axios from "axios";
+import { DataSelect, Estados, EstatusCarrera } from "../types";
 
 export const VacanteForm = () => {
   const [errorsForm, setErrorsForm] = useState<string[]>([]);
+  const [dataEstatusCarrera, setDataEstatusCarrera] = useState<DataSelect[]>(
+    []
+  );
   const [showNotification, setShowNotification] = useState(false);
   const { methods, validForm, submit } = useVacanteFormManagement();
   const {
@@ -53,7 +63,31 @@ export const VacanteForm = () => {
   };
 
   useEffect(setErrors, [errors]);
-  return(
+
+  useEffect(() => {
+    axios
+      .post("/consulta_estatus_carrera")
+      .then((data) => {
+        const catalogEnterprise: DataSelect[] = [];
+
+        const array = data.data as EstatusCarrera[];
+
+        for (let index = 0; index < array.length; index++) {
+          const { id, carreraDescripcion } = array[index];
+          const tipo: DataSelect = {
+            label: carreraDescripcion,
+            value: id.toString(),
+          };
+          catalogEnterprise.push(tipo);
+        }
+        setDataEstatusCarrera(catalogEnterprise);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, []);
+
+  return (
     <FormProvider {...methods}>
       <div className="text-4xl font-bold mt-5">Crear Vacante</div>
 
@@ -63,7 +97,7 @@ export const VacanteForm = () => {
       >
         <FormInput label="Nombre de la Oferta" name="nombreOferta" />
         <FormInput label="Nombre del Puesto" name="nombrePuesto" />
-   
+
         <FormInput label="Vigencia" name="vigencia" type="date" />
         <FormInput label="Duración de Contrato" name="duracionContrato" />
         <FormSelect
@@ -83,7 +117,10 @@ export const VacanteForm = () => {
           name="horario"
           options={[
             { value: "Medio Turno Matutino", label: "Medio Turno Matutino" },
-            { value: "Medio Turno Vespertino", label: "Medio Turno Vespertino" },
+            {
+              value: "Medio Turno Vespertino",
+              label: "Medio Turno Vespertino",
+            },
             { value: "Tiempo Completo", label: "Tiempo Completo" },
           ]}
         />
@@ -97,8 +134,16 @@ export const VacanteForm = () => {
             { value: "indistinto", label: "Indistinto" },
           ]}
         />
-        <FormInput label="Estado" name="estado" />{/*Cambiar por endpoints*/}
-        <FormInput label="Estatus del Alumno" name="estatus" />
+        <FormSelect
+          label="Estado"
+          data={Estados}
+          name="estado"
+        />
+        <FormSelect
+          label="Estatus del Alumno"
+          data={dataEstatusCarrera}
+          name="estatus"
+        />
         <FormMultiTagInput label="Habilidades" name="habilidades" />
         <FormMultiTagInput label="Idiomas" name="idiomas" />
         <div className="font-bold text-center">Experiencia Laboral</div>
@@ -110,7 +155,14 @@ export const VacanteForm = () => {
             setErrorsForm([]);
             const isValid = await validForm();
             if (!isValid) {
-              if (!!errors.nombreOferta || !!errors.vigencia || !!errors.duracionContrato || !!errors.nombrePuesto || !!errors.salario || !!errors.tags) {
+              if (
+                !!errors.nombreOferta ||
+                !!errors.vigencia ||
+                !!errors.duracionContrato ||
+                !!errors.nombrePuesto ||
+                !!errors.salario ||
+                !!errors.tags
+              ) {
                 setErrors();
               }
               handleShowNotification();
@@ -128,5 +180,5 @@ export const VacanteForm = () => {
         onClose={handleHideNotification}
       />
     </FormProvider>
-  )
-}
+  );
+};
