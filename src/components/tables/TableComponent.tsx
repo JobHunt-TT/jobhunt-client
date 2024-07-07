@@ -22,6 +22,7 @@ interface TableComponentProps<T> {
   titulo: string;
   dataHead: DataHeadTable[];
   data: T[];
+  keyId?: string;
   width?: WidthTable;
   enabledChangeSelect?: boolean;
   showActions?: boolean;
@@ -30,13 +31,14 @@ interface TableComponentProps<T> {
   formCreate?: JSX.Element;
   keyIdByCount?: string;
   enabledTableCount?: boolean;
-  handleForm?: () => void;
+  handleForm?: (id: string) => void;
 }
 
 export const TableComponent = <T,>({
   titulo,
   dataHead,
   data,
+  keyId,
   width = "xl",
   enabledChangeSelect = true,
   showActions = true,
@@ -121,7 +123,7 @@ export const TableComponent = <T,>({
     );
   };
 
-  const handleDeleteModal = () => {
+  const handleDeleteModal = (id: string) => {
     MySwal.fire({
       icon: "warning",
       title: "Advertencia",
@@ -132,7 +134,7 @@ export const TableComponent = <T,>({
       confirmButtonColor: "#16A34A",
       cancelButtonColor: "#DC2626",
     }).then(({ isConfirmed }) => {
-      isConfirmed && !!handleForm && handleForm();
+      isConfirmed && !!handleForm && handleForm(id);
     });
   };
 
@@ -184,8 +186,8 @@ export const TableComponent = <T,>({
 
   const startIndex = (currentPage - 1) * filterSelect;
   const endIndex = startIndex + filterSelect;
-  const paginatedEnterprises = data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.length / filterSelect);
+  // const paginatedEnterprises = data.slice(startIndex, endIndex);
+  // const totalPages = Math.ceil(data.length / filterSelect);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -214,7 +216,7 @@ export const TableComponent = <T,>({
 
   useEffect(() => {
     setDataFilteed(data.slice(startIndex, endIndex))
-  }, [paginatedEnterprises])
+  }, [data, startIndex, endIndex])
   
 
   useEffect(() => {
@@ -496,7 +498,7 @@ export const TableComponent = <T,>({
                   key={index}
                   enabledChangeSelect={enabledChangeSelect}
                   showActions={showActions}
-                  onClickIcon={handleDeleteModal}
+                  onClickIcon={() => handleDeleteModal(String(item[keyId as keyof T]))}
                 />
               ))}
             </>

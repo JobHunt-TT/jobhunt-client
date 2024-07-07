@@ -3,10 +3,10 @@ import { AlertNotification, FormInput, FormSelect } from "../components";
 import { useEffect, useState } from "react";
 import { DireccionFormFields, useDireccionFormManagement } from "../hooks";
 import axios from "axios";
-import { CPInfo, DataSelect } from "../types";
+import { Estados } from "../types";
 
 interface DireccionFormProps {
-  type: 'alumno' | 'empresa' | 'oferta'
+  type: "alumno" | "empresa" | "oferta";
 }
 
 export const DireccionForm = ({ type }: DireccionFormProps) => {
@@ -26,40 +26,10 @@ export const DireccionForm = ({ type }: DireccionFormProps) => {
     setShowNotification(false);
   };
 
-  const changeCP = ({ cp }: DireccionFormFields) => {
-    axios.get(`https://apicodigospostales.com/v1/cp/`, {
-      params: {
-        token: "pruebas",
-        valor: cp
-      },
-    })
-      .then((data) => {
-        console.log("success", data);
-        const responseCP = data.data;
-        const selectData: any[] = responseCP.map((response: any) => {
-          return {
-            label: response.Colonia,
-            value: response.Colonia,
-            municipio: response.Municipio,
-            estado: response.Entidad,
-          };
-        });
-        console.log(selectData);
-
-        setDataCPSelect(selectData);
-        if (selectData.length === 1) {
-          methods.setValue("colonia", selectData[0].value);
-          methods.setValue("municipio", selectData[0].municipio);
-          methods.setValue("estado", selectData[0].estado);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
-
   const handleColoniaChange = (selectedColonia: string) => {
-    const selectedData = dataCPSelect.find(item => item.value === selectedColonia);
+    const selectedData = dataCPSelect.find(
+      (item) => item.value === selectedColonia
+    );
     if (selectedData) {
       methods.setValue("municipio", selectedData.municipio);
       methods.setValue("estado", selectedData.estado);
@@ -110,7 +80,7 @@ export const DireccionForm = ({ type }: DireccionFormProps) => {
 
   useEffect(() => {
     methods.setValue("type", type);
-  }, [type, methods])
+  }, [type, methods]);
 
   return (
     <FormProvider {...methods}>
@@ -120,24 +90,17 @@ export const DireccionForm = ({ type }: DireccionFormProps) => {
         className="w-full px-4 mt-8 mb-6 grid grid-rows-2 gap-4"
         onSubmit={handleSubmit(submit)}
       >
-        <FormInput
-          label="CP"
-          name="cp"
-          onBlurInput={() => changeCP(methods.getValues())}
-        />
+        <FormInput label="CP" name="cp" />
         <FormInput label="Calle" name="vialidad" />
         <FormInput label="No. Ext." name="noExt" />
         <FormInput label="No. Int." name="noInt" />
+        <FormInput label="Colonia" name="colonia" />
+        <FormInput label="Municipio" name="municipio" />
         <FormSelect
-          label="Colonia"
-          data={dataCPSelect}
-          name="colonia"
-          disabled={dataCPSelect.length === 1}
-          selectFirst={dataCPSelect.length === 1}
-          onChangeInput={(value: string) => handleColoniaChange(value)}
+          label="Estado"
+          data={Estados}
+          name="estado"
         />
-        <FormInput label="Municipio" name="municipio" disabled />
-        <FormInput label="Estado" name="estado" disabled />
         <FormInput label="Entre Calles" name="entreCalles" />
         <button
           className="col-span-2 bg-black text-white py-3 rounded-md font-semibold"
