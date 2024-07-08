@@ -261,6 +261,9 @@ export const AdminPage = () => {
               showActions={false}
               enabledTableCount
               keyIdByCount="statusId"
+              showButtonLink
+              textButtonLink="Ver Estadísticas"
+              navigateLink="/adminStats"
             />
           </div>
           <div className="col-span-2">
@@ -271,6 +274,9 @@ export const AdminPage = () => {
               showActions={false}
               enabledTableCount
               keyIdByCount="estatusId"
+              showButtonLink
+              textButtonLink="Ver Estadísticas"
+              navigateLink="/adminStats"
             />
           </div>
         

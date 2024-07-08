@@ -1,4 +1,5 @@
 import {
+  faArrowUpRightFromSquare,
   faBackwardStep,
   faChevronLeft,
   faChevronRight,
@@ -15,6 +16,7 @@ import { DataHeadTable, WidthTable } from "../../types";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useNavigate } from "react-router-dom";
 
 const MySwal = withReactContent(Swal);
 
@@ -28,6 +30,9 @@ interface TableComponentProps<T> {
   showActions?: boolean;
   showButtonCreate?: boolean;
   textButtonCreate?: string;
+  showButtonLink?: boolean;
+  textButtonLink?: string;
+  navigateLink?: string;
   formCreate?: JSX.Element;
   keyIdByCount?: string;
   enabledTableCount?: boolean;
@@ -44,11 +49,15 @@ export const TableComponent = <T,>({
   showActions = true,
   showButtonCreate = false,
   textButtonCreate,
+  showButtonLink = false,
+  textButtonLink,
+  navigateLink,
   formCreate,
   keyIdByCount,
   enabledTableCount = false,
   handleForm,
 }: TableComponentProps<T>) => {
+  const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -215,9 +224,8 @@ export const TableComponent = <T,>({
   ]);
 
   useEffect(() => {
-    setDataFilteed(data.slice(startIndex, endIndex))
-  }, [data, startIndex, endIndex])
-  
+    setDataFilteed(data.slice(startIndex, endIndex));
+  }, [data, startIndex, endIndex]);
 
   useEffect(() => {
     setDataFilteed(data);
@@ -239,6 +247,15 @@ export const TableComponent = <T,>({
             onClick={handleOpenModal}
           >
             {textButtonCreate}
+          </button>
+        )}
+        {showButtonLink && (
+          <button
+            className="text-politectico font-bold text-lg rounded-full"
+            onClick={() => navigate(`${navigateLink}`)}
+          >
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="mr-2" />
+            {textButtonLink}
           </button>
         )}
       </div>
@@ -366,7 +383,10 @@ export const TableComponent = <T,>({
             </select>
           </div>
           <div className="flex h-full items-center ">
-            <div className="text-gray-600 mr-4">{startIndex + 1} - {Math.min(endIndex, data.length)} de {data.length}</div>
+            <div className="text-gray-600 mr-4">
+              {startIndex + 1} - {Math.min(endIndex, data.length)} de{" "}
+              {data.length}
+            </div>
             <div className="grid grid-cols-4 gap-4">
               <FontAwesomeIcon
                 icon={faChevronLeft}
@@ -498,7 +518,9 @@ export const TableComponent = <T,>({
                   key={index}
                   enabledChangeSelect={enabledChangeSelect}
                   showActions={showActions}
-                  onClickIcon={() => handleDeleteModal(String(item[keyId as keyof T]))}
+                  onClickIcon={() =>
+                    handleDeleteModal(String(item[keyId as keyof T]))
+                  }
                 />
               ))}
             </>
