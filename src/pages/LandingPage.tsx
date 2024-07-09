@@ -139,7 +139,7 @@ export const LandingPage = () => {
                     <div>
                       <div className=" flex text-center items-center justify-start  m-3">
                         <img
-                          src="./img/Homer.jpg"
+                          src="./img/.jpg"
                           alt="Profile"
                           width="100"
                           height="100"
